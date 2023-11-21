@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES6",
+    "lib": ["ES6", "DOM", "DOM.Iterable"],
+    "noEmit": true,
+    "types": ["vite/client"],
+    // "skipLibCheck": true, // enable for temp fix for vue
+    "useDefineForClassFields": true,
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    // "isolatedModules": true, // for bundlers like vite
+    /* Enable javascript compilation */
+    "allowJs": true,
+    "checkJs": true
+  },
+  "include": ["**/*.ts", "**/*.mts", "**/*.cts", "**/*.tsx", "**/*.mtsx", "**/*.js", "**/*.mjs", "**/*.cjs", "**/*.jsx", "**/*.mjsx"],
+  "exclude": ["dist/*", "build/*", "scripts/*"]
+}

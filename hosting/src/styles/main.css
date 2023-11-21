@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  button {
+    @apply select-none rounded border border-transparent px-5 py-2 text-base font-extrabold text-black cursor-pointer bg-blue-500 enabled:transition-colors enabled:duration-200 enabled:hover:border-red-500 enabled:focus:outline-none enabled:active:transition-colors enabled:active:bg-blue-300 disabled:bg-gray-400 disabled:pointer-events-none;
+  }
+}

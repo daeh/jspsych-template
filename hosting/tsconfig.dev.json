@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.base",
+  "compilerOptions": {
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitAny": false,
+    "noFallthroughCasesInSwitch": false,
+    "removeComments": false
+  }
+}

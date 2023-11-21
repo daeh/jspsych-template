@@ -1,0 +1,15 @@
+{
+  "name": "exampleproj",
+  "version": "1.0.0",
+  "description": "template serverless project with vite and jspsych",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "firebase deploy --only hosting",
+    "deploy-rules": "firebase deploy --only firestore:rules"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "firebase-tools": "^12.9.1"
+  }
+}

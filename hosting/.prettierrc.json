@@ -1,0 +1,39 @@
+{
+  "printWidth": 120,
+  "trailingComma": "all",
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": false,
+  "singleQuote": true,
+  "quoteProps": "consistent",
+  "bracketSpacing": true,
+  "bracketSameLine": true,
+  "arrowParens": "always",
+  "proseWrap": "never",
+  "overrides": [
+    {
+      "files": "*.json",
+      "options": {
+        "printWidth": 400,
+        "trailingComma": "es5",
+        "tabWidth": 2,
+        "singleQuote": false
+      }
+    },
+    {
+      "files": ["*.html"],
+      "options": {
+        "printWidth": 200,
+        "singleQuote": false,
+        "bracketSameLine": true
+      }
+    },
+    {
+      "files": ["*.code-workspace"],
+      "options": {
+        "useTabs": true,
+        "singleQuote": false
+      }
+    }
+  ]
+}
