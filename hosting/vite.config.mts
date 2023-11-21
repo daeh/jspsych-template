@@ -1,13 +1,18 @@
+import browserslistToEsbuild from 'browserslist-to-esbuild'
 import { defineConfig } from 'vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
-import browserslistToEsbuild from 'browserslist-to-esbuild'
 
+console.log('MODE: ', process.env.NODE_ENV)
+
+const filesPathToExclude = ['eslint.config.js']
 export default defineConfig({
   build: {
     target: browserslistToEsbuild(),
+    manifest: true,
+    rollupOptions: {
+      external: filesPathToExclude,
+    },
   },
-  // @ts-ignore
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   plugins: [
     createHtmlPlugin({
       minify: true,

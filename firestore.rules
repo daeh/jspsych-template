@@ -7,4 +7,11 @@ service cloud.firestore {
         allow read, write: if request.auth.uid == uid; // Allow read and write if the UID matches
     }
   }
+
+  match /databases/{database}/documents {
+    // This is like a router: exptData-dbug/:uid
+    match /exptData-dbug/{uid} {
+        allow read, write: if request.auth.uid == uid; // Allow read and write if the UID matches
+    }
+  }
 }

@@ -1,45 +1,54 @@
-import { saveTrialDataComplete, saveTrialDataPartial } from './utils'
-import { getUserInfo, sandboxStatus } from './globals'
-import { initJsPsych } from 'jspsych'
 import jsPsychHtmlKeyboardResponse from '@jspsych/plugin-html-keyboard-response'
-import jsPsychPreload from '@jspsych/plugin-preload'
 import jsPsychImageKeyboardResponse from '@jspsych/plugin-image-keyboard-response'
+import jsPsychPreload from '@jspsych/plugin-preload'
+import { initJsPsych } from 'jspsych'
 
-import blueImg from './images/blue.png'
-import orangeImg from './images/orange.png'
+import type { DataCollection } from '../node_modules/jspsych/dist/modules/data/DataCollection'
 
-const sandy = sandboxStatus()
+/* Alternatively
+ * type JsPsychInstance = ReturnType<typeof initJsPsych>
+ * type JsPsychGetData = JsPsychInstance['data']['get']
+ * export type JsPsychDataCollection = ReturnType<JsPsychGetData>
+ */
+
+import { debugging, getUserInfo } from './globalVariables'
+import { saveTrialDataComplete, saveTrialDataPartial } from './utils'
+
+import imgStimBlue from './images/blue.png'
+import imgStimOrange from './images/orange.png'
+
+const debug = debugging()
 
 export async function runExperiment() {
-  if (sandy) {
+  if (debug) {
     console.log('--runExperiment--')
     console.log('UserInfo ::', getUserInfo())
   }
 
   /* initialize jsPsych */
   const jsPsych = initJsPsych({
-    on_data_update: function (trialData) {
-      if (sandy) {
+    on_data_update: function (trialData: TrialData) {
+      if (debug) {
         console.log('jsPsych-update :: trialData ::')
         console.log(trialData)
       }
       // if trialData contains a saveToFirestore property, and the property is true, then save the trialData to Firestore
-      if (trialData?.saveToFirestore) {
+      if (trialData.saveToFirestore) {
         saveTrialDataPartial(trialData).then(
-          (value) => {
-            if (sandy) {
-              console.log('saveTrialDataPartial: Success', value) // Success!
+          () => {
+            if (debug) {
+              console.log('saveTrialDataPartial: Success') // Success!
             }
           },
-          (reason) => {
-            console.error(reason) // Error!
+          (err) => {
+            console.error(err) // Error!
           },
         )
       }
     },
-    on_finish: async (data) => {
-      await saveTrialDataComplete(data)
-      if (sandy) {
+    on_finish: async (data: DataCollection) => {
+      await saveTrialDataComplete(data.values())
+      if (debug) {
         console.log('jsPsych-finish :: data ::')
         console.log(data)
         jsPsych.data.displayData()
@@ -53,14 +62,14 @@ export async function runExperiment() {
   /* preload images */
   const preload = {
     type: jsPsychPreload,
-    images: [blueImg, orangeImg],
+    images: [imgStimBlue, imgStimOrange],
   }
   timeline.push(preload)
 
   /* define welcome message trial */
   const welcome = {
     type: jsPsychHtmlKeyboardResponse,
-    stimulus: 'Welcome to the experiment. Press any key to begin.',
+    stimulus: '<span class="text-xl">Welcome to the experiment. Press any key to begin.</span>',
   }
   timeline.push(welcome)
 
@@ -68,15 +77,15 @@ export async function runExperiment() {
   const instructions = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
-        <p>In this experiment, a circle will appear in the center 
-        of the screen.</p><p>If the circle is <strong>blue</strong>, 
-        press the letter F on the keyboard as fast as you can.</p>
-        <p>If the circle is <strong>orange</strong>, press the letter J 
-        as fast as you can.</p>
+        <p>In this experiment, a circle will appear in the center of the screen.</p>
+        <p>If the circle is <span class="text-blue-500 font-semibold">blue</span>, 
+        press the letter <span class="text-blue-500 font-semibold">F</span> on the keyboard as fast as you can.</p>
+        <p>If the circle is <span class="text-orange-500 font-semibold">orange</span>, 
+        press the letter <span class="text-orange-500 font-semibold">J</span> as fast as you can.</p>
         <div style='width: 700px;'>
-        <div style='float: left;'><img src='${blueImg}'></img>
+        <div style='float: left;'><img src='${imgStimBlue}'></img>
         <p class='small'><strong>Press the F key</strong></p></div>
-        <div style='float: right;'><img src='${orangeImg}'></img>
+        <div style='float: right;'><img src='${imgStimOrange}'></img>
         <p class='small'><strong>Press the J key</strong></p></div>
         </div>
         <p>Press any key to begin.</p>
@@ -86,9 +95,9 @@ export async function runExperiment() {
   timeline.push(instructions)
 
   /* define trial stimuli array for timeline variables */
-  const test_stimuli = [
-    { stimulus: blueImg, correct_response: 'f' },
-    { stimulus: orangeImg, correct_response: 'j' },
+  const test_stimuli: Record<string, string>[] = [
+    { stimulus: imgStimBlue, correct_response: 'f' as KeyboardResponse },
+    { stimulus: imgStimOrange, correct_response: 'j' as KeyboardResponse },
   ]
 
   /* define fixation and test trials */
@@ -97,23 +106,26 @@ export async function runExperiment() {
     stimulus: '<div style="font-size:60px;">+</div>',
     choices: 'NO_KEYS',
     trial_duration: function () {
-      return jsPsych.randomization.sampleWithoutReplacement([250, 500, 750, 1000, 1250, 1500, 1750, 2000], 1)[0]
+      return jsPsych.randomization.sampleWithoutReplacement(
+        [250, 500, 750, 1000, 1250, 1500, 1750, 2000],
+        1,
+      )[0] as number
     },
     data: {
-      task: 'fixation',
+      task: 'fixation' as Task,
     },
   }
 
   const test = {
     type: jsPsychImageKeyboardResponse,
-    stimulus: jsPsych.timelineVariable('stimulus'),
-    choices: ['f', 'j'],
+    stimulus: jsPsych.timelineVariable('stimulus') as string,
+    choices: ['f', 'j'] as KeyboardResponse[],
     data: {
-      task: 'response',
-      correct_response: jsPsych.timelineVariable('correct_response'),
+      task: 'response' as Task,
+      correct_response: jsPsych.timelineVariable('correct_response') as string,
     },
-    on_finish: function (data) {
-      data.correct = jsPsych.pluginAPI.compareKeys(data.response, data.correct_response)
+    on_finish: function (data: TrialData) {
+      data.correct = jsPsych.pluginAPI.compareKeys(data.response || null, data.correct_response || null)
       data.saveToFirestore = true
     },
   }
@@ -128,13 +140,13 @@ export async function runExperiment() {
   timeline.push(test_procedure)
 
   /* define debrief */
-  var debrief_block = {
+  let debrief_block = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: function () {
-      var trials = jsPsych.data.get().filter({ task: 'response' })
-      var correct_trials = trials.filter({ correct: true })
-      var accuracy = Math.round((correct_trials.count() / trials.count()) * 100)
-      var rt = Math.round(correct_trials.select('rt').mean())
+      let trials = jsPsych.data.get().filter({ task: 'response' })
+      let correct_trials = trials.filter({ correct: true })
+      let accuracy = Math.round((correct_trials.count() / trials.count()) * 100)
+      let rt = Math.round(correct_trials.select('rt').mean())
 
       return `<p>You responded correctly on ${accuracy}% of the trials.</p>
           <p>Your average response time was ${rt}ms.</p>

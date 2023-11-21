@@ -1,4 +1,4 @@
-import { promises as fs } from 'fs'
+import { constants, promises as fs } from 'fs'
 import { platform } from 'os'
 import { dirname, join, resolve } from 'path'
 import { fileURLToPath } from 'url'
@@ -14,6 +14,22 @@ async function createLink() {
   console.log(`linking ${sourceFile} to ${targetFile}`)
 
   try {
+    // Check if targetFile exists and is a symlink
+    const exists = await fs
+      .access(targetFile, constants.F_OK)
+      .then(() => true)
+      .catch(() => false)
+    if (exists) {
+      const stats = await fs.lstat(targetFile)
+      if (stats.isSymbolicLink() || stats.isFIFO()) {
+        // If targetFile is a symlink, remove it
+        await fs.unlink(targetFile)
+      } else {
+        // If targetFile exists but is not a symlink, throw an error
+        throw new Error(`Target file ${targetFile} exists and is not a symlink.`)
+      }
+    }
+
     if (platform() === 'win32') {
       // On Windows, create a symbolic link
       await fs.symlink(sourceFile, targetFile, 'file')
@@ -24,7 +40,7 @@ async function createLink() {
       console.log('Hard link created successfully.')
     }
   } catch (err) {
-    console.error('Error creating link:', err.message)
+    console.error('Error creating link:: ', err)
   }
 }
 

@@ -1,21 +1,33 @@
 {
   "compilerOptions": {
     "module": "ESNext",
-    "target": "ES6",
-    "lib": ["ES6", "DOM", "DOM.Iterable"],
-    "noEmit": true,
-    "types": ["vite/client"],
-    // "skipLibCheck": true, // enable for temp fix for vue
-    "useDefineForClassFields": true,
-    /* Bundler mode */
+    "target": "ES2022", // target handled by Vite via ESBuild via browserslist-to-esbuild
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+
+    /* Bundler Mode */
     "moduleResolution": "bundler",
+    "noEmit": true,
+    "esModuleInterop": false,
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    // "isolatedModules": true, // for bundlers like vite
-    /* Enable javascript compilation */
+    "isolatedModules": true, // for bundlers like vite. Setting the isolatedModules flag tells TypeScript to warn you if you write certain code that can’t be correctly interpreted by a single-file transpilation process.
+    // "allowSyntheticDefaultImports": false,
+
+    /* For Vite */
+    // "types": ["vite/client"], // defined in types/vite.d.ts
+    // "typeRoots": [""],
+    "skipLibCheck": true, // enable for temp fix
+    "useDefineForClassFields": true,
+
+    /* Linting */
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Enable JavaScript Compilation */
     "allowJs": true,
     "checkJs": true
   },
-  "include": ["**/*.ts", "**/*.mts", "**/*.cts", "**/*.tsx", "**/*.mtsx", "**/*.js", "**/*.mjs", "**/*.cjs", "**/*.jsx", "**/*.mjsx"],
-  "exclude": ["dist/*", "build/*", "scripts/*"]
+  "include": ["src/types/*.d.ts", "**/*.ts", "**/*.mts", "**/*.cts", "**/*.tsx", "**/*.mtsx", "**/*.js", "**/*.mjs", "**/*.cjs", "**/*.jsx", "**/*.mjsx"],
+  "exclude": ["dist", "build"]
 }

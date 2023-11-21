@@ -1,28 +1,35 @@
 import { runExperiment } from './experiment'
-import { getExptInitialized, sandboxStatus, setExptInitialized } from './globals'
-import 'jspsych/css/jspsych.css'
+import { debugging, getExptInitialized, setExptInitialized } from './globalVariables'
+
 import './styles/main.css'
 
-const sandy = sandboxStatus()
+const debug = debugging()
 
 export function enableBeginExperiment() {
+  /*
+   * Called on onAuthStateChanged() after initExperimentData() finishes
+   */
+
   if (getExptInitialized()) return
+
   const startButton = document.getElementById('startButton') as HTMLButtonElement
-  startButton.textContent = "Let's Go!"
-  startButton.disabled = false
+
   startButton.addEventListener('click', () => {
     startButton.disabled = true
     startButton.blur()
     runExperiment().then(
-      (value) => {
-        if (sandy) {
-          console.log('runExperiment: Finished: Success :: ', value) // Success!
+      () => {
+        if (debug) {
+          console.log('runExperiment: Finished: Success') // Success!
         }
       },
-      (reason) => {
-        console.error(reason) // Error!
+      (err) => {
+        console.error(err) // Error!
       },
     )
   })
+
+  startButton.textContent = "Let's Go!"
+  startButton.disabled = false
   setExptInitialized(true)
 }

@@ -1,0 +1,12 @@
+**/.git/
+**/.github/
+# **/.vscode/
+**/.idea/
+**/build/
+**/dist/
+**/.firebase
+**/.firebaserc
+**/firestore.rules
+**/package-lock.json
+**/*.lock
+**/_ignores/

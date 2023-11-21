@@ -1,0 +1,5 @@
+* text=auto
+*-pubignore* export-ignore
+*_pubignore* export-ignore
+.firebaserc export-ignore
+hosting/src/firebaseConfig.ts export-ignore

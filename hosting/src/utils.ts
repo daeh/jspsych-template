@@ -1,94 +1,91 @@
-import { enableBeginExperiment } from './main'
-import { getUserInfo, sandboxStatus, setUserInfo } from './globals'
-import { firebaseConfig } from './firebaseConfig'
-import { initializeApp } from 'firebase/app'
-import { getAuth, onAuthStateChanged, signInAnonymously, User } from 'firebase/auth'
 import {
-  addDoc,
-  collection,
+  // addDoc,
+  // collection,
   doc,
-  DocumentData,
+  // DocumentData,
   getDoc,
-  getDocs,
-  getFirestore,
-  onSnapshot,
+  // getDocs,
+  // getFirestore,
+  // onSnapshot,
   runTransaction,
   setDoc,
   Timestamp,
 } from 'firebase/firestore'
 
-const sandy = sandboxStatus()
+import { getDataBase, getUID } from './auth'
+import { getBrowserInfo, getOSInfo, getWindowSize } from './clientNavigatorQuery'
+import { debugging, getDocStr, setUserInfo, UserRecord } from './globalVariables'
 
-// Initialize firebase
-const app = initializeApp(firebaseConfig)
-const auth = getAuth(app)
-const db = getFirestore(app)
-let uid: string
-onAuthStateChanged(auth, (user: User | null) => {
-  if (user != null) {
-    uid = user?.uid
-    if (sandy) {
-      console.log('anon uid :: ', user.uid)
-    }
-    initExperiment(uid).then(
-      (value) => {
-        enableBeginExperiment()
-        if (sandy) {
-          console.log('initExperiment: Success :: ', value) // Success!
-        }
-      },
-      (reason) => {
-        console.error(reason) // Error!
-      },
-    )
-  }
-})
-void signInAnonymously(auth)
+const debug = debugging()
 
-const initExperiment = async (uid: string): Promise<void> => {
+export async function initExperimentData(uid: string): Promise<void> {
   // Initialize User
-  const userInfo = initUser(uid)
+  const userInfo = setUserInfo(uid)
 
   // Initialize User's Data
   await initData(userInfo)
 }
 
-const initUser = (uid: string) => {
-  const queryString: string = window.location.search
-  return setUserInfo(uid, queryString)
-}
-
-const initData = async (userInfo): Promise<void> => {
+async function initData(userInfo: UserRecord): Promise<void> {
   const docData = {
+    ...userInfo,
     dateInit: Timestamp.now(),
     trialsPartial: [],
+    clientInfo: {
+      browser: getBrowserInfo(),
+      os: getOSInfo(),
+      windowSize: getWindowSize(),
+    },
   }
 
-  // update docData with userInfo
-  Object.assign(docData, userInfo)
+  const exptDataDoc = getDocStr('exptData')
+  const uid = await getUID()
+  const db = getDataBase()
+  const docRef = doc(db, exptDataDoc, uid)
+  const docSnap = await getDoc(docRef)
 
-  await setDoc(doc(db, 'exptData', `${uid}`), docData)
-  if (sandy) {
+  if (docSnap.exists()) {
+    const existingData = docSnap.data()
+    if (existingData.hasOwnProperty('priorInits')) {
+      let { priorInits, ...existingDataReduced } = existingData
+      if (priorInits instanceof Array) {
+        // @ts-expect-error priorInits does not exist on type
+        docData['priorInits'] = [...priorInits, existingDataReduced]
+      } else {
+        // @ts-expect-error priorInits does not exist on type
+        docData['priorInits'] = [priorInits, existingDataReduced]
+      }
+    } else {
+      // @ts-expect-error priorInits does not exist on type
+      docData['priorInits'] = [existingData]
+    }
+  }
+
+  await setDoc(doc(db, exptDataDoc, uid), docData)
+  if (debug) {
     console.log('initData: Document written')
   }
 }
 
-export const saveTrialDataPartial = async (trialData): Promise<boolean> => {
-  const docRef = doc(db, 'exptData', uid)
+export async function saveTrialDataPartial(trialData: TrialData): Promise<boolean> {
+  const exptDataDoc = getDocStr('exptData')
+  const uid = await getUID()
+  const db = getDataBase()
+  const docRef = doc(db, exptDataDoc, uid)
   try {
     await runTransaction(db, async (transaction): Promise<void> => {
       // Get the latest data, rather than relying on the store
       const docSnap = await transaction.get(docRef)
       if (!docSnap.exists()) {
-        throw 'saveTrialDataPartial: Document does not exist'
+        throw new Error('saveTrialDataPartial: Document does not exist')
       }
 
       // Get the latest trial and current trial
       const userData = docSnap.data()
 
-      const data: Record<string, any[]> = {}
+      const data: Record<string, unknown[]> = {}
 
-      if (userData && 'trialsPartial' in userData) {
+      if ('trialsPartial' in userData) {
         data.trialsPartial = userData.trialsPartial
       } else {
         data.trialsPartial = []
@@ -99,41 +96,71 @@ export const saveTrialDataPartial = async (trialData): Promise<boolean> => {
       // Update the fields in responseData directly
       transaction.update(docRef, data)
 
-      if (sandy) {
+      if (debug) {
         console.log('Successfully saved data')
       }
     })
-  } catch (error) {
-    console.error('Error saving data', error)
+  } catch (err) {
+    console.error('Error saving data:: ', err)
     return false
   }
   return true
 }
 
-// Save trial data for questions handling concurrent writes
-export const saveTrialDataComplete = async (jsPsychData): Promise<boolean> => {
-  const docRef = doc(db, 'exptData', uid)
+export async function saveTrialDataComplete(jsPsychDataTrials: unknown[]): Promise<boolean> {
+  const exptDataDoc = getDocStr('exptData')
+  const uid = await getUID()
+  const db = getDataBase()
+  const docRef = doc(db, exptDataDoc, uid)
   try {
     await runTransaction(db, async (transaction): Promise<void> => {
       // Get the latest data, rather than relying on the store
       const docSnap = await transaction.get(docRef)
       if (!docSnap.exists()) {
-        throw 'saveTrialDataComplete :: Document does not exist'
+        throw new Error('saveTrialDataComplete: Document does not exist')
       }
 
-      const data: Record<string, any[] | Timestamp | string | number> = {
+      const data: Record<string, unknown[] | Timestamp | string | number> = {
         dataComplete: Timestamp.now(),
-        trials: jsPsychData.trials,
+        trials: jsPsychDataTrials,
       }
 
+      // Update the fields in responseData directly
       transaction.update(docRef, data)
 
-      if (sandy) {
+      if (debug) {
         console.log('Successfully saved data')
       }
     })
-  } catch (error) {
-    console.error('Error saving data', error)
+  } catch (err) {
+    console.error('Error saving data:: ', err)
+    return false
+  }
+  return true
+}
+
+export async function saveRootData(responseData: Record<string, string | number>): Promise<boolean> {
+  const exptDataDoc = getDocStr('exptData')
+  const uid = await getUID()
+  const db = getDataBase()
+  const docRef = doc(db, exptDataDoc, uid)
+  try {
+    await runTransaction(db, async (transaction): Promise<void> => {
+      // Get the latest data, rather than relying on the store
+      const docSnap = await transaction.get(docRef)
+      if (!docSnap.exists()) {
+        throw new Error('saveQuestionData: Document does not exist')
+      }
+
+      // Update the fields in responseData directly
+      transaction.update(docRef, responseData)
+
+      if (debug) {
+        console.log('Successfully saved data')
+      }
+    })
+  } catch (err) {
+    console.error('Error saving data:: ', err)
     return false
   }
   return true
