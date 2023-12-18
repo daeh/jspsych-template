@@ -60,7 +60,7 @@ You can format, lint and build the project from the command line by calling the 
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "export ESLINT_USE_FLAT_CONFIG=true && prettier --config .prettierrc.json --write . && eslint --config eslint.config.mjs --fix . && tsc --project tsconfig.json --noEmit"
+    "lint": "export ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write . && eslint --config eslint.config.mjs --fix . && tsc --project tsconfig.json --noEmit"
   }
 }
 ```
@@ -83,7 +83,7 @@ For developing the website, this project uses
 
 - [ESLint](https://eslint.org/) (configured in [`eslint.config.mjs`](hosting/eslint.config.mjs))
 - [TypeScript](https://www.typescriptlang.org/) (configured in [`tsconfig.*.json`](hosting/tsconfig.base.json))
-- [Prettier](https://prettier.io/) (configured in [`.prettierrc.json`](hosting/.prettierrc.json))
+- [Prettier](https://prettier.io/) (configured in [`prettier.config.mjs`](hosting/prettier.config.mjs))
 
 The ESLint config integrates these configurations.
 

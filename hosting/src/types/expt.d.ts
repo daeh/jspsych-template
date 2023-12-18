@@ -1,6 +1,6 @@
-declare type Task = 'response' | 'fixation'
-declare type Response = 'left' | 'right'
-declare type KeyboardResponse = 'f' | 'j'
+export type Task = 'response' | 'fixation'
+export type Response = 'left' | 'right'
+export type KeyboardResponse = 'f' | 'j'
 
 interface TrialData {
   task: string

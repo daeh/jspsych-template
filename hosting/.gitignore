@@ -1,15 +1,11 @@
-### Building ###
-dist/
-build/
-
-### Editor directories and files ###
-#.vscode/*
-!.vscode/
-# .idea
-!.idea/
-.idea/workspace.xml
-
-### Project ###
-eslint.config.js
+### auth files ###
+### excluded in .gitattributes
 # src/firebaseConfig.ts
 
+### Generated files ###
+node_modules/
+dist/
+build/
+eslint.config.js
+
+### Project ###

@@ -16,6 +16,8 @@ import { getDataBase, getUID } from './auth'
 import { getBrowserInfo, getOSInfo, getWindowSize } from './clientNavigatorQuery'
 import { debugging, getDocStr, setUserInfo, UserRecord } from './globalVariables'
 
+import type { TrialData } from './types/expt'
+
 const debug = debugging()
 
 export async function initExperimentData(uid: string): Promise<void> {

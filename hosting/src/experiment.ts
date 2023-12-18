@@ -3,8 +3,6 @@ import jsPsychImageKeyboardResponse from '@jspsych/plugin-image-keyboard-respons
 import jsPsychPreload from '@jspsych/plugin-preload'
 import { initJsPsych } from 'jspsych'
 
-import type { DataCollection } from '../node_modules/jspsych/dist/modules/data/DataCollection'
-
 /* Alternatively
  * type JsPsychInstance = ReturnType<typeof initJsPsych>
  * type JsPsychGetData = JsPsychInstance['data']['get']
@@ -16,6 +14,9 @@ import { saveTrialDataComplete, saveTrialDataPartial } from './utils'
 
 import imgStimBlue from './images/blue.png'
 import imgStimOrange from './images/orange.png'
+
+import type { KeyboardResponse, Task, TrialData } from './types/expt'
+import type { DataCollection } from '../node_modules/jspsych/dist/modules/data/DataCollection'
 
 const debug = debugging()
 
