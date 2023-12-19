@@ -4,7 +4,8 @@ import { createHtmlPlugin } from 'vite-plugin-html'
 
 console.log('MODE: ', process.env.NODE_ENV)
 
-const filesPathToExclude = ['eslint.config.js']
+const filesPathToExclude: (string | RegExp)[] = []
+
 export default defineConfig({
   build: {
     target: browserslistToEsbuild(),

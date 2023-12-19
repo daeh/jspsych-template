@@ -2,10 +2,12 @@
 ### excluded in .gitattributes
 # src/firebaseConfig.ts
 
-### Generated files ###
+### Runtime ###
 node_modules/
 dist/
 build/
+
+### Generated files ###
 eslint.config.js
 
 ### Project ###
