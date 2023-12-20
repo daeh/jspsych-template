@@ -28,6 +28,6 @@
     "allowJs": true,
     "checkJs": true
   },
-  "include": ["src/types/*.d.ts", "**/*.ts", "**/*.mts", "**/*.cts", "**/*.tsx", "**/*.mtsx", "**/*.js", "**/*.mjs", "**/*.cjs", "**/*.jsx", "**/*.mjsx"],
+  "include": ["./types/*.d.ts", "**/*.ts", "**/*.mts", "**/*.cts", "**/*.tsx", "**/*.mtsx", "**/*.js", "**/*.mjs", "**/*.cjs", "**/*.jsx", "**/*.mjsx"],
   "exclude": ["dist", "build"]
 }

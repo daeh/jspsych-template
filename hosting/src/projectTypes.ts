@@ -2,9 +2,11 @@ export type Task = 'response' | 'fixation'
 export type Response = 'left' | 'right'
 export type KeyboardResponse = 'f' | 'j'
 
-export interface RecursiveRecord {
+interface RecursiveRecord {
   [key: string]: number | string | RecursiveRecord
 }
+
+export type RecursiveRecordArray = Record<string, number | string | RecursiveRecord | RecursiveRecord[]>
 
 export interface TrialData {
   task: string

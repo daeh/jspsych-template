@@ -3,7 +3,7 @@ import jsPsychImageKeyboardResponse from '@jspsych/plugin-image-keyboard-respons
 import jsPsychPreload from '@jspsych/plugin-preload'
 import { initJsPsych } from 'jspsych'
 
-import { debugging, getUserInfo } from './globalVariables'
+import { debugging, getUserInfo, prolificCC, prolificCUrl } from './globalVariables'
 import { saveTrialDataComplete, saveTrialDataPartial } from './utils'
 
 import imgStimBlue from './images/blue.png'
@@ -20,6 +20,25 @@ import type { DataCollection } from '../node_modules/jspsych/dist/modules/data/D
 
 const debug = debugging()
 
+const debuggingText = debug ? `<br /><br />redirect link : ${prolificCUrl}` : '<br />'
+const exitMessage = `<p class="align-middle text-center"> 
+Please wait. You will be redirected back to Prolific in a few moments. 
+<br /><br />
+If not, please use the following completion code to ensure compensation for this study: ${prolificCC}
+${debuggingText}
+</p>`
+
+const exitExperiment = () => {
+  document.body.innerHTML = exitMessage
+  setTimeout(() => {
+    window.location.replace(prolificCUrl)
+  }, 3000)
+}
+const exitExperimentDebugging = () => {
+  const contentDiv = document.getElementById('jspsych-content')
+  if (contentDiv) contentDiv.innerHTML = exitMessage
+}
+
 export async function runExperiment() {
   if (debug) {
     console.log('--runExperiment--')
@@ -30,8 +49,7 @@ export async function runExperiment() {
   const jsPsych = initJsPsych({
     on_data_update: function (trialData: TrialData) {
       if (debug) {
-        console.log('jsPsych-update :: trialData ::')
-        console.log(trialData)
+        console.log('jsPsych-update :: trialData ::', trialData)
       }
       // if trialData contains a saveToFirestore property, and the property is true, then save the trialData to Firestore
       if (trialData.saveToFirestore) {
@@ -47,13 +65,28 @@ export async function runExperiment() {
         )
       }
     },
-    on_finish: async (data: DataCollection) => {
-      await saveTrialDataComplete(data.values())
-      if (debug) {
-        console.log('jsPsych-finish :: data ::')
-        console.log(data)
-        jsPsych.data.displayData()
-      }
+    on_finish: (data: DataCollection) => {
+      const contentDiv = document.getElementById('jspsych-content')
+      if (contentDiv) contentDiv.innerHTML = '<p> Please wait, your data are being saved.</p>'
+      saveTrialDataComplete(data.values()).then(
+        () => {
+          if (debug) {
+            exitExperimentDebugging()
+            console.log('saveTrialDataComplete: Success') // Success!
+            console.log('jsPsych-finish :: data ::')
+            console.log(data)
+            setTimeout(() => {
+              jsPsych.data.displayData()
+            }, 3000)
+          } else {
+            exitExperiment()
+          }
+        },
+        (err) => {
+          console.error(err) // Error!
+          exitExperiment()
+        },
+      )
     },
   })
 

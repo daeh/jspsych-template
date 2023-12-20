@@ -16,7 +16,7 @@ import { getDataBase, getUID } from './auth'
 import { getBrowserInfo, getOSInfo, getWindowSize } from './clientNavigatorQuery'
 import { debugging, getDocStr, setUserInfo, UserRecord } from './globalVariables'
 
-import type { TrialData } from './projectTypes'
+import type { RecursiveRecordArray, TrialData } from './projectTypes'
 
 const debug = debugging()
 
@@ -141,7 +141,7 @@ export async function saveTrialDataComplete(jsPsychDataTrials: unknown[]): Promi
   return true
 }
 
-export async function saveRootData(responseData: Record<string, string | number>): Promise<boolean> {
+export async function saveRootData(responseData: RecursiveRecordArray): Promise<boolean> {
   const exptDataDoc = getDocStr('exptData')
   const uid = await getUID()
   const db = getDataBase()
@@ -151,7 +151,7 @@ export async function saveRootData(responseData: Record<string, string | number>
       // Get the latest data, rather than relying on the store
       const docSnap = await transaction.get(docRef)
       if (!docSnap.exists()) {
-        throw new Error('saveQuestionData: Document does not exist')
+        throw new Error('saveRootData: Document does not exist')
       }
 
       // Update the fields in responseData directly

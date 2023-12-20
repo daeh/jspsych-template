@@ -1,5 +1,10 @@
 const debug = true
 
+const experimentId = 'expt-0.0.0'
+
+const prolificCCReal = 'REPLACEME'
+const prolificCUrlReal = `https://app.prolific.com/submissions/complete?cc=${prolificCCReal}`
+
 const urlSearchParams = new URLSearchParams(window.location.search)
 const urlParams = Object.fromEntries(urlSearchParams)
 
@@ -9,12 +14,16 @@ export class UserRecord {
   readonly prolificStudyId: string
   readonly prolificSessionId: string
 
-  urlParams: Record<string, string>
+  readonly urlParams: Record<string, string>
+
+  readonly experimentId: string
 
   constructor(firebaseUId: string) {
     this.firebaseUId = firebaseUId
 
     this.urlParams = urlParams
+
+    this.experimentId = experimentId
 
     if (urlSearchParams.has('PROLIFIC_PID')) {
       this.prolificPId = urlSearchParams.get('PROLIFIC_PID') || 'error'
@@ -71,6 +80,12 @@ export function sandbox() {
   return emulator()
 }
 
+function definitelyLive() {
+  /* Returns true if web app is running on a live server
+   */
+  return !sandbox() && !emulator() && getURLParams().hasOwnProperty('PROLIFIC_PID')
+}
+
 export function debugging() {
   /*
    * If web app is NOT running locally:
@@ -81,6 +96,9 @@ export function debugging() {
    *   respect `debug` variable setting
    *   (but URL Search Params can override it).
    */
+  if (definitelyLive()) {
+    return false
+  }
   if (getURLParams().hasOwnProperty('debug')) {
     // load with https://*.web.app/?debug
     return true
@@ -106,3 +124,6 @@ export function getDocStr(docId: string) {
   const dbstring = redirect ? '-dbug' : ''
   return `${docId}${dbstring}`
 }
+
+export const prolificCC = definitelyLive() ? prolificCCReal : 'TESTING'
+export const prolificCUrl = definitelyLive() ? prolificCUrlReal : `https://daeh.info/?prolific&cc=${prolificCC}`
