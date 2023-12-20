@@ -16,7 +16,7 @@ import { getDataBase, getUID } from './auth'
 import { getBrowserInfo, getOSInfo, getWindowSize } from './clientNavigatorQuery'
 import { debugging, getDocStr, setUserInfo, UserRecord } from './globalVariables'
 
-import type { TrialData } from './types/expt'
+import type { TrialData } from './projectTypes'
 
 const debug = debugging()
 

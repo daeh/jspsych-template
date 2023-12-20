@@ -85,6 +85,10 @@ export function debugging() {
     // load with https://*.web.app/?debug
     return true
   }
+  if (getURLParams().hasOwnProperty('nodebug')) {
+    // load with https://*.web.app/?nodebug
+    return false
+  }
   if (!emulator()) {
     return false
   }

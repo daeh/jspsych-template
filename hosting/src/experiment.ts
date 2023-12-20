@@ -9,7 +9,7 @@ import { saveTrialDataComplete, saveTrialDataPartial } from './utils'
 import imgStimBlue from './images/blue.png'
 import imgStimOrange from './images/orange.png'
 
-import type { KeyboardResponse, Task, TrialData } from './types/expt'
+import type { KeyboardResponse, Task, TrialData } from './projectTypes'
 import type { DataCollection } from '../node_modules/jspsych/dist/modules/data/DataCollection'
 
 /* Alternatively
