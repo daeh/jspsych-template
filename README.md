@@ -165,7 +165,6 @@ The relevant settings are:
 For [IntelliJ IDEA](https://www.jetbrains.com/idea/) / [WebStorm](https://www.jetbrains.com/webstorm/) to respect the configuration, you need to enable ESLint and Prettier for the relevant filetypes. There is an example config in `.idea`. To enable ESLing and Prettier manually:
 
 <details>
-
 <summary>IntelliJ Setup</summary>
 
 - `Settings... > Languages & Frameworks > JavaScript > Code Quality Tools > ESLint`
@@ -196,6 +195,13 @@ If you change the project from an `ES Module` to a `Common.js Module`, or if ESL
 
 ### Firebase and Firestore Configuration
 
+<details>
+ <summary>Firebase Setup</summary>
+
+TODO: describe how to setup hosting and database
+
+</details>
+
 ## Data Collection
 
 ### Prolific Configuration
@@ -213,6 +219,56 @@ The project is looks for Prolific URL parameters and stores them. Make sure that
 In order to register that Prolific users have completed the experiment, add the study's **Completion Code** to `const prolificCCReal = ...` in [`globalVariables.ts`](hosting/src/globalVariables.ts).
 
 </details>
+
+## Retrieving Data
+
+Retrieve the data from Firestore using the Firebase Admin SDK, which you must authorize with credentials from your Firebase project.
+
+### Generate credentials to access the firestore database
+
+1. Go to the Firebase Console.
+2. Select your project.
+3. Navigate to "Project settings" > "Service accounts".
+4. Click "Generate new private key" and save the JSON file.
+
+### Save credential in an encrypted disk image (NOT IN YOUR GIT REPO)
+
+<details>
+
+ <summary>Encryption Setup</summary>
+
+TODO: describe sparse image strategy
+
+</details>
+
+### Install Firebase Admin SDK
+
+```shell
+pip install firebase-admin
+```
+
+<details>
+
+ <summary>Python Setup</summary>
+
+TODO: give environment requirements for python script
+
+</details>
+
+### Download the data
+
+Run the script in [`scripts/retrieve_data.py`](scripts/retrieve_data.py)
+
+```shell
+python retrieve_data.py \
+    --cred "~/Desktop/myproject-firebase-adminsdk.json" \
+    --out "~/Desktop/dataout" \
+    --collection 'exptData' 'sharedData'
+```
+
+`--cred` the path to the private key you downloaded from Firebase.
+`--out` the path to a directory where the files will be saved (the directory will be created; the path cannot exist yet)
+`--collection` the collections to download (during development, these are `exptData-dbug` and `sharedData-dbug`)
 
 ---
 
