@@ -6,7 +6,8 @@ interface RecursiveRecord {
   [key: string]: number | string | RecursiveRecord
 }
 
-export type RecursiveRecordArray = Record<string, number | string | RecursiveRecord | RecursiveRecord[]>
+// prettier-ignore
+export type RecursiveRecordArray = Record<string, number | string | RecursiveRecord | number[] | string[] | RecursiveRecord[]>
 
 export interface TrialData {
   task: string

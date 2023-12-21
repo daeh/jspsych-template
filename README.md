@@ -1,6 +1,6 @@
 # serverless jsPsych Template (jsPsych-Firebase-Firestore-Prolific-Vite)
 
-This repository is an example of how to setup a development environment building online psych experiments. Key aspects are:
+This repository is an example of how to setup a development environment for building online psych experiments. Key aspects are:
 
 - TypeScript centric
 - Future-looking linting and formatting configuration using [ESLint](https://eslint.org) and [Prettier](https://prettier.io/)
@@ -36,7 +36,7 @@ Install the dependancies using [Yarn](https://yarnpkg.com/) (or [npm](https://ww
 yarn install ### or: npm install
 
 ### Push the Firestore rules (defined in firestore.rules)
-yarn deploy-rules
+yarn deploy-rules ### or: npm run deploy-rules
 
 ### Enter the experiment directory
 cd "hosting" || exit
@@ -94,23 +94,31 @@ For bundling the website, this project uses
 - [PostCSS](https://postcss.org/) (configured in [`postcss.config.mjs`](hosting/postcss.config.mjs); uses [PostCSS Preset Env](https://github.com/csstools/postcss-plugins/tree/main/plugin-packs/postcss-preset-env), which uses [Autoprefixer](https://github.com/postcss/autoprefixer))
 - [Browserslist](https://github.com/browserslist/browserslist) (via the [browserslist-to-esbuild plugin](https://github.com/marcofugaro/browserslist-to-esbuild); configured in [`hosting/package.json`](hosting/package.json))
 - [jsPsych](https://www.jspsych.org/) - UX (experiment flow, data capture)
+
+For serving the website, this project uses
+
 - [Firebase](https://firebase.google.com/) - hosting (configured by files in the project root)
 - [Firestore](https://firebase.google.com/docs/firestore) - [serverless](https://www.serverless.com/) data storage/access (configured by files in the project root)
-- [Prolific](https://www.prolific.com/)
+- [Prolific](https://www.prolific.com/) - recruitment
 
 ## ESLint
 
 This project uses a future-looking configuration that implements the major developments from [ESLint](https://eslint.org). The main config file in this repo is the flat ESLint config, [`eslint.config.mjs`](hosting/eslint.config.mjs).
 
+<details>
+<summary>ES Module parsing</summary>
+
 This project is configured as an `ES Module`, so this config file could be named `eslint.config.js`, but I have given it the `.mjs` extension to make this config work for `Common.js Module` development with minimal reconfiguration.
 
-While ESLint has no issue using the `.mjs` config file, at present, IDEs like VS Code and IntelliJ IDEA require the `.js` extension. A simple workaround is to make an alias `eslint.config.js` that points to `eslint.config.mjs`. This is done automatically during install by the [`hosting/package.json`](hosting/package.json) file.
+While ESLint has no issue using the `.mjs` config file, at present, IDEs like VS Code and IntelliJ IDEA require the `.js` extension. A simple workaround is to make an alias `eslint.config.js` that points to `eslint.config.mjs`. This is done automatically during installation by the [`hosting/package.json`](hosting/package.json) file.
 
-### ESLint Flat Config System
+</details>
+
+### Flat Config System
 
 Beginning in ESLint `v9.0.0`, the default will be the new [flat config system](https://eslint.org/docs/latest/use/configure/configuration-files-new). This will depreciate the `Common.js Module` config system (which uses `.eslintrc.js`), replacing it with the `ES Module` config system (which uses `eslint.config.js`).
 
-### ESLint Stylistic
+### Stylistic Plugin
 
 ESLint is [depreciating formatting rules](https://eslint.org/blog/2023/10/deprecating-formatting-rules/), passing over maintenance and development to the community-run plugin [ESLint Stylistic](https://eslint.style/).
 
@@ -194,12 +202,15 @@ If you change the project from an `ES Module` to a `Common.js Module`, or if ESL
 
 <details>
   <summary>Prolific URL Search Params</summary>
-
 ### Prolific URL Search Params
 
 The project is looks for Prolific URL parameters and stores them. Make sure that you've set up Prolific to use URL Search Params.
 
 ![Prolific_param](assets-readme/Prolific_param.png)
+
+### Prolific Completion Code
+
+In order to register that Prolific users have completed the experiment, add the study's **Completion Code** to `const prolificCCReal = ...` in [`globalVariables.ts`](hosting/src/globalVariables.ts).
 
 </details>
 

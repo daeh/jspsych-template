@@ -5,6 +5,8 @@ const experimentId = 'expt-0.0.0'
 const prolificCCReal = 'REPLACEME'
 const prolificCUrlReal = `https://app.prolific.com/submissions/complete?cc=${prolificCCReal}`
 
+const gitCommit: string = __COMMIT_HASH__ || 'unknown'
+
 const urlSearchParams = new URLSearchParams(window.location.search)
 const urlParams = Object.fromEntries(urlSearchParams)
 
@@ -17,6 +19,7 @@ export class UserRecord {
   readonly urlParams: Record<string, string>
 
   readonly experimentId: string
+  readonly gitCommit: string
 
   constructor(firebaseUId: string) {
     this.firebaseUId = firebaseUId
@@ -24,6 +27,7 @@ export class UserRecord {
     this.urlParams = urlParams
 
     this.experimentId = experimentId
+    this.gitCommit = gitCommit
 
     if (urlSearchParams.has('PROLIFIC_PID')) {
       this.prolificPId = urlSearchParams.get('PROLIFIC_PID') || 'error'
