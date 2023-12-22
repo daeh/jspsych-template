@@ -4,7 +4,9 @@
   "description": "template serverless project with vite and jspsych",
   "scripts": {
     "deploy": "firebase deploy --only hosting",
-    "deploy-rules": "firebase deploy --only firestore:rules"
+    "deploy-rules": "firebase deploy --only firestore:rules",
+    "release": "zsh scripts/release.zsh $PWD",
+    "retrieve": "zsh scripts/retrieve.zsh $PWD"
   },
   "source": "./hosting",
   "author": "",
