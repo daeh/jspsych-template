@@ -51,16 +51,27 @@ const importRules = {
         // ['sibling', 'parent'], // Relative imports, the sibling and parent types they can be mingled together
         'index', // index imports
         'type', // type imports
+        'object', // object imports
         'unknown', // unknown
       ],
       'pathGroups': [
         {
           pattern: './images/**',
-          group: 'sibling',
+          group: 'object',
+          position: 'after',
+        },
+        {
+          pattern: '**/*.+(png|jpg|jpeg|gif|svg)',
+          group: 'object',
           position: 'after',
         },
         {
           pattern: './styles/**',
+          group: 'unknown',
+          position: 'after',
+        },
+        {
+          pattern: '**/*.css',
           group: 'unknown',
           position: 'after',
         },

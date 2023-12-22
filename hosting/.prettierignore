@@ -4,9 +4,8 @@
 **/.idea/
 **/build/
 **/dist/
-**/.firebase
+**/.firebase/
 **/.firebaserc
 **/firestore.rules
 **/package-lock.json
 **/*.lock
-

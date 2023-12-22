@@ -2,10 +2,10 @@ import { initializeApp } from 'firebase/app'
 import { getAuth, onAuthStateChanged, signInAnonymously, User } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 
-import { firebaseConfig } from './firebaseConfig'
+import { firebaseConfig } from './databaseCred'
+import { initExperimentData } from './databaseUtils'
 import { debugging } from './globalVariables'
 import { enableBeginExperiment } from './main'
-import { initExperimentData } from './utils'
 
 const debug = debugging()
 

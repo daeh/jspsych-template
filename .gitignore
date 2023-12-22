@@ -1,6 +1,6 @@
 ### auth files ###
 ### excluded in .gitattributes
-# .firebaserc
+.firebaserc
 
 ### Runtime ###
 node_modules/

@@ -12,11 +12,11 @@ import {
   Timestamp,
 } from 'firebase/firestore'
 
-import { getDataBase, getUID } from './auth'
 import { getBrowserInfo, getOSInfo, getWindowSize } from './clientNavigatorQuery'
+import { getDataBase, getUID } from './databaseAuth'
 import { debugging, getDocStr, setUserInfo, UserRecord } from './globalVariables'
 
-import type { RecursiveRecordArray, TrialData } from './projectTypes'
+import type { RecursiveRecordArray, TrialData } from './project'
 
 const debug = debugging()
 

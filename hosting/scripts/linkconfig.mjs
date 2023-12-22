@@ -6,6 +6,28 @@ import { fileURLToPath } from 'url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const projectDirname = resolve(dirname(__dirname))
 
+/**
+ * @param {string} directory
+ */
+async function renameTemplates(directory) {
+  const files = await fs.readdir(directory, { withFileTypes: true })
+
+  for (const file of files) {
+    const fullPath = join(directory, file.name)
+
+    if (file.isDirectory()) {
+      // Recursive call for directories
+      await renameTemplates(fullPath)
+    } else if (file.isFile() && file.name.endsWith('-template.ts')) {
+      // Rename file if it ends with '-template.ts'
+      const newFileName = file.name.replace('-template.ts', '.ts')
+      const newFullPath = join(directory, newFileName)
+      await fs.rename(fullPath, newFullPath)
+      console.log(`Renamed ${file.name} to ${newFileName}`)
+    }
+  }
+}
+
 async function createLink() {
   // const packageRoot = process.env.INIT_CWD
   const sourceFile = join(projectDirname, 'eslint.config.mjs')
@@ -39,6 +61,9 @@ async function createLink() {
       await fs.link(sourceFile, targetFile)
       console.log('Hard link created successfully.')
     }
+
+    const srcDir = join(projectDirname, 'src')
+    await renameTemplates(srcDir)
   } catch (err) {
     console.error('Error creating link:: ', err)
   }

@@ -3,14 +3,14 @@ import jsPsychImageKeyboardResponse from '@jspsych/plugin-image-keyboard-respons
 import jsPsychPreload from '@jspsych/plugin-preload'
 import { initJsPsych } from 'jspsych'
 
+import { saveTrialDataComplete, saveTrialDataPartial } from './databaseUtils'
 import { debugging, getUserInfo, prolificCC, prolificCUrl } from './globalVariables'
-import { saveTrialDataComplete, saveTrialDataPartial } from './utils'
+
+import type { KeyboardResponse, Task, TrialData } from './project'
+import type { DataCollection } from '../node_modules/jspsych/dist/modules/data/DataCollection'
 
 import imgStimBlue from './images/blue.png'
 import imgStimOrange from './images/orange.png'
-
-import type { KeyboardResponse, Task, TrialData } from './projectTypes'
-import type { DataCollection } from '../node_modules/jspsych/dist/modules/data/DataCollection'
 
 /* Alternatively
  * type JsPsychInstance = ReturnType<typeof initJsPsych>

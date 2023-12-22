@@ -1,8 +1,7 @@
 import argparse
 from pathlib import Path
 import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import firestore
+from firebase_admin import credentials, firestore
 import json
 from typing import NamedTuple
 import subprocess

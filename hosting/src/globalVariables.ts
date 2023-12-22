@@ -1,9 +1,10 @@
+import { prolificCCode } from './prolificCred'
+
 const debug = true
 
 const experimentId = 'expt-0.0.0'
 
-const prolificCCReal = 'REPLACEME'
-const prolificCUrlReal = `https://app.prolific.com/submissions/complete?cc=${prolificCCReal}`
+const prolificCUrlLive = `https://app.prolific.com/submissions/complete?cc=${prolificCCode}`
 
 const gitCommit: string = __COMMIT_HASH__ || 'unknown'
 
@@ -129,5 +130,5 @@ export function getDocStr(docId: string) {
   return `${docId}${dbstring}`
 }
 
-export const prolificCC = definitelyLive() ? prolificCCReal : 'TESTING'
-export const prolificCUrl = definitelyLive() ? prolificCUrlReal : `https://daeh.info/?prolific&cc=${prolificCC}`
+export const prolificCC = definitelyLive() ? prolificCCode : 'TESTING'
+export const prolificCUrl = definitelyLive() ? prolificCUrlLive : `https://daeh.info/?prolific&cc=${prolificCC}`

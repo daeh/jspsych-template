@@ -1,1 +1,2 @@
-hosting/src/firebaseConfig.ts export-ignore
+src/databaseCred.ts export-ignore
+src/prolificCred.ts export-ignore

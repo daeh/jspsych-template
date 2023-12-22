@@ -21,7 +21,11 @@ This repository is an example of how to setup a development environment for buil
 After you setup your Firebase and Firestore services, add your configurations to
 
 - [`.firebaserc`](.firebaserc)
-- [`firebaseConfig.ts`](hosting/src/firebaseConfig.ts)
+- [`databaseCred-template.ts`](hosting/src/databaseCred-template.ts) (which is renamed to `databaseCred.ts` during install)
+
+You don't need to setup prolific to develop the experiment, but after you've made a prolific project, add the completion code to
+
+- [`prolificCred-template.ts`](hosting/src/prolificCred-template) (which is renamed to `prolificCred.ts` during install)
 
 ### Install Node Dependancies
 
@@ -266,9 +270,9 @@ python retrieve_data.py \
     --collection 'exptData' 'sharedData'
 ```
 
-`--cred` the path to the private key you downloaded from Firebase.
-`--out` the path to a directory where the files will be saved (the directory will be created; the path cannot exist yet)
-`--collection` the collections to download (during development, these are `exptData-dbug` and `sharedData-dbug`)
+- `--cred` the path to the private key you downloaded from Firebase.
+- `--out` the path to a directory where the files will be saved (the directory will be created; the path cannot exist yet)
+- `--collection` the collections to download (during development, these are `exptData-dbug` and `sharedData-dbug`)
 
 ---
 

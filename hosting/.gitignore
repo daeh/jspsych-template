@@ -1,6 +1,7 @@
 ### auth files ###
 ### excluded in .gitattributes
-# src/firebaseConfig.ts
+src/databaseCred.ts
+src/prolificCred.ts
 
 ### Runtime ###
 node_modules/
