@@ -25,7 +25,7 @@ After you setup your Firebase and Firestore services, add your configurations to
 
 You don't need to setup prolific to develop the experiment, but after you've made a prolific project, add the completion code to
 
-- [`prolificCred-template.ts`](hosting/src/prolificCred-template) (which is renamed to `prolificCred.ts` during install)
+- [`prolificCred-template.ts`](hosting/src/prolificCred-template.ts) (which is renamed to `prolificCred.ts` during install)
 
 ### Install Node Dependancies
 
