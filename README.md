@@ -224,8 +224,6 @@ In order to register that Prolific users have completed the experiment, add the 
 
 </details>
 
-
-
 ## Deploying an experiment
 
 ```shell

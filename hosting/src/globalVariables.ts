@@ -1,4 +1,4 @@
-import { description, version } from '../package.json'
+import { description, version } from '../../package.json'
 
 import { prolificCCode } from './prolificCred'
 

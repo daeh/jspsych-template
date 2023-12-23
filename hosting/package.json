@@ -1,7 +1,7 @@
 {
-  "name": "jsPsychExperimentTemplate",
+  "name": "jsPsychTemplate-experimentSrc",
   "version": "0.0.1",
-  "description": "Example experiment using jsPsych, Vite, Firestore, and Prolific",
+  "description": "This file gives the web app dependencies. All other information is in the package.json file in the root directory.",
   "author": "Dae Houlihan <dev@daeh.info> (https://daeh.info)",
   "license": "ISC",
   "scripts": {
