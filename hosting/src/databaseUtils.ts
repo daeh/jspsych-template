@@ -25,7 +25,7 @@ export async function initExperimentData(uid: string): Promise<void> {
   const userInfo = setUserInfo(uid)
 
   if (debug) {
-    console.log(`Experiment ID: ${userInfo.experimentId}`)
+    console.log(`Experiment Version: ${userInfo.version}`)
     console.log(`Git Commit: ${userInfo.gitCommit}`)
   }
 

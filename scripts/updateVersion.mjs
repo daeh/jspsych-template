@@ -13,19 +13,6 @@ async function updatePackageJsonVersion(newVersion, projectDir) {
   await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n', 'utf8')
 }
 
-// Function to update the version in globalVariables.ts
-/**
- * @param {string} newVersion
- * @param {string} projectDir
- */
-async function updateGlobalVariablesTs(newVersion, projectDir) {
-  const globalVariablesPath = path.join(projectDir, 'hosting/src/globalVariables.ts')
-  let content = await fs.readFile(globalVariablesPath, 'utf8')
-  // const experimentId = 'expt-14.2.0'
-  content = content.replace(/(const experimentId.*?=\s*['"])[^'"]+(['"])/, `$1expt-${newVersion}$2`)
-  await fs.writeFile(globalVariablesPath, content, 'utf8')
-}
-
 async function main() {
   const [, , newVersion, projectDir] = process.argv
 
@@ -36,8 +23,7 @@ async function main() {
 
   try {
     await updatePackageJsonVersion(newVersion, projectDir)
-    await updateGlobalVariablesTs(newVersion, projectDir)
-    console.log(`Version updated to ${newVersion} in package.json and globalVariables.ts`)
+    console.log(`Version updated to ${newVersion} in package.json`)
   } catch (error) {
     console.error('Error updating version:', error)
     process.exit(1)

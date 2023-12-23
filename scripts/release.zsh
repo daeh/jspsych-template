@@ -3,12 +3,6 @@
 # Define the project directory from the first argument
 project=$1
 
-# Get the current version
-currentVersion=$(node "${project}/scripts/getNodeVersion.mjs" "$project")
-
-# Define a horizontal separator
-separator="-------------------------------------------------------------"
-
 # Function to check last command's exit status
 check_status() {
     if [ $? -ne 0 ]; then
@@ -16,6 +10,13 @@ check_status() {
         exit 1
     fi
 }
+
+# Define a horizontal separator
+separator="-------------------------------------------------------------"
+
+# Get the current version
+currentVersion=$(node "scripts/getVersion.mjs")
+check_status "Get Version"
 
 # Change to the hosting directory or exit if it fails
 cd "${project}/hosting" || { printf "Failed to change directory to ${project}/hosting\n"; exit 1; }
@@ -49,7 +50,8 @@ else
             
             # If version was updated, run update version script
             if [[ -n "$new_version" ]]; then
-                node "${project}/scripts/updateVersion.mjs" "$new_version" "$project"
+                node "scripts/updateVersion.mjs" "$new_version" "$project"
+                node "scripts/updateVersion.mjs" "$new_version" "$project/hosting"
 
                 TAG='Y'
 

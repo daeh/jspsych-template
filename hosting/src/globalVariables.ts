@@ -1,8 +1,8 @@
+import { description, version } from '../package.json'
+
 import { prolificCCode } from './prolificCred'
 
 const debug = true
-
-const experimentId = 'expt-0.0.0'
 
 const prolificCUrlLive = `https://app.prolific.com/submissions/complete?cc=${prolificCCode}`
 
@@ -19,16 +19,18 @@ export class UserRecord {
 
   readonly urlParams: Record<string, string>
 
-  readonly experimentId: string
+  readonly version: string
   readonly gitCommit: string
+  readonly description: string
 
   constructor(firebaseUId: string) {
     this.firebaseUId = firebaseUId
 
     this.urlParams = urlParams
 
-    this.experimentId = experimentId
+    this.version = version
     this.gitCommit = gitCommit
+    this.description = description
 
     if (urlSearchParams.has('PROLIFIC_PID')) {
       this.prolificPId = urlSearchParams.get('PROLIFIC_PID') || 'error'

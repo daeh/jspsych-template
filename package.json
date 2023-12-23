@@ -1,16 +1,25 @@
 {
-  "name": "exampleproj",
-  "version": "0.0.0",
-  "description": "template serverless project with vite and jspsych",
+  "name": "jsPsychTemplate",
+  "version": "0.0.1",
+  "description": "Template serverless project for running online experiments using jsPsych and Prolific",
+  "author": "Dae Houlihan <dev@daeh.info> (https://daeh.info)",
+  "license": "ISC",
+  "homepage": "https://github.com/daeh/jspsych-template#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daeh/jspsych-template.git"
+  },
+  "bugs": {
+    "url": "https://github.com/daeh/jspsych-template/issues"
+  },
   "scripts": {
     "deploy": "firebase deploy --only hosting",
     "deploy-rules": "firebase deploy --only firestore:rules",
     "release": "zsh scripts/release.zsh $PWD",
     "retrieve": "zsh scripts/retrieve.zsh $PWD"
   },
+  "type": "module",
   "source": "./hosting",
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "firebase-tools": "^13.0.2"
   }

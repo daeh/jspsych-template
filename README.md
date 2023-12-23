@@ -224,6 +224,21 @@ In order to register that Prolific users have completed the experiment, add the 
 
 </details>
 
+
+
+## Deploying an experiment
+
+```shell
+yarn release
+```
+
+<details>
+ <summary>Deployment</summary>
+
+TODO: elaborate
+
+</details>
+
 ## Retrieving Data
 
 Retrieve the data from Firestore using the Firebase Admin SDK, which you must authorize with credentials from your Firebase project.
