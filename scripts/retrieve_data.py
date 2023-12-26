@@ -1,11 +1,12 @@
 import argparse
-from pathlib import Path
-import firebase_admin
-from firebase_admin import credentials, firestore
 import json
-from typing import NamedTuple
 import subprocess
 import time
+from pathlib import Path
+from typing import NamedTuple
+
+import firebase_admin
+from firebase_admin import credentials, firestore
 
 
 class FirestoreEncoder(json.JSONEncoder):
@@ -19,17 +20,23 @@ class FirestoreEncoder(json.JSONEncoder):
 def load_creds(relpath: str):
     cred_archive = Path("~/Documents/api_credentials.sparsebundle").expanduser()
     cred_file = Path("/Volumes/creds/") / relpath
-    assert cred_archive.exists(), f"Sparsebundle does not exist at {cred_archive}"  # pathlib thinks that sparsebundles are directories, not files
+    assert cred_archive.exists(), (
+        f"Sparsebundle does not exist at {cred_archive}"
+    )  # pathlib thinks that sparsebundles are directories, not files
     assert cred_file.suffix == ".json", f"File {cred_file} does not have .json suffix"
     if not cred_file.parent.is_dir():
-        clout = subprocess.run(["open", str(cred_archive)], encoding="utf-8", check=True)
+        clout = subprocess.run(
+            ["open", str(cred_archive)], encoding="utf-8", check=True
+        )
         assert clout.returncode == 0
         timeout = 10  # seconds
         delay = 0.5
         while not cred_file.parent.is_dir():
             time.sleep(delay)
             timeout -= delay
-            assert timeout > 0, f"Timed out waiting for {cred_file.parent} to be mounted"
+            assert (
+                timeout > 0
+            ), f"Timed out waiting for {cred_file.parent} to be mounted"
     assert cred_file.is_file(), f"File {cred_file} does not exist"
     with open(cred_file, "r", encoding="utf-8") as f:
         contents = json.load(f)
@@ -38,7 +45,6 @@ def load_creds(relpath: str):
 
 
 def authorize(credpath: str, encrypted=False):
-
     if encrypted:
         credential = load_creds(credpath)
         cred_path = credential.path
@@ -56,21 +62,23 @@ def authorize(credpath: str, encrypted=False):
     return firestore.client()
 
 
-def getdata(credpath: str, exportpath: str, collections: list[str], encrypted: bool = False):
-
+def getdata(
+    credpath: str, exportpath: str, collections: list[str], encrypted: bool = False
+):
     export_path = Path(exportpath).expanduser()
     if not export_path.is_absolute():
         export_path = (Path(__file__).parent / export_path).absolute()
 
     if export_path.exists():
-        raise Exception(f"Path {export_path} already exists. Aborting to prevent overwriting data.")
+        raise Exception(
+            f"Path {export_path} already exists. Aborting to prevent overwriting data."
+        )
 
     export_path.mkdir(parents=True, exist_ok=True)
 
     db = authorize(credpath, encrypted)
 
     for collection_name in collections:
-
         docs = db.collection(collection_name).stream()
 
         data = {doc.id: doc.to_dict() for doc in docs}
@@ -82,8 +90,7 @@ def getdata(credpath: str, exportpath: str, collections: list[str], encrypted: b
 
 
 def _cli():
-    """Retrieve data from Firestore and save it locally.
-    """
+    """Retrieve data from Firestore and save it locally."""
     parser = argparse.ArgumentParser(
         prog="Data Retriever",
         description=__doc__,
@@ -91,18 +98,42 @@ def _cli():
         # argument_default=argparse.SUPPRESS
         # epilog="Text at the bottom of help"
     )
-    parser.add_argument("--cred", dest="credpath", required=True, help="Path to Firebase credentials JSON file")
-    parser.add_argument("--out", dest="exportpath", required=True, help="Output directory path")
-    parser.add_argument("--collection", dest="collections", nargs="+", required=True, help="Name of the Firestore collections to retrieve")
-    parser.add_argument("--encrypted", action="store_true", help="Specify if the credentials file is stored in an encrypted sparseimage")
+    parser.add_argument(
+        "--cred",
+        dest="credpath",
+        required=True,
+        help="Path to Firebase credentials JSON file",
+    )
+    parser.add_argument(
+        "--out", dest="exportpath", required=True, help="Output directory path"
+    )
+    parser.add_argument(
+        "--collection",
+        dest="collections",
+        nargs="+",
+        required=True,
+        help="Name of the Firestore collections to retrieve",
+    )
+    parser.add_argument(
+        "--encrypted",
+        action="store_true",
+        help="Specify if the credentials file is stored in an encrypted sparseimage",
+    )
     args = parser.parse_args()
     return vars(args)
 
 
-def main(credpath: str, exportpath: str, collections: list[str], encrypted: bool = False):
-
-    getdata(credpath=credpath, exportpath=exportpath, collections=collections, encrypted=encrypted)
+def main(
+    credpath: str, exportpath: str, collections: list[str], encrypted: bool = False
+):
+    getdata(
+        credpath=credpath,
+        exportpath=exportpath,
+        collections=collections,
+        encrypted=encrypted,
+    )
 
 
 if __name__ == "__main__":
     main(**_cli())
+

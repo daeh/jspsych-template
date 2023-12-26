@@ -9,3 +9,5 @@
 **/firestore.rules
 **/package-lock.json
 **/*.lock
+**/*_lintignore*
+**/*-lintignore*

@@ -15,7 +15,8 @@
   "scripts": {
     "deploy": "firebase deploy --only hosting",
     "deploy-rules": "firebase deploy --only firestore:rules",
-    "release": "node scripts/releaseScript.js $PWD",
+    "update-deps": "yarn upgrade-interactive --latest && cd hosting && yarn upgrade-interactive --latest",
+    "release": "node scripts/releaseScript.mjs $PWD",
     "releasecli": "zsh scripts/release.zsh $PWD",
     "retrieve": "zsh scripts/retrieve.zsh $PWD"
   },

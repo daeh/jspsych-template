@@ -191,4 +191,3 @@ function main(project) {
   }
 }
 main(process.argv[2])
-//# sourceMappingURL=releaseScript.js.map
