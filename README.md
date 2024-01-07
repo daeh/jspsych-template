@@ -27,9 +27,9 @@ You don't need to setup prolific to develop the experiment, but after you've mad
 
 - [`prolificCred-template.ts`](hosting/src/prolificCred-template.ts) (which is renamed to `prolificCred.ts` during install)
 
-### Install Node Dependancies
+### Install Node Dependencies
 
-Install the dependancies using [Yarn](https://yarnpkg.com/) (or [npm](https://www.npmjs.com/), if you prefer).
+Install the dependencies using [Yarn](https://yarnpkg.com/) (or [npm](https://www.npmjs.com/), if you prefer).
 
 ```shell
 ###
@@ -232,11 +232,11 @@ The script [`scripts/releaseScript.mjs`](scripts/releaseScript.mjs) automates de
 yarn release ### or npm run release
 ```
 
-The script will walk you through comitting your changes to git repo [that you forked](#installation).
+The script will walk you through committing your changes to git repo [that you forked](#installation).
 
 A key idea here is that there should never be ambiguity about what code was served to a participant.
 
-The `releaseScript.mjs` prompts you to incriment the version number, generates a new git commit, injects the version number and the git commit's SHA hash parameters into the static website, and then deploys the website to Firebase. The version and hash variables are stored alongside a user's responses.
+The `releaseScript.mjs` prompts you to increment the version number, generates a new git commit, injects the version number and the git commit's SHA hash variables into the static website, and then deploys the website to Firebase. The version and hash variables are stored alongside a user's responses.
 
 <details>
  <summary>Deployment</summary>
