@@ -33,13 +33,13 @@
     "jspsych": "^7.3.4"
   },
   "devDependencies": {
-    "@stylistic/eslint-plugin": "^1.5.1",
-    "@stylistic/eslint-plugin-js": "^1.5.1",
-    "@stylistic/eslint-plugin-ts": "^1.5.1",
+    "@stylistic/eslint-plugin": "^1.5.3",
+    "@stylistic/eslint-plugin-js": "^1.5.3",
+    "@stylistic/eslint-plugin-ts": "^1.5.3",
     "@types/eslint-config-prettier": "^6.11.3",
-    "@typescript-eslint/eslint-plugin": "^6.16.0",
-    "@typescript-eslint/parser": "^6.16.0",
-    "browserslist-to-esbuild": "^1.2.0",
+    "@typescript-eslint/eslint-plugin": "^6.18.0",
+    "@typescript-eslint/parser": "^6.18.0",
+    "browserslist-to-esbuild": "^2.1.0",
     "child_process": "^1.0.2",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.0.0",
@@ -47,13 +47,13 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-prettier": "^5.1.2",
     "globals": "^13.24.0",
-    "postcss": "^8.4.31",
+    "postcss": "^8.4.33",
     "postcss-preset-env": "^9.3.0",
     "prettier": "^3.1.1",
-    "prettier-plugin-tailwindcss": "^0.5.9",
-    "tailwindcss": "^3.4.0",
+    "prettier-plugin-tailwindcss": "^0.5.11",
+    "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3",
-    "vite": "^5.0.10",
+    "vite": "^5.0.11",
     "vite-plugin-html": "^3.2.1"
   }
 }

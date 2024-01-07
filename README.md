@@ -226,9 +226,17 @@ In order to register that Prolific users have completed the experiment, add the 
 
 ## Deploying an experiment
 
+The script [`scripts/releaseScript.mjs`](scripts/releaseScript.mjs) automates deployment of the experiments. You can run it from the root directory with:
+
 ```shell
-yarn release
+yarn release ### or npm run release
 ```
+
+The script will walk you through comitting your changes to git repo [that you forked](#installation).
+
+A key idea here is that there should never be ambiguity about what code was served to a participant.
+
+The `releaseScript.mjs` prompts you to incriment the version number, generates a new git commit, injects the version number and the git commit's SHA hash parameters into the static website, and then deploys the website to Firebase. The version and hash variables are stored alongside a user's responses.
 
 <details>
  <summary>Deployment</summary>
