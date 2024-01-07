@@ -43,7 +43,7 @@ async function rest(project) {
       'Linting...' +
       '\n-------------------------------------------------------------\n',
   )
-  exec('yarn lint-prod')
+  exec('yarn lint:prod')
   checkStatus('Lint Hosting')
   exec('yarn lint-parent')
   checkStatus('Lint Parent')
@@ -156,7 +156,7 @@ async function rest(project) {
       'Building project...' +
       '\n-------------------------------------------------------------\n',
   )
-  exec('yarn build-prod')
+  exec('yarn build:prod')
   checkStatus('Build')
   cd(`${project}/`)
   console.log(

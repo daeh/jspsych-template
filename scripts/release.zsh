@@ -23,7 +23,7 @@ cd "${project}/hosting" || { printf "Failed to change directory to ${project}/ho
 
 # Run linting
 printf "\n%s\nRunning linting...\n" "$separator"
-yarn lint-prod
+yarn lint:prod
 yarn lint-parent
 check_status "Linting"
 
@@ -128,7 +128,7 @@ cd "${project}/hosting" || { printf "Failed to change directory to ${project}/ho
 
 # Run build
 printf "\n%s\nBuilding project...\n" "$separator"
-yarn build-prod
+yarn build:prod
 check_status "Build"
 
 # Change to the parent directory
