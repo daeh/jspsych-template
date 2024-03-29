@@ -23,8 +23,9 @@
   "type": "module",
   "source": "./hosting",
   "devDependencies": {
-    "firebase-tools": "^13.0.2",
+    "firebase-tools": "^13.6.0",
     "readline-sync": "^1.4.10",
     "shelljs": "^0.8.5"
-  }
+  },
+  "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
 }
