@@ -1,5 +1,5 @@
 {
-  "name": "jsPsychTemplate",
+  "name": "jspsych-template",
   "version": "0.0.1",
   "description": "Template serverless project for running online experiments using jsPsych, Firestore and Prolific",
   "author": "Dae Houlihan <dev@daeh.info> (https://daeh.info)",
@@ -23,7 +23,7 @@
   "type": "module",
   "source": "./hosting",
   "devDependencies": {
-    "firebase-tools": "^13.6.0",
+    "firebase-tools": "^13.13.0",
     "readline-sync": "^1.4.10",
     "shelljs": "^0.8.5"
   },
