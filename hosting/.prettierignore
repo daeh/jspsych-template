@@ -1,14 +1,41 @@
+#########
+### specialized ignore patterns ###
+#########
+**/*_lintignore*
+**/*-lintignore*
+**/*_buildignore*
+**/*-buildignore*
+
+#########
+### generated directories ###
+#########
 **/.git/
 **/.github/
-# **/.vscode/
-**/.idea/
+**/.yarn/
 **/build/
 **/_build/
 **/dist/
+**/node_modules/
+
+#########
+### generated files ###
+#########
+*.lock
+*-lock.*
+eslint.config.js
+
+#########
+### editor config ###
+#########
+**/.vscode/
+# !.vscode/
+**/.idea/
+# !.idea/
+# .idea/workspace.xml
+
+#########
+### project specific patterns ###
+#########
 **/.firebase/
 **/.firebaserc
 **/firestore.rules
-**/package-lock.json
-**/*.lock
-**/*_lintignore*
-**/*-lintignore*

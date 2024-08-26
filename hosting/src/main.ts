@@ -23,7 +23,7 @@ export function enableBeginExperiment() {
           console.log('runExperiment: Finished: Success') // Success!
         }
       },
-      (err) => {
+      (err: unknown) => {
         console.error(err) // Error!
       },
     )

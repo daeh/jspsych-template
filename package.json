@@ -23,7 +23,7 @@
   "type": "module",
   "source": "./hosting",
   "devDependencies": {
-    "firebase-tools": "^13.13.0",
+    "firebase-tools": "^13.15.4",
     "readline-sync": "^1.4.10",
     "shelljs": "^0.8.5"
   },

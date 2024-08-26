@@ -28,7 +28,7 @@ onAuthStateChanged(auth, (user: User | null) => {
           console.log('onAuthStateChanged(): initExperimentData(): Success') // Success!
         }
       },
-      (err) => {
+      (err: unknown) => {
         console.error(err) // Error!
       },
     )

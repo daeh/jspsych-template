@@ -1,14 +1,14 @@
 {
   "editor.formatOnSave": true,
+  "eslint.useFlatConfig": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "eslint.experimental.useFlatConfig": true,
   "files.associations": {
     "*.css": "tailwindcss"
   },
   "[javascript][javascriptreact][typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

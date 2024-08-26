@@ -7,7 +7,7 @@ import { saveTrialDataComplete, saveTrialDataPartial } from './databaseUtils'
 import { debugging, getUserInfo, prolificCC, prolificCUrl } from './globalVariables'
 
 import type { KeyboardResponse, Task, TrialData } from './project'
-import type { DataCollection } from '../node_modules/jspsych/dist/modules/data/DataCollection'
+import type { DataCollection } from 'jspsych'
 
 import imgStimBlue from './images/blue.png'
 import imgStimOrange from './images/orange.png'
@@ -59,7 +59,7 @@ export async function runExperiment() {
               console.log('saveTrialDataPartial: Success') // Success!
             }
           },
-          (err) => {
+          (err: unknown) => {
             console.error(err) // Error!
           },
         )
@@ -82,7 +82,7 @@ export async function runExperiment() {
             exitExperiment()
           }
         },
-        (err) => {
+        (err: unknown) => {
           console.error(err) // Error!
           exitExperiment()
         },
@@ -152,11 +152,11 @@ export async function runExperiment() {
 
   const test = {
     type: jsPsychImageKeyboardResponse,
-    stimulus: jsPsych.timelineVariable('stimulus') as string,
+    stimulus: jsPsych.timelineVariable('stimulus') as unknown as string,
     choices: ['f', 'j'] as KeyboardResponse[],
     data: {
       task: 'response' as Task,
-      correct_response: jsPsych.timelineVariable('correct_response') as string,
+      correct_response: jsPsych.timelineVariable('correct_response') as unknown as string,
     },
     on_finish: function (data: TrialData) {
       data.correct = jsPsych.pluginAPI.compareKeys(data.response || null, data.correct_response || null)

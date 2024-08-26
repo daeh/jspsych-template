@@ -1,9 +1,7 @@
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 
-import defaultStylisticPlugin from '@stylistic/eslint-plugin'
-import javascriptStylisticPlugin from '@stylistic/eslint-plugin-js'
-import typescriptStylisticPlugin from '@stylistic/eslint-plugin-ts'
+import stylisticPlugin from '@stylistic/eslint-plugin'
 import typescriptEslintPlugin from '@typescript-eslint/eslint-plugin'
 import typescriptEslintParser from '@typescript-eslint/parser'
 import prettierConfig from 'eslint-config-prettier'
@@ -14,10 +12,19 @@ import globals from 'globals'
 
 const projectDirname = dirname(fileURLToPath(import.meta.url))
 
-const env = (() => {
+const context = (() => {
   if (typeof process.env.NODE_ENV === 'undefined') return 'default'
   if (process.env.NODE_ENV === 'development') return 'development'
   if (process.env.NODE_ENV === 'production') return 'production'
+  new Error('Invalid NODE_ENV')
+  return 'error'
+})()
+
+const tsconfig = (() => {
+  if (context === 'default') return './tsconfig.json'
+  if (context === 'development') return './tsconfig.dev.json'
+  if (context === 'production') return './tsconfig.prod.json'
+  new Error('Invalid context')
   return 'error'
 })()
 
@@ -106,7 +113,7 @@ const typescriptRules = {
   ...typescriptEslintPlugin.configs.strict.rules,
   ...typescriptEslintPlugin.configs['strict-type-checked'].rules,
   ...typescriptEslintPlugin.configs['stylistic-type-checked'].rules,
-  ...typescriptStylisticPlugin.configs['disable-legacy'].rules,
+  ...stylisticPlugin.configs['disable-legacy'].rules,
   ...importRules,
   ...baseRules,
 }
@@ -117,7 +124,7 @@ const javascriptRules = {
   ...typescriptEslintPlugin.configs.recommended.rules,
   ...typescriptEslintPlugin.configs.strict.rules,
   ...typescriptEslintPlugin.configs['stylistic'].rules,
-  ...javascriptStylisticPlugin.configs['disable-legacy'].rules,
+  ...stylisticPlugin.configs['disable-legacy'].rules,
   ...importRules,
   ...baseRules,
 }
@@ -143,8 +150,8 @@ const config = [
       parserOptions: {
         ecmaVersion: 'latest', // 2024 sets the ecmaVersion parser option to 15
         tsconfigRootDir: resolve(projectDirname),
-        project: env === 'production' ? './tsconfig.prod.json' : './tsconfig.json',
         sourceType: 'module',
+        project: tsconfig,
       },
     },
   },
@@ -161,7 +168,7 @@ const config = [
     },
     plugins: {
       '@typescript-eslint': typescriptEslintPlugin,
-      '@stylistic': defaultStylisticPlugin,
+      '@stylistic': stylisticPlugin,
       'import': pluginImport,
       'prettier': prettierPlugin,
     },
@@ -200,7 +207,7 @@ const config = [
     },
     plugins: {
       '@typescript-eslint': typescriptEslintPlugin,
-      '@stylistic': defaultStylisticPlugin,
+      '@stylistic': stylisticPlugin,
       'import': pluginImport,
       'prettier': prettierPlugin,
     },
@@ -221,7 +228,7 @@ const config = [
     },
     plugins: {
       '@typescript-eslint': typescriptEslintPlugin,
-      '@stylistic': defaultStylisticPlugin,
+      '@stylistic': stylisticPlugin,
       'import': pluginImport,
       'prettier': prettierPlugin,
     },
@@ -239,7 +246,7 @@ const config = [
     },
     plugins: {
       '@typescript-eslint': typescriptEslintPlugin,
-      '@stylistic': defaultStylisticPlugin,
+      '@stylistic': stylisticPlugin,
       'import': pluginImport,
       'prettier': prettierPlugin,
     },
