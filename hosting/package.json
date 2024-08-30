@@ -29,11 +29,11 @@
     "@jspsych/plugin-html-keyboard-response": "^2.0.0",
     "@jspsych/plugin-image-keyboard-response": "^2.0.0",
     "@jspsych/plugin-preload": "^2.0.0",
-    "firebase": "^10.13.0",
+    "firebase": "^10.13.1",
     "jspsych": "^8.0.2"
   },
   "devDependencies": {
-    "@stylistic/eslint-plugin": "^2.6.4",
+    "@stylistic/eslint-plugin": "^2.7.2",
     "@types/eslint-config-prettier": "^6.11.3",
     "@typescript-eslint/eslint-plugin": "^8.3.0",
     "@typescript-eslint/parser": "^8.3.0",

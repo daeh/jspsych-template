@@ -17,13 +17,12 @@
     "deploy-rules": "firebase deploy --only firestore:rules",
     "update-deps": "yarn upgrade-interactive --latest && cd hosting && yarn upgrade-interactive --latest",
     "release": "node scripts/releaseScript.mjs $PWD",
-    "releasecli": "zsh scripts/release.zsh $PWD",
     "retrieve": "zsh scripts/retrieve.zsh $PWD"
   },
   "type": "module",
   "source": "./hosting",
   "devDependencies": {
-    "firebase-tools": "^13.15.4",
+    "firebase-tools": "^13.16.0",
     "readline-sync": "^1.4.10",
     "shelljs": "^0.8.5"
   },

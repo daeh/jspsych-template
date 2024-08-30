@@ -1,26 +1,37 @@
 import { promises as fs } from 'fs'
 import path from 'path'
+
 import readlineSync from 'readline-sync'
 import pkg from 'shelljs'
-// import * as shell from 'shelljs'
+
 const { cd, exec, error } = pkg
+// import * as shell from 'shelljs'
+
 // Import the package.json file
-import file from '../package.json' assert { type: 'json' }
+import packageFile from '../package.json' with { type: 'json' }
+// import file from '../package.json' assert { type: 'json' }
+
 process.env.FORCE_COLOR = '1'
+
 function getVersion() {
-  // Cast the imported file to the PackageJson type
-  const packageJson = file
-  // Now access the version safely
+  const packageJson = packageFile
   const version = packageJson.version
   return version
 }
-// Function to update the version in package.json
+
+/**
+ * Update the version number in package.json
+ *
+ * @param {string} newVersion
+ * @param {string} projectDir
+ */
 async function updatePackageJsonVersion(newVersion, projectDir) {
   const packageJsonPath = path.join(projectDir, 'package.json')
   const packageJson = JSON.parse(await fs.readFile(packageJsonPath, 'utf8'))
   packageJson.version = newVersion
   await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n', 'utf8')
 }
+
 // Function to check last command's exit status
 function checkStatus(task) {
   if (error()) {
@@ -30,12 +41,17 @@ function checkStatus(task) {
     process.exit(1)
   }
 }
-async function rest(project) {
+
+/**
+ * @param {string} projectPath
+ */
+async function attemptRelease(projectPath) {
   // Get the current version
   const currentVersion = getVersion()
   checkStatus('Get Current Version')
   // Change to the hosting directory or exit if it fails
-  cd(`${project}/hosting`)
+  const hostingPath = path.join(projectPath, 'hosting')
+  cd(hostingPath)
   checkStatus('Change Directory to Hosting')
   // Run linting
   console.log(
@@ -47,7 +63,7 @@ async function rest(project) {
   checkStatus('Lint Hosting')
   exec('yarn lint-parent')
   checkStatus('Lint Parent')
-  cd(`${project}/`)
+  cd(projectPath)
   console.log(
     '\n-------------------------------------------------------------\n\n' + `Current Version: ${currentVersion}`,
   )
@@ -74,8 +90,8 @@ async function rest(project) {
     if (incrementVersion.toLowerCase() === 'y') {
       newVersion = readlineSync.question('>>> Enter the new version number:  ')
       if (/^[0-9]+\.[0-9]+\.[0-9]+$/.test(newVersion)) {
-        await updatePackageJsonVersion(newVersion, project)
-        await updatePackageJsonVersion(newVersion, path.join(project, 'hosting'))
+        await updatePackageJsonVersion(newVersion, projectPath)
+        await updatePackageJsonVersion(newVersion, path.join(projectPath, 'hosting'))
         tag = true
         console.log(
           '\n-------------------------------------------------------------\n' +
@@ -150,7 +166,7 @@ async function rest(project) {
     }
   }
   checkStatus('Tag Release')
-  cd(`${project}/hosting`)
+  cd(hostingPath)
   console.log(
     '\n-------------------------------------------------------------\n' +
       'Building project...' +
@@ -158,7 +174,7 @@ async function rest(project) {
   )
   exec('yarn build:prod')
   checkStatus('Build')
-  cd(`${project}/`)
+  cd(projectPath)
   console.log(
     '\n-------------------------------------------------------------\n' +
       'Deploying project...' +
@@ -174,9 +190,13 @@ async function rest(project) {
       '\n-------------------------------------------------------------\n',
   )
 }
-function main(project) {
-  if (project) {
-    rest(project).then(
+
+/**
+ * @param {string} projectPath
+ */
+function main(projectPath) {
+  if (projectPath) {
+    attemptRelease(projectPath).then(
       () => {
         process.exit(0)
       },
@@ -186,8 +206,9 @@ function main(project) {
       },
     )
   } else {
-    console.error('\nNo project specified.\n')
+    console.error('\nNo project path specified.\n')
     process.exit(1)
   }
 }
+
 main(process.argv[2])
