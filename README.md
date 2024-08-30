@@ -166,7 +166,7 @@ The relevant settings are:
 
 ### IntelliJ IDEA Settings
 
-For [IntelliJ IDEA](https://www.jetbrains.com/idea/) / [WebStorm](https://www.jetbrains.com/webstorm/) to respect the configuration, you need to enable ESLint and Prettier for the relevant filetypes. There is an example config in `.idea`. To enable ESLing and Prettier manually:
+For [IntelliJ IDEA](https://www.jetbrains.com/idea/) / [WebStorm](https://www.jetbrains.com/webstorm/) to respect the configuration, you need to enable ESLint and Prettier for the relevant filetypes. There is an example config in `.idea`. To enable ESLint and Prettier manually:
 
 <details>
 <summary>IntelliJ Setup</summary>
