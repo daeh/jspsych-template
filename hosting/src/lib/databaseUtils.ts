@@ -12,13 +12,14 @@ import {
   Timestamp,
 } from 'firebase/firestore'
 
+import { debugging, getDocStr, setUserInfo, UserRecord } from '../globalVariables'
+
 import { getBrowserInfo, getOSInfo, getWindowSize } from './clientNavigatorQuery'
 import { getDataBase, getUID } from './databaseAuth'
-import { debugging, getDocStr, setUserInfo, UserRecord } from './globalVariables'
 
-import type { RecursiveRecordArray, TrialData } from './project'
+import type { RecursiveRecordArray, TrialData } from '../project'
 
-const debug = debugging()
+const debug: boolean = debugging()
 
 export async function initExperimentData(uid: string): Promise<void> {
   // Initialize User
@@ -56,14 +57,14 @@ async function initData(userInfo: UserRecord): Promise<void> {
     if (existingData.hasOwnProperty('priorInits')) {
       let { priorInits, ...existingDataReduced } = existingData
       if (priorInits instanceof Array) {
-        // @ts-expect-error priorInits does not exist on type
+        // @ts-expect-error allow priorInits to by unknown
         docData['priorInits'] = [...priorInits, existingDataReduced]
       } else {
-        // @ts-expect-error priorInits does not exist on type
+        // @ts-expect-error allow priorInits to by unknown
         docData['priorInits'] = [priorInits, existingDataReduced]
       }
     } else {
-      // @ts-expect-error priorInits does not exist on type
+      // @ts-expect-error allow priorInits to by unknown
       docData['priorInits'] = [existingData]
     }
   }

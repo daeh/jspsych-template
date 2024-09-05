@@ -2,6 +2,9 @@
   "extends": "./tsconfig.base",
   "compilerOptions": {
     "strict": true,
+    /**
+       To have warnings/errors at the correct position, enable source maps.
+      */
     "sourceMap": false,
     "removeComments": true,
     ////

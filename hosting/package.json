@@ -6,17 +6,16 @@
   "license": "ISC",
   "scripts": {
     "dev": "vite",
+    "preview": "vite preview",
     "build": "vite build",
     "build:dev": "NODE_ENV=development vite build --mode development",
-    "build:prod": "export NODE_ENV=production && export ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write . && eslint --config eslint.config.mjs --fix . && tsc --project tsconfig.prod.json --noEmit && vite build --mode production",
-    "lint": "export ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write . && eslint --config eslint.config.mjs --fix . && tsc --project tsconfig.json --noEmit",
-    "lint:dev": "export NODE_ENV=development && export ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write . && eslint --config eslint.config.mjs --fix . && tsc --project tsconfig.dev.json --noEmit",
-    "lint:prod": "export NODE_ENV=production && export ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write . && eslint --config eslint.config.mjs --fix . && tsc --project tsconfig.prod.json --noEmit",
-    "lint:dry": "export ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --check . ; eslint --config eslint.config.mjs . && tsc --project tsconfig.json --noEmit",
-    "lint-parent": "export NODE_ENV=production && export ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write .. && eslint --config eslint.config.mjs --fix ..",
-    "lint-parent:dry": "export NODE_ENV=production && export ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --check .. ; eslint --config eslint.config.mjs ..",
-    "preview": "vite preview",
-    "postinstall": "node ./scripts/linkconfig.mjs"
+    "build:prod": "NODE_ENV=production && ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write . && eslint --config eslint.config.mjs --fix . && tsc --project tsconfig.prod.json --noEmit && vite build --mode production",
+    "lint": "ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write . && eslint --config eslint.config.mjs --fix . && tsc --project tsconfig.json --noEmit",
+    "lint:dev": "NODE_ENV=development && ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write . && eslint --config eslint.config.mjs --fix . && tsc --project tsconfig.dev.json --noEmit",
+    "lint:prod": "NODE_ENV=production && ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write . && eslint --config eslint.config.mjs --fix . && tsc --project tsconfig.prod.json --noEmit",
+    "lint:dry": "ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --check . ; eslint --config eslint.config.mjs . && tsc --project tsconfig.json --noEmit",
+    "lint-parent": "NODE_ENV=production && ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write .. && eslint --config eslint.config.mjs --fix ..",
+    "lint-parent:dry": "NODE_ENV=production && ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --check .. ; eslint --config eslint.config.mjs .."
   },
   "type": "module",
   "directories": {
@@ -35,23 +34,25 @@
   "devDependencies": {
     "@stylistic/eslint-plugin": "^2.7.2",
     "@types/eslint-config-prettier": "^6.11.3",
-    "@typescript-eslint/eslint-plugin": "^8.3.0",
-    "@typescript-eslint/parser": "^8.3.0",
-    "browserslist-to-esbuild": "^2.1.0",
+    "@typescript-eslint/eslint-plugin": "^8.4.0",
+    "@typescript-eslint/parser": "^8.4.0",
+    "autoprefixer": "^10.4.20",
+    "browserslist-to-esbuild": "^2.1.1",
     "child_process": "^1.0.2",
     "eslint": "<9.0.0",
-    "eslint-config-prettier": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.3",
-    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-import": "^2.30.0",
     "eslint-plugin-prettier": "^5.2.1",
     "globals": "^15.9.0",
-    "postcss": "^8.4.41",
+    "postcss": "^8.4.45",
     "postcss-preset-env": "^10.0.2",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",
     "tailwindcss": "^3.4.10",
     "typescript": "^5.5.4",
-    "vite": "^5.4.2",
-    "vite-plugin-html": "^3.2.1"
-  }
+    "vite": "^5.4.3",
+    "vite-plugin-html": "^3.2.2"
+  },
+  "packageManager": "yarn@4.4.1"
 }

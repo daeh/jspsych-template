@@ -1,13 +1,16 @@
 import { initializeApp } from 'firebase/app'
-import { getAuth, onAuthStateChanged, signInAnonymously, User } from 'firebase/auth'
+import { getAuth, onAuthStateChanged, signInAnonymously } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
+
+import { debugging } from '../globalVariables'
+import { enableBeginExperiment } from '../main'
 
 import { firebaseConfig } from './databaseCred'
 import { initExperimentData } from './databaseUtils'
-import { debugging } from './globalVariables'
-import { enableBeginExperiment } from './main'
 
-const debug = debugging()
+import type { User } from 'firebase/auth'
+
+const debug: boolean = debugging()
 
 // Initialize firebase
 const app = initializeApp(firebaseConfig)

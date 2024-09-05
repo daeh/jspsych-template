@@ -8,14 +8,21 @@
     <title>%VITE_TITLE%</title>
   </head>
   <body>
-    <p class="text-center">
-      <br />
-      <br />
-      <span class="text-2xl">Ready?</span>
-      <br />
-      <br />
-      <button id="startButton" class="mx-auto" disabled>Please Wait...</button>
-    </p>
+    <div id="welcome-splash" class="z-[999] hidden h-screen items-center justify-center">
+      <div class="text-center">
+        <p class="mb-8">
+          <span class="text-2xl">Ready?</span>
+        </p>
+        <button id="startButton" class="mx-auto" disabled>Please Wait...</button>
+      </div>
+    </div>
+    <div id="loading-splash" class="fixed bottom-0 left-0 right-0 top-0 z-[998]">
+      <div class="flex h-screen items-center justify-center text-center">
+        <p class="mb-8">
+          <span class="text-2xl">Loading...</span>
+        </p>
+      </div>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

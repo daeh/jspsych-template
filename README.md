@@ -21,15 +21,15 @@ This repository is an example of how to setup a development environment for buil
 After you setup your Firebase and Firestore services, add your configurations to
 
 - [`.firebaserc`](.firebaserc)
-- [`databaseCred-template.ts`](hosting/src/databaseCred-template.ts) (which is renamed to `databaseCred.ts` during install)
+- [`databaseCred.ts`](hosting/src/lib/databaseCred.ts)
 
-You don't need to setup prolific to develop the experiment, but after you've made a prolific project, add the completion code to
+You don't need to set up prolific to develop the experiment, but after you've made a prolific project, add the completion code to
 
-- [`prolificCred-template.ts`](hosting/src/prolificCred-template.ts) (which is renamed to `prolificCred.ts` during install)
+- [`prolificCred.ts`](hosting/src/lib/prolificCred.ts)
 
 ### Install Node Dependencies
 
-Install the dependencies using [Yarn](https://yarnpkg.com/) (or [npm](https://www.npmjs.com/), if you prefer).
+Install the dependencies using [Yarn](https://yarnpkg.com/)
 
 ```shell
 ###
@@ -37,19 +37,16 @@ Install the dependencies using [Yarn](https://yarnpkg.com/) (or [npm](https://ww
 ###
 
 ### Install the Firebase dependencies
-yarn install ### or: npm install
+yarn install
 
 ### Push the Firestore rules (defined in firestore.rules)
-yarn deploy-rules ### or: npm run deploy-rules
+yarn deploy-rules
 
 ### Enter the experiment directory
 cd "hosting" || exit
 
-### Install the website dependencies
-yarn install ### or: npm install
-
 ### Start the Vite server
-yarn dev ### or: npm run dev
+yarn dev
 ```
 
 ## Usage
@@ -57,6 +54,7 @@ yarn dev ### or: npm run dev
 You can format, lint and build the project from the command line by calling the commands in [`hosting/package.json`](hosting/package.json):
 
 <details>
+
 <summary>package.json scripts</summary>
 
 ```json
@@ -64,14 +62,14 @@ You can format, lint and build the project from the command line by calling the 
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "export ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write . && eslint --config eslint.config.mjs --fix . && tsc --project tsconfig.json --noEmit"
+    "lint": "ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write . && eslint --config eslint.config.mjs --fix . && tsc --project tsconfig.json --noEmit"
   }
 }
 ```
 
 </details>
 
-To develop the website, run `yarn dev` (or `npm run dev`), which will open a localhost Vite server that will update as you make modifications.
+To develop the website, run `yarn dev`, which will open a localhost Vite server that will update as you make modifications.
 
 ### Sandbox
 
@@ -110,11 +108,12 @@ For serving the website, this project uses
 This project uses a future-looking configuration that implements the major developments from [ESLint](https://eslint.org). The main config file in this repo is the flat ESLint config, [`eslint.config.mjs`](hosting/eslint.config.mjs).
 
 <details>
+
 <summary>ES Module parsing</summary>
 
-This project is configured as an `ES Module`, so this config file could be named `eslint.config.js`, but I have given it the `.mjs` extension to make this config work for `Common.js Module` development with minimal reconfiguration.
+This project is configured as an `ES Module`, so this config file could be named `eslint.config.js`, but I have given it the `mjs` extension to make this config work for `Common.js Module` development with minimal reconfiguration.
 
-While ESLint has no issue using the `.mjs` config file, at present, IDEs like VS Code and IntelliJ IDEA require the `.js` extension. A simple workaround is to make an alias `eslint.config.js` that points to `eslint.config.mjs`. This is done automatically during installation by the [`hosting/package.json`](hosting/package.json) file.
+While ESLint has no issue using the `mjs` config file, at present, IDEs like VS Code and IntelliJ IDEA require the `js` extension. A simple workaround is to make an alias `eslint.config.js` that points to `eslint.config.mjs`. This is done automatically during installation by the [`hosting/package.json`](hosting/package.json) file.
 
 </details>
 
@@ -130,11 +129,12 @@ ESLint is [depreciating formatting rules](https://eslint.org/blog/2023/10/deprec
 
 ### VS Code Settings
 
-For [VS Code](https://code.visualstudio.com/) to respect the configuration, you need to specify the formatter for the relevant files. This is done for you in [`VSCodeProject.code-workspace`](VSCodeProject.code-workspace) and in [`.vscode/settings.json`](hosting/.vscode/settings.json) (these are redundant, you only need one). This configures the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) extension to use the flat config system, makes VS Code use the [Prettier - Code Formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extensions for formatting filetypes not covered by ESLint, and enables [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss). This obviously requires that you have these extensions enabled for the workspace. Activate the `VSCodeProject.code-workspace` via `File > Open Workspace from File...` (or by double clicking it), or activate `.vscode` via `File > Open Folder...` in VS Code.
+For [VS Code](https://code.visualstudio.com/) to respect the configuration, you need to specify the formatter for the relevant files. This is done for you in [`VSCodeProject.code-workspace`](VSCodeProject.code-workspace) and in [`.vscode/settings.json`](hosting/.vscode/settings.json) (these are redundant, you only need one). This configures the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) extension to use the flat config system, makes VS Code use the [Prettier - Code Formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extensions for formatting filetypes not covered by ESLint, and enables [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss). This obviously requires that you have these extensions enabled for the workspace. Activate the `VSCodeProject.code-workspace` via `File > Open Workspace from File...` (or by double-clicking it), or activate `.vscode` via `File > Open Folder...` in VS Code.
 
 The relevant settings are:
 
 <details>
+
 <summary>VSCode Settings</summary>
 
 ```json
@@ -169,6 +169,7 @@ The relevant settings are:
 For [IntelliJ IDEA](https://www.jetbrains.com/idea/) / [WebStorm](https://www.jetbrains.com/webstorm/) to respect the configuration, you need to enable ESLint and Prettier for the relevant filetypes. There is an example config in `.idea`. To enable ESLint and Prettier manually:
 
 <details>
+
 <summary>IntelliJ Setup</summary>
 
 - `Settings... > Languages & Frameworks > JavaScript > Code Quality Tools > ESLint`
@@ -200,7 +201,8 @@ If you change the project from an `ES Module` to a `Common.js Module`, or if ESL
 ### Firebase and Firestore Configuration
 
 <details>
- <summary>Firebase Setup</summary>
+
+<summary>Firebase Setup</summary>
 
 TODO: describe how to setup hosting and database
 
@@ -211,7 +213,9 @@ TODO: describe how to setup hosting and database
 ### Prolific Configuration
 
 <details>
-  <summary>Prolific URL Search Params</summary>
+
+<summary>Prolific URL Search Params</summary>
+
 ### Prolific URL Search Params
 
 The project is looks for Prolific URL parameters and stores them. Make sure that you've set up Prolific to use URL Search Params.
@@ -229,7 +233,7 @@ In order to register that Prolific users have completed the experiment, add the 
 The script [`scripts/releaseScript.mjs`](scripts/releaseScript.mjs) automates deployment of the experiments. You can run it from the root directory with:
 
 ```shell
-yarn release ### or npm run release
+yarn release
 ```
 
 The script will walk you through committing your changes to git repo [that you forked](#installation).
@@ -239,7 +243,8 @@ A key idea here is that there should never be ambiguity about what code was serv
 The `releaseScript.mjs` prompts you to increment the version number, generates a new git commit, injects the version number and the git commit's SHA hash variables into the static website, and then deploys the website to Firebase. The version and hash variables are stored alongside a user's responses.
 
 <details>
- <summary>Deployment</summary>
+
+<summary>Deployment</summary>
 
 TODO: elaborate
 
@@ -260,7 +265,7 @@ Retrieve the data from Firestore using the Firebase Admin SDK, which you must au
 
 <details>
 
- <summary>Encryption Setup</summary>
+<summary>Encryption Setup</summary>
 
 TODO: describe sparse image strategy
 
@@ -274,7 +279,7 @@ pip install firebase-admin
 
 <details>
 
- <summary>Python Setup</summary>
+<summary>Python Setup</summary>
 
 TODO: give environment requirements for python script
 

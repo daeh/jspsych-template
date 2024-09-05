@@ -7,17 +7,29 @@
     /* Bundler Mode */
     "moduleResolution": "bundler",
     "noEmit": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "isolatedModules": true, // for bundlers like vite. Setting the isolatedModules flag tells TypeScript to warn you if you write certain code that can’t be correctly interpreted by a single-file transpilation process.
-    // "allowSyntheticDefaultImports": false,
+    /**
+       For bundlers like vite. Setting the isolatedModules flag tells TypeScript to warn you if you write certain code that can’t be correctly interpreted by a single-file transpilation process.
+      */
+    "isolatedModules": true,
+    /**
+       Enforce using `import type` instead of `import` for Types.
+      */
+    "verbatimModuleSyntax": true,
 
     /* For Vite */
     // "types": ["vite/client"], // defined in types/vite.d.ts
     // "typeRoots": [""],
     "skipLibCheck": true, // enable for temp fix
     "useDefineForClassFields": true,
+
+    /**
+       To have warnings/errors at the correct position, enable source maps.
+      */
+    "sourceMap": true,
 
     /* Linting */
     "strict": true,
@@ -28,6 +40,24 @@
     "allowJs": true,
     "checkJs": true
   },
-  "include": ["./types/*.d.ts", "**/*.ts", "**/*.mts", "**/*.cts", "**/*.tsx", "**/*.mtsx", "**/*.js", "**/*.mjs", "**/*.cjs", "**/*.jsx", "**/*.mjsx"],
-  "exclude": ["dist", "build"]
+  "include": ["types/*.d.ts", "**/*.ts", "**/*.mts", "**/*.cts", "**/*.tsx", "**/*.mtsx", "**/*.js", "**/*.mjs", "**/*.cjs", "**/*.jsx", "**/*.mjsx"],
+  "exclude": [
+    /* specialized ignore patterns */
+    "**/*_lintignore*",
+    "**/*-lintignore*",
+    "**/*_buildignore*",
+    "**/*-buildignore*",
+    /* generated directories */
+    "**/.yarn/",
+    "**/build/",
+    "**/dist/",
+    "**/node_modules/",
+    /* generated files */
+    "*.lock",
+    "*-lock.*",
+    /* editor config */
+    "**/.vscode/",
+    "**/.idea/"
+    /* project specific patterns */
+  ]
 }

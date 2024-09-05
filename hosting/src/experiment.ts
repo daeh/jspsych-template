@@ -3,8 +3,8 @@ import jsPsychImageKeyboardResponse from '@jspsych/plugin-image-keyboard-respons
 import jsPsychPreload from '@jspsych/plugin-preload'
 import { initJsPsych } from 'jspsych'
 
-import { saveTrialDataComplete, saveTrialDataPartial } from './databaseUtils'
 import { debugging, getUserInfo, prolificCC, prolificCUrl } from './globalVariables'
+import { saveTrialDataComplete, saveTrialDataPartial } from './lib/databaseUtils'
 
 import type { KeyboardResponse, Task, TrialData } from './project'
 import type { DataCollection } from 'jspsych'
@@ -34,6 +34,7 @@ const exitExperiment = () => {
     window.location.replace(prolificCUrl)
   }, 3000)
 }
+
 const exitExperimentDebugging = () => {
   const contentDiv = document.getElementById('jspsych-content')
   if (contentDiv) contentDiv.innerHTML = exitMessage
@@ -91,7 +92,7 @@ export async function runExperiment() {
   })
 
   /* create timeline */
-  const timeline = []
+  const timeline: Record<string, any>[] = []
 
   /* preload images */
   const preload = {
@@ -190,5 +191,6 @@ export async function runExperiment() {
   timeline.push(debrief_block)
 
   /* start the experiment */
+  // @ts-expect-error allow timeline to be type jsPsych TimelineArray
   await jsPsych.run(timeline)
 }

@@ -5,8 +5,7 @@ import stylisticPlugin from '@stylistic/eslint-plugin'
 import typescriptEslintPlugin from '@typescript-eslint/eslint-plugin'
 import typescriptEslintParser from '@typescript-eslint/parser'
 import prettierConfig from 'eslint-config-prettier'
-import pluginImport from 'eslint-plugin-import'
-import pluginImportConfig from 'eslint-plugin-import/config/recommended.js'
+import importPlugin from 'eslint-plugin-import'
 import prettierPlugin from 'eslint-plugin-prettier'
 import globals from 'globals'
 
@@ -35,6 +34,7 @@ const allJsExtensions = allJsExtensionsArray.join(',')
 const allExtensions = [...allTsExtensionsArray, ...allJsExtensionsArray].join(',')
 
 const importRules = {
+  ...importPlugin.flatConfigs.recommended.rules,
   'import/no-unresolved': 'error',
   'sort-imports': [
     'error',
@@ -107,7 +107,6 @@ const baseRules = {
 
 const typescriptRules = {
   ...prettierConfig.rules,
-  ...pluginImportConfig.rules,
   ...typescriptEslintPlugin.configs.recommended.rules,
   ...typescriptEslintPlugin.configs['recommended-type-checked'].rules,
   ...typescriptEslintPlugin.configs.strict.rules,
@@ -120,10 +119,9 @@ const typescriptRules = {
 
 const javascriptRules = {
   ...prettierConfig.rules,
-  ...pluginImportConfig.rules,
   ...typescriptEslintPlugin.configs.recommended.rules,
   ...typescriptEslintPlugin.configs.strict.rules,
-  ...typescriptEslintPlugin.configs['stylistic'].rules,
+  ...typescriptEslintPlugin.configs.stylistic.rules,
   ...stylisticPlugin.configs['disable-legacy'].rules,
   ...importRules,
   ...baseRules,
@@ -149,8 +147,8 @@ const config = [
       parser: typescriptEslintParser,
       parserOptions: {
         ecmaVersion: 'latest', // 2024 sets the ecmaVersion parser option to 15
-        tsconfigRootDir: resolve(projectDirname),
         sourceType: 'module',
+        tsconfigRootDir: resolve(projectDirname),
         project: tsconfig,
       },
     },
@@ -169,7 +167,7 @@ const config = [
     plugins: {
       '@typescript-eslint': typescriptEslintPlugin,
       '@stylistic': stylisticPlugin,
-      'import': pluginImport,
+      'import': importPlugin,
       'prettier': prettierPlugin,
     },
     rules: {
@@ -208,7 +206,7 @@ const config = [
     plugins: {
       '@typescript-eslint': typescriptEslintPlugin,
       '@stylistic': stylisticPlugin,
-      'import': pluginImport,
+      'import': importPlugin,
       'prettier': prettierPlugin,
     },
     rules: {
@@ -229,7 +227,7 @@ const config = [
     plugins: {
       '@typescript-eslint': typescriptEslintPlugin,
       '@stylistic': stylisticPlugin,
-      'import': pluginImport,
+      'import': importPlugin,
       'prettier': prettierPlugin,
     },
     rules: {
@@ -247,7 +245,7 @@ const config = [
     plugins: {
       '@typescript-eslint': typescriptEslintPlugin,
       '@stylistic': stylisticPlugin,
-      'import': pluginImport,
+      'import': importPlugin,
       'prettier': prettierPlugin,
     },
     rules: {
@@ -255,7 +253,20 @@ const config = [
     },
   },
   {
-    ignores: ['dist', 'build'],
+    ignores: [
+      /* specialized ignore patterns */
+      '**/*_lintignore*',
+      '**/*-lintignore*',
+      '**/*_buildignore*',
+      '**/*-buildignore*',
+      /* generated directories */
+      '.yarn/',
+      'dist/',
+      'build/',
+      /* generated files */
+      /* editor config */
+      /* project specific patterns */
+    ],
   },
 ]
 

@@ -1,4 +1,4 @@
-import { debugging } from './globalVariables'
+import { debugging } from '../globalVariables'
 
 const debug = debugging()
 

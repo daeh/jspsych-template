@@ -1,6 +1,6 @@
-import { description, version } from '../../package.json'
+import { description, version } from '../package.json'
 
-import { prolificCCode } from './prolificCred'
+import { prolificCCode } from './lib/prolificCred'
 
 const debug = true
 
@@ -93,7 +93,7 @@ function definitelyLive() {
   return !sandbox() && !emulator() && getURLParams().hasOwnProperty('PROLIFIC_PID')
 }
 
-export function debugging() {
+export function debugging(): boolean {
   /*
    * If web app is NOT running locally:
    *   if there are any URL Search Params, force PRODUCTION mode

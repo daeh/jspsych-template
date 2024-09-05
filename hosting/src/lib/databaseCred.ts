@@ -1,3 +1,4 @@
+import type { FirebaseOptions } from 'firebase/app'
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 export const firebaseConfig = {
   apiKey: '...',
@@ -7,4 +8,4 @@ export const firebaseConfig = {
   messagingSenderId: '...',
   appId: '...',
   measurementId: 'G-...',
-}
+} as FirebaseOptions

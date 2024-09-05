@@ -1,18 +1,32 @@
+#########
 ### auth files ###
 ### excluded in .gitattributes
+#########
 .firebaserc
 
-### Runtime ###
+#########
+### generated directories ###
+#########
 node_modules/
 .firebase/
 _build/
-_build.zip
 logs/
+
+#########
+### generated files ###
+#########
+_build.zip
 ./*.log
 
+#########
 ### Editor directories and files ###
+#########
 # .vscode/
 !.vscode/
 # .idea/
 !.idea/
 .idea/workspace.xml
+
+#########
+### project specific patterns ###
+#########

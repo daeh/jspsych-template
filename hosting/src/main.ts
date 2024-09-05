@@ -12,11 +12,25 @@ export function enableBeginExperiment() {
 
   if (getExptInitialized()) return
 
+  const loadingDiv = document.getElementById('loading-splash')
+  const welcomeDiv = document.getElementById('welcome-splash')
   const startButton = document.getElementById('startButton') as HTMLButtonElement
 
+  if (loadingDiv !== null) {
+    loadingDiv.style.display = 'none'
+  }
+
+  if (welcomeDiv) {
+    welcomeDiv.style.display = 'flex'
+  }
+
   startButton.addEventListener('click', () => {
-    startButton.disabled = true
     startButton.blur()
+    startButton.disabled = true
+
+    if (welcomeDiv) {
+      welcomeDiv.style.display = 'none'
+    }
     runExperiment().then(
       () => {
         if (debug) {
