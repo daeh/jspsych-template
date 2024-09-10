@@ -90,8 +90,8 @@ For bundling the website, this project uses
 
 - [Vite](https://vitejs.dev/) (configured in [`vite.config.mts`](vite.config.mts))
 - [Tailwind CSS](https://tailwindcss.com/) (configured in [`tailwind.config.ts`](tailwind.config.ts))
-<!-- - [PostCSS](https://postcss.org/) (configured in [`vite.config.mjs`](hosting/vite.config.mjs); uses [PostCSS Preset Env](https://github.com/csstools/postcss-plugins/tree/main/plugin-packs/postcss-preset-env), which uses [Autoprefixer](https://github.com/postcss/autoprefixer)) -->
-- [PostCSS](https://postcss.org/) (configured in [`vite.config.mjs`](vite.config.mjs); uses [postcss-import](https://github.com/postcss/postcss-import), [Autoprefixer](https://github.com/postcss/autoprefixer))
+<!-- - [PostCSS](https://postcss.org/) (configured in [`vite.config.mts`](hosting/vite.config.mts); uses [PostCSS Preset Env](https://github.com/csstools/postcss-plugins/tree/main/plugin-packs/postcss-preset-env), which uses [Autoprefixer](https://github.com/postcss/autoprefixer)) -->
+- [PostCSS](https://postcss.org/) (configured in [`vite.config.mts`](vite.config.mts); uses [postcss-import](https://github.com/postcss/postcss-import), [Autoprefixer](https://github.com/postcss/autoprefixer))
 - [Browserslist](https://github.com/browserslist/browserslist) (via the [browserslist-to-esbuild plugin](https://github.com/marcofugaro/browserslist-to-esbuild); configured in [`package.json`](package.json))
 - [jsPsych](https://www.jspsych.org/) - UX (experiment flow, data capture)
 
