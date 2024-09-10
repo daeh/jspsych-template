@@ -22,7 +22,6 @@
 #########
 *.lock
 *-lock.*
-eslint.config.js
 
 #########
 ### editor config ###

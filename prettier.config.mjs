@@ -12,7 +12,10 @@ const config = {
   arrowParens: 'always',
   proseWrap: 'never',
   endOfLine: 'lf',
-  plugins: ['prettier-plugin-tailwindcss'],
+  // plugins: ['prettier-plugin-tailwindcss'],
+  // plugins: [require.resolve('prettier-plugin-organize-imports')],
+  plugins: [import('prettier-plugin-tailwindcss')],
+  tailwindConfig: './tailwind.config.ts',
   overrides: [
     {
       files: ['*.html'],

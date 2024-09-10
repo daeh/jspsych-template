@@ -10,12 +10,10 @@ src/prolificCred.ts
 #########
 node_modules/
 dist/
-build/
 
 #########
 ### generated files ###
 #########
-eslint.config.js
 
 #########
 ### project specific patterns ###

@@ -1,1 +1,1 @@
-export const prolificCCode: string = 'REPLACE-WITH-YOURS'
+export const prolificCCode = 'REPLACE-WITH-YOURS'

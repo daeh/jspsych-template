@@ -19,6 +19,16 @@ _build.zip
 ./*.log
 
 #########
+### generated yarn files
+#########
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+#########
 ### Editor directories and files ###
 #########
 # .vscode/

@@ -1,13 +1,14 @@
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 
+import prettierConfig from 'eslint-config-prettier'
+import globals from 'globals'
+
 import stylisticPlugin from '@stylistic/eslint-plugin'
 import typescriptEslintPlugin from '@typescript-eslint/eslint-plugin'
 import typescriptEslintParser from '@typescript-eslint/parser'
-import prettierConfig from 'eslint-config-prettier'
 import importPlugin from 'eslint-plugin-import'
 import prettierPlugin from 'eslint-plugin-prettier'
-import globals from 'globals'
 
 const projectDirname = dirname(fileURLToPath(import.meta.url))
 
@@ -176,7 +177,7 @@ const config = [
   },
   {
     /* +lenient for typescript files in ./src/ folder */
-    files: [`src/**/*.{${allTsExtensions}}`],
+    files: [`hosting/src/**/*.{${allTsExtensions}}`, `build-pubmods-pubignore/hosting/src/**/*.{${allTsExtensions}}`],
     ignores: [`**/*.config.{${allTsExtensions}}`],
     settings: {
       'import/resolver': {
@@ -261,9 +262,10 @@ const config = [
       '**/*-buildignore*',
       /* generated directories */
       '.yarn/',
-      'dist/',
+      'hosting/dist/',
       'build/',
       /* generated files */
+      '.pnp.*',
       /* editor config */
       /* project specific patterns */
     ],

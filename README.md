@@ -42,16 +42,13 @@ yarn install
 ### Push the Firestore rules (defined in firestore.rules)
 yarn deploy-rules
 
-### Enter the experiment directory
-cd "hosting" || exit
-
 ### Start the Vite server
 yarn dev
 ```
 
 ## Usage
 
-You can format, lint and build the project from the command line by calling the commands in [`hosting/package.json`](hosting/package.json):
+You can format, lint and build the project from the command line by calling the commands in [`package.json`](package.json):
 
 <details>
 
@@ -60,8 +57,8 @@ You can format, lint and build the project from the command line by calling the 
 ```json
 {
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "vite --config vite.config.mts hosting",
+    "build": "vite build --config vite.config.mts hosting",
     "lint": "ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write . && eslint --config eslint.config.mjs --fix . && tsc --project tsconfig.json --noEmit"
   }
 }
@@ -83,18 +80,19 @@ Alternatively, you can force debugging mode by including `debug` as a URL Parame
 
 For developing the website, this project uses
 
-- [ESLint](https://eslint.org/) (configured in [`eslint.config.mjs`](hosting/eslint.config.mjs))
-- [TypeScript](https://www.typescriptlang.org/) (configured in [`tsconfig.*.json`](hosting/tsconfig.base.json))
-- [Prettier](https://prettier.io/) (configured in [`prettier.config.mjs`](hosting/prettier.config.mjs))
+- [ESLint](https://eslint.org/) (configured in [`eslint.config.mjs`](eslint.config.mjs))
+- [TypeScript](https://www.typescriptlang.org/) (configured in [`tsconfig.*.json`](tsconfig.base.json))
+- [Prettier](https://prettier.io/) (configured in [`prettier.config.mjs`](prettier.config.mjs))
 
 The ESLint config integrates these configurations.
 
 For bundling the website, this project uses
 
-- [Vite](https://vitejs.dev/) (configured in [`vite.config.mts`](hosting/vite.config.mts))
-- [Tailwind CSS](https://tailwindcss.com/) (configured in [`tailwind.config.ts`](hosting/tailwind.config.ts))
-- [PostCSS](https://postcss.org/) (configured in [`postcss.config.mjs`](hosting/postcss.config.mjs); uses [PostCSS Preset Env](https://github.com/csstools/postcss-plugins/tree/main/plugin-packs/postcss-preset-env), which uses [Autoprefixer](https://github.com/postcss/autoprefixer))
-- [Browserslist](https://github.com/browserslist/browserslist) (via the [browserslist-to-esbuild plugin](https://github.com/marcofugaro/browserslist-to-esbuild); configured in [`hosting/package.json`](hosting/package.json))
+- [Vite](https://vitejs.dev/) (configured in [`vite.config.mts`](vite.config.mts))
+- [Tailwind CSS](https://tailwindcss.com/) (configured in [`tailwind.config.ts`](tailwind.config.ts))
+<!-- - [PostCSS](https://postcss.org/) (configured in [`vite.config.mjs`](hosting/vite.config.mjs); uses [PostCSS Preset Env](https://github.com/csstools/postcss-plugins/tree/main/plugin-packs/postcss-preset-env), which uses [Autoprefixer](https://github.com/postcss/autoprefixer)) -->
+- [PostCSS](https://postcss.org/) (configured in [`vite.config.mjs`](vite.config.mjs); uses [postcss-import](https://github.com/postcss/postcss-import), [Autoprefixer](https://github.com/postcss/autoprefixer))
+- [Browserslist](https://github.com/browserslist/browserslist) (via the [browserslist-to-esbuild plugin](https://github.com/marcofugaro/browserslist-to-esbuild); configured in [`package.json`](package.json))
 - [jsPsych](https://www.jspsych.org/) - UX (experiment flow, data capture)
 
 For serving the website, this project uses
@@ -105,7 +103,7 @@ For serving the website, this project uses
 
 ## ESLint
 
-This project uses a future-looking configuration that implements the major developments from [ESLint](https://eslint.org). The main config file in this repo is the flat ESLint config, [`eslint.config.mjs`](hosting/eslint.config.mjs).
+This project uses a future-looking configuration that implements the major developments from [ESLint](https://eslint.org). The main config file in this repo is the flat ESLint config, [`eslint.config.mjs`](eslint.config.mjs).
 
 <details>
 
@@ -113,7 +111,7 @@ This project uses a future-looking configuration that implements the major devel
 
 This project is configured as an `ES Module`, so this config file could be named `eslint.config.js`, but I have given it the `mjs` extension to make this config work for `Common.js Module` development with minimal reconfiguration.
 
-While ESLint has no issue using the `mjs` config file, at present, IDEs like VS Code and IntelliJ IDEA require the `js` extension. A simple workaround is to make an alias `eslint.config.js` that points to `eslint.config.mjs`. This is done automatically during installation by the [`hosting/package.json`](hosting/package.json) file.
+<!-- While ESLint has no issue using the `mjs` config file, at present, IDEs like VS Code and IntelliJ IDEA require the `js` extension. A simple workaround is to make an alias `eslint.config.js` that points to `eslint.config.mjs`. This is done automatically during installation by the [`package.json`](package.json) file. -->
 
 </details>
 
@@ -129,7 +127,7 @@ ESLint is [depreciating formatting rules](https://eslint.org/blog/2023/10/deprec
 
 ### VS Code Settings
 
-For [VS Code](https://code.visualstudio.com/) to respect the configuration, you need to specify the formatter for the relevant files. This is done for you in [`VSCodeProject.code-workspace`](VSCodeProject.code-workspace) and in [`.vscode/settings.json`](hosting/.vscode/settings.json) (these are redundant, you only need one). This configures the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) extension to use the flat config system, makes VS Code use the [Prettier - Code Formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extensions for formatting filetypes not covered by ESLint, and enables [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss). This obviously requires that you have these extensions enabled for the workspace. Activate the `VSCodeProject.code-workspace` via `File > Open Workspace from File...` (or by double-clicking it), or activate `.vscode` via `File > Open Folder...` in VS Code.
+For [VS Code](https://code.visualstudio.com/) to respect the configuration, you need to specify the formatter for the relevant files. This is done for you in [`VSCodeProject.code-workspace`](VSCodeProject.code-workspace) and in [`.vscode/settings.json`](.vscode/settings.json) (these are redundant, you only need one). This configures the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) extension to use the flat config system, makes VS Code use the [Prettier - Code Formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extensions for formatting filetypes not covered by ESLint, and enables [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss). This obviously requires that you have these extensions enabled for the workspace. Activate the `VSCodeProject.code-workspace` via `File > Open Workspace from File...` (or by double-clicking it), or activate `.vscode` via `File > Open Folder...` in VS Code.
 
 The relevant settings are:
 

@@ -1,7 +1,8 @@
+import { initJsPsych } from 'jspsych'
+
 import jsPsychHtmlKeyboardResponse from '@jspsych/plugin-html-keyboard-response'
 import jsPsychImageKeyboardResponse from '@jspsych/plugin-image-keyboard-response'
 import jsPsychPreload from '@jspsych/plugin-preload'
-import { initJsPsych } from 'jspsych'
 
 import { debugging, getUserInfo, prolificCC, prolificCUrl } from './globalVariables'
 import { saveTrialDataComplete, saveTrialDataPartial } from './lib/databaseUtils'

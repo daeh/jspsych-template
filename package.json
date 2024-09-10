@@ -10,7 +10,16 @@
     "deploy-rules": "firebase deploy --only firestore:rules",
     "update-deps": "yarn upgrade-interactive --latest && cd hosting && yarn upgrade-interactive --latest",
     "release": "node scripts/releaseScript.mjs $PWD",
-    "retrieve": "zsh scripts/retrieve.zsh $PWD"
+    "retrieve": "zsh scripts/retrieve.zsh $PWD",
+    "dev": "vite --config vite.config.mts hosting",
+    "preview": "vite preview --config vite.config.mts hosting",
+    "build": "vite build --config vite.config.mts hosting",
+    "build:dev": "NODE_ENV=development vite build --config vite.config.mts --mode development hosting",
+    "build:prod": "NODE_ENV=production && ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write . && eslint --config eslint.config.mjs --fix . && tsc --project tsconfig.prod.json --noEmit && vite build --config vite.config.mts --mode production hosting",
+    "lint": "ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write . && eslint --config eslint.config.mjs --fix . && tsc --project tsconfig.json --noEmit",
+    "lint:dev": "NODE_ENV=development && ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write . && eslint --config eslint.config.mjs --fix . && tsc --project tsconfig.dev.json --noEmit",
+    "lint:prod": "NODE_ENV=production && ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write . && eslint --config eslint.config.mjs --fix . && tsc --project tsconfig.prod.json --noEmit",
+    "lint:dry": "ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --check . ; eslint --config eslint.config.mjs . && tsc --project tsconfig.json --noEmit"
   },
   "type": "module",
   "repository": {
@@ -21,13 +30,48 @@
     "url": "https://github.com/daeh/jspsych-template/issues"
   },
   "source": "./hosting",
-  "devDependencies": {
-    "firebase-tools": "^13.16.0",
-    "readline-sync": "^1.4.10",
-    "shelljs": "^0.8.5"
+  "directories": {
+    "serve": "hosting/dist"
   },
-  "packageManager": "yarn@4.4.1",
-  "workspaces": [
-    "hosting"
-  ]
+  "browserslist": [
+    "defaults"
+  ],
+  "dependencies": {
+    "@jspsych/plugin-html-keyboard-response": "^2.0.0",
+    "@jspsych/plugin-image-keyboard-response": "^2.0.0",
+    "@jspsych/plugin-preload": "^2.0.0",
+    "firebase": "^10.13.1",
+    "jspsych": "^8.0.2"
+  },
+  "devDependencies": {
+    "@stylistic/eslint-plugin": "^2.8.0",
+    "@types/eslint-config-prettier": "^6.11.3",
+    "@types/node": "^22.5.4",
+    "@types/postcss-import": "^14.0.3",
+    "@typescript-eslint/eslint-plugin": "^8.5.0",
+    "@typescript-eslint/parser": "^8.5.0",
+    "autoprefixer": "^10.4.20",
+    "browserslist": "^4.23.3",
+    "browserslist-to-esbuild": "^2.1.1",
+    "child_process": "^1.0.2",
+    "eslint": "<9.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^3.6.3",
+    "eslint-plugin-import": "^2.30.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "firebase-tools": "^13.16.0",
+    "globals": "^15.9.0",
+    "postcss": "^8.4.45",
+    "postcss-import": "^16.1.0",
+    "postcss-preset-env": "^10.0.3",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.6",
+    "readline-sync": "^1.4.10",
+    "shelljs": "^0.8.5",
+    "tailwindcss": "^3.4.10",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.3",
+    "vite-plugin-html": "^3.2.2"
+  },
+  "packageManager": "yarn@4.4.1"
 }

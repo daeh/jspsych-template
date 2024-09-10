@@ -58,14 +58,14 @@ async function initData(userInfo: UserRecord): Promise<void> {
       let { priorInits, ...existingDataReduced } = existingData
       if (priorInits instanceof Array) {
         // @ts-expect-error allow priorInits to by unknown
-        docData['priorInits'] = [...priorInits, existingDataReduced]
+        docData.priorInits = [...priorInits, existingDataReduced]
       } else {
         // @ts-expect-error allow priorInits to by unknown
-        docData['priorInits'] = [priorInits, existingDataReduced]
+        docData.priorInits = [priorInits, existingDataReduced]
       }
     } else {
       // @ts-expect-error allow priorInits to by unknown
-      docData['priorInits'] = [existingData]
+      docData.priorInits = [existingData]
     }
   }
 

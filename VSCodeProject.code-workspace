@@ -1,7 +1,8 @@
 {
   "folders": [
     {
-      "path": "hosting"
+      "name": "root",
+      "path": "."
     }
   ],
   "settings": {
@@ -24,9 +25,17 @@
     },
     "[css][scss][less]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+    },
+    "search.exclude": {
+      "**/.yarn": true,
+      "**/.pnp.*": true
+    },
+    "eslint.nodePath": ".yarn/sdks",
+    "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs",
+    "typescript.tsdk": ".yarn/sdks/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true
   },
   "extensions": {
-    "recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode", "bradlc.vscode-tailwindcss"]
+    "recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode", "bradlc.vscode-tailwindcss", "arcanis.vscode-zipfs"]
   }
 }

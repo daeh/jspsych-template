@@ -1,4 +1,4 @@
-import { description, version } from '../package.json'
+import { description, version } from '../../package.json'
 
 import { prolificCCode } from './lib/prolificCred'
 
@@ -50,7 +50,7 @@ export class UserRecord {
   }
 }
 
-let exptInitialized: boolean = false
+let exptInitialized = false
 let userInfo: UserRecord
 
 export function getURLParams(): Record<string, string> {
