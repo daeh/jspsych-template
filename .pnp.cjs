@@ -33,7 +33,6 @@ const RAW_RUNTIME_STATE =
           ["@stylistic/eslint-plugin", "virtual:b9981c46fa1e662e2368899ec160ec87797b4f88a01f31193d97f499e5ffa9d2a1d569ee54d3c098062d38039943a1084c7d4eed97883c4db1cd8efb3bca249a#npm:2.8.0"],\
           ["@types/eslint-config-prettier", "npm:6.11.3"],\
           ["@types/node", "npm:22.5.4"],\
-          ["@types/postcss-import", "npm:14.0.3"],\
           ["@typescript-eslint/eslint-plugin", "virtual:b9981c46fa1e662e2368899ec160ec87797b4f88a01f31193d97f499e5ffa9d2a1d569ee54d3c098062d38039943a1084c7d4eed97883c4db1cd8efb3bca249a#npm:8.5.0"],\
           ["@typescript-eslint/parser", "virtual:b9981c46fa1e662e2368899ec160ec87797b4f88a01f31193d97f499e5ffa9d2a1d569ee54d3c098062d38039943a1084c7d4eed97883c4db1cd8efb3bca249a#npm:8.5.0"],\
           ["autoprefixer", "virtual:b9981c46fa1e662e2368899ec160ec87797b4f88a01f31193d97f499e5ffa9d2a1d569ee54d3c098062d38039943a1084c7d4eed97883c4db1cd8efb3bca249a#npm:10.4.20"],\
@@ -50,7 +49,6 @@ const RAW_RUNTIME_STATE =
           ["globals", "npm:15.9.0"],\
           ["jspsych", "npm:8.0.2"],\
           ["postcss", "npm:8.4.45"],\
-          ["postcss-import", "virtual:b9981c46fa1e662e2368899ec160ec87797b4f88a01f31193d97f499e5ffa9d2a1d569ee54d3c098062d38039943a1084c7d4eed97883c4db1cd8efb3bca249a#npm:16.1.0"],\
           ["postcss-preset-env", "virtual:b9981c46fa1e662e2368899ec160ec87797b4f88a01f31193d97f499e5ffa9d2a1d569ee54d3c098062d38039943a1084c7d4eed97883c4db1cd8efb3bca249a#npm:10.0.3"],\
           ["prettier", "npm:3.3.3"],\
           ["prettier-plugin-tailwindcss", "virtual:b9981c46fa1e662e2368899ec160ec87797b4f88a01f31193d97f499e5ffa9d2a1d569ee54d3c098062d38039943a1084c7d4eed97883c4db1cd8efb3bca249a#npm:0.6.6"],\
@@ -3218,16 +3216,6 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@types/node", "npm:22.5.4"],\
           ["undici-types", "npm:6.19.8"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["@types/postcss-import", [\
-      ["npm:14.0.3", {\
-        "packageLocation": "../../../../.yarn/berry/cache/@types-postcss-import-npm-14.0.3-9b35c61e5d-10c0.zip/node_modules/@types/postcss-import/",\
-        "packageDependencies": [\
-          ["@types/postcss-import", "npm:14.0.3"],\
-          ["postcss", "npm:8.4.45"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -8099,7 +8087,6 @@ const RAW_RUNTIME_STATE =
           ["@stylistic/eslint-plugin", "virtual:b9981c46fa1e662e2368899ec160ec87797b4f88a01f31193d97f499e5ffa9d2a1d569ee54d3c098062d38039943a1084c7d4eed97883c4db1cd8efb3bca249a#npm:2.8.0"],\
           ["@types/eslint-config-prettier", "npm:6.11.3"],\
           ["@types/node", "npm:22.5.4"],\
-          ["@types/postcss-import", "npm:14.0.3"],\
           ["@typescript-eslint/eslint-plugin", "virtual:b9981c46fa1e662e2368899ec160ec87797b4f88a01f31193d97f499e5ffa9d2a1d569ee54d3c098062d38039943a1084c7d4eed97883c4db1cd8efb3bca249a#npm:8.5.0"],\
           ["@typescript-eslint/parser", "virtual:b9981c46fa1e662e2368899ec160ec87797b4f88a01f31193d97f499e5ffa9d2a1d569ee54d3c098062d38039943a1084c7d4eed97883c4db1cd8efb3bca249a#npm:8.5.0"],\
           ["autoprefixer", "virtual:b9981c46fa1e662e2368899ec160ec87797b4f88a01f31193d97f499e5ffa9d2a1d569ee54d3c098062d38039943a1084c7d4eed97883c4db1cd8efb3bca249a#npm:10.4.20"],\
@@ -8116,7 +8103,6 @@ const RAW_RUNTIME_STATE =
           ["globals", "npm:15.9.0"],\
           ["jspsych", "npm:8.0.2"],\
           ["postcss", "npm:8.4.45"],\
-          ["postcss-import", "virtual:b9981c46fa1e662e2368899ec160ec87797b4f88a01f31193d97f499e5ffa9d2a1d569ee54d3c098062d38039943a1084c7d4eed97883c4db1cd8efb3bca249a#npm:16.1.0"],\
           ["postcss-preset-env", "virtual:b9981c46fa1e662e2368899ec160ec87797b4f88a01f31193d97f499e5ffa9d2a1d569ee54d3c098062d38039943a1084c7d4eed97883c4db1cd8efb3bca249a#npm:10.0.3"],\
           ["prettier", "npm:3.3.3"],\
           ["prettier-plugin-tailwindcss", "virtual:b9981c46fa1e662e2368899ec160ec87797b4f88a01f31193d97f499e5ffa9d2a1d569ee54d3c098062d38039943a1084c7d4eed97883c4db1cd8efb3bca249a#npm:0.6.6"],\
@@ -10038,33 +10024,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["npm:16.1.0", {\
-        "packageLocation": "../../../../.yarn/berry/cache/postcss-import-npm-16.1.0-97f2f09176-10c0.zip/node_modules/postcss-import/",\
-        "packageDependencies": [\
-          ["postcss-import", "npm:16.1.0"]\
-        ],\
-        "linkType": "SOFT"\
-      }],\
       ["virtual:32443f8dff76478f7c5c6e3c656bc03946ca349f2bafe2416c9ec48d8b197cf19ccac9337ccec89bbe1cd1114480640967e433c84d60fb2619debfc61ba2dae8#npm:15.1.0", {\
         "packageLocation": "./.yarn/__virtual__/postcss-import-virtual-58ce2e529a/5/.yarn/berry/cache/postcss-import-npm-15.1.0-8b9e86f900-10c0.zip/node_modules/postcss-import/",\
         "packageDependencies": [\
           ["postcss-import", "virtual:32443f8dff76478f7c5c6e3c656bc03946ca349f2bafe2416c9ec48d8b197cf19ccac9337ccec89bbe1cd1114480640967e433c84d60fb2619debfc61ba2dae8#npm:15.1.0"],\
-          ["@types/postcss", null],\
-          ["postcss", "npm:8.4.45"],\
-          ["postcss-value-parser", "npm:4.2.0"],\
-          ["read-cache", "npm:1.0.0"],\
-          ["resolve", "patch:resolve@npm%3A1.22.8#optional!builtin<compat/resolve>::version=1.22.8&hash=c3c19d"]\
-        ],\
-        "packagePeers": [\
-          "@types/postcss",\
-          "postcss"\
-        ],\
-        "linkType": "HARD"\
-      }],\
-      ["virtual:b9981c46fa1e662e2368899ec160ec87797b4f88a01f31193d97f499e5ffa9d2a1d569ee54d3c098062d38039943a1084c7d4eed97883c4db1cd8efb3bca249a#npm:16.1.0", {\
-        "packageLocation": "./.yarn/__virtual__/postcss-import-virtual-a731cdf09d/5/.yarn/berry/cache/postcss-import-npm-16.1.0-97f2f09176-10c0.zip/node_modules/postcss-import/",\
-        "packageDependencies": [\
-          ["postcss-import", "virtual:b9981c46fa1e662e2368899ec160ec87797b4f88a01f31193d97f499e5ffa9d2a1d569ee54d3c098062d38039943a1084c7d4eed97883c4db1cd8efb3bca249a#npm:16.1.0"],\
           ["@types/postcss", null],\
           ["postcss", "npm:8.4.45"],\
           ["postcss-value-parser", "npm:4.2.0"],\

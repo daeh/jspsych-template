@@ -89,9 +89,8 @@ async function attemptRelease(projectPath) {
     }
     if (incrementVersion.toLowerCase() === 'y') {
       newVersion = readlineSync.question('>>> Enter the new version number:  ')
-      if (/^[0-9]+\.[0-9]+\.[0-9]+$/.test(newVersion)) {
+      if (/^[0-9]+?\.[0-9]+?\.[0-9]+$/.test(newVersion)) {
         await updatePackageJsonVersion(newVersion, projectPath)
-        await updatePackageJsonVersion(newVersion, path.join(projectPath, 'hosting'))
         tag = true
         console.log(
           '\n-------------------------------------------------------------\n' +

@@ -1,6 +1,5 @@
 import { execSync } from 'child_process'
 
-import postcssImport from 'postcss-import'
 import tailwindcss from 'tailwindcss'
 import tailwindcssNesting from 'tailwindcss/nesting'
 
@@ -9,10 +8,9 @@ import browserslistToEsbuild from 'browserslist-to-esbuild'
 import { defineConfig } from 'vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
 
-import tailwindConfig from './tailwind.config.ts'
+import tailwindConfig from './tailwind.config'
 
 import type { UserConfig } from 'vite'
-// import postcssNesting from 'postcss-nesting';
 
 const filesPathToExclude: (string | RegExp)[] = [/[-_]buildignore/]
 
@@ -55,28 +53,13 @@ export default defineConfig(({ command, mode }) => {
     css: {
       postcss: {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        plugins: [postcssImport, tailwindcssNesting, tailwindcss(tailwindConfig), autoprefixer],
-        // plugins: {
-        //   // 'postcss-import': {},
-        //   'tailwindcss/nesting': 'postcss-nesting',
-        //   'tailwindcss': {  },
-        //   /* POSTCSS-PRESET-ENV: remove autoprefixer if you had it here, it's part of postcss-preset-env */
-        //   'postcss-preset-env': {
-        //     /* TAILWINDCSS: Note that if you are using postcss-preset-env in your project, you should make sure to disable nesting and let tailwindcss/nesting handle it for you instead: */
-        //     features: { 'nesting-rules': false },
-        //   },
-        // },
+        plugins: [tailwindcssNesting, tailwindcss(tailwindConfig), autoprefixer],
       },
     },
     define: {
       'import.meta.env.VITE_APP_TITLE': JSON.stringify(title),
       '__COMMIT_HASH__': JSON.stringify(getCurrentCommitHash()),
     },
-    // resolve: {
-    //   alias: {
-    //     '@': srcDir,
-    //   },
-    // },
   } satisfies UserConfig
   return config
 })

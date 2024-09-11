@@ -140,6 +140,7 @@ const typescriptRulesDev = {
   '@typescript-eslint/dot-notation': ['off'],
 }
 
+/** @type {import("eslint").Linter.Config[]} */
 const config = [
   {
     /* setup parser for all files */
@@ -266,6 +267,7 @@ const config = [
       'build/',
       /* generated files */
       '.pnp.*',
+      'vite.config.mts.timestamp-*.mjs',
       /* editor config */
       /* project specific patterns */
     ],

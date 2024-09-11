@@ -22,6 +22,7 @@
 #########
 *.lock
 *-lock.*
+vite.config.mts.timestamp-*.mjs
 
 #########
 ### editor config ###
