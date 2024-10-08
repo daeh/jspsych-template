@@ -12,9 +12,7 @@ const config = {
   arrowParens: 'always',
   proseWrap: 'never',
   endOfLine: 'lf',
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  plugins: [import('prettier-plugin-tailwindcss')],
+  plugins: ['prettier-plugin-tailwindcss'],
   tailwindConfig: './tailwind.config.ts',
   overrides: [
     {
@@ -55,4 +53,4 @@ const config = {
   ],
 }
 
-export default config
+module.exports = config

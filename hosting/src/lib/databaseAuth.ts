@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app'
 import { getAuth, onAuthStateChanged, signInAnonymously } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 
-import { debugging } from '../globalVariables'
+import { debugging, mockStore } from '../globalVariables'
 import { enableBeginExperiment } from '../main'
 
 import { firebaseConfig } from './databaseCred'
@@ -11,6 +11,8 @@ import { initExperimentData } from './databaseUtils'
 import type { User } from 'firebase/auth'
 
 const debug: boolean = debugging()
+
+const mock = mockStore()
 
 // Initialize firebase
 const app = initializeApp(firebaseConfig)
@@ -37,7 +39,10 @@ onAuthStateChanged(auth, (user: User | null) => {
     )
   }
 })
-void signInAnonymously(auth)
+
+if (!mock) {
+  void signInAnonymously(auth)
+}
 
 export function getDataBase() {
   return db

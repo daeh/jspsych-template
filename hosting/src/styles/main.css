@@ -1,5 +1,7 @@
 @import 'jspsych/css/jspsych.css';
 
+/* @import './debug.css'; */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,4 +10,21 @@
   button {
     @apply cursor-pointer select-none rounded border border-transparent bg-blue-500 px-5 py-2 text-base font-extrabold text-black enabled:transition-colors enabled:duration-200 enabled:hover:border-red-500 enabled:focus:outline-none enabled:active:bg-blue-300 enabled:active:transition-colors disabled:pointer-events-none disabled:bg-gray-400;
   }
+}
+
+@layer components {
+  .debug-toggle {
+    @apply fixed bottom-2.5 right-2.5 z-[1000];
+  }
+
+  .debug-panel {
+    @apply fixed bottom-[50px] right-2.5 z-[1000] max-h-[400px] w-[300px] overflow-y-auto rounded bg-black bg-opacity-80 p-2.5 font-mono text-sm leading-4 text-white;
+  }
+
+  .debug-panel pre {
+    @apply text-xs;
+  }
+}
+
+@layer utilities {
 }

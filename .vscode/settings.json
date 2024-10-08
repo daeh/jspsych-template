@@ -1,6 +1,5 @@
 {
   "editor.formatOnSave": true,
-  "eslint.useFlatConfig": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
@@ -19,12 +18,19 @@
   "[css][scss][less]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "files.exclude": {
+    ".idea": true
+  },
   "search.exclude": {
     "**/.yarn": true,
-    "**/.pnp.*": true
+    "**/.pnp.*": true,
+    ".idea": true,
+    ".vscode": true
   },
-  "eslint.nodePath": ".yarn/sdks",
-  "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs",
-  "typescript.tsdk": ".yarn/sdks/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true
+  "eslint.useFlatConfig": true,
+  // "eslint.nodePath": "node_modules",
+  // "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "prettier.prettierPath": "./node_modules/prettier",
+  "prettier.configPath": "./prettier.config.cjs" // this is a temp fix for VSCode
 }

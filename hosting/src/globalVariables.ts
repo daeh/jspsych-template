@@ -4,6 +4,8 @@ import { prolificCCode } from './lib/prolificCred'
 
 const debug = true
 
+const mock = true
+
 const prolificCUrlLive = `https://app.prolific.com/submissions/complete?cc=${prolificCCode}`
 
 const gitCommit: string = __COMMIT_HASH__ || 'unknown'
@@ -121,6 +123,13 @@ export function debugging(): boolean {
     return false
   }
   return debug
+}
+
+export function mockStore(): boolean {
+  if (!debugging()) {
+    return false
+  }
+  return mock
 }
 
 export function getDocStr(docId: string) {

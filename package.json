@@ -8,7 +8,7 @@
   "scripts": {
     "deploy": "firebase deploy --only hosting",
     "deploy-rules": "firebase deploy --only firestore:rules",
-    "update-deps": "yarn upgrade-interactive --latest && cd hosting && yarn upgrade-interactive --latest",
+    "update-deps": "yarn set version stable && yarn upgrade-interactive",
     "release": "node scripts/releaseScript.mjs $PWD",
     "retrieve": "zsh scripts/retrieve.zsh $PWD",
     "dev": "vite --config vite.config.mts hosting",
@@ -29,7 +29,7 @@
   "bugs": {
     "url": "https://github.com/daeh/jspsych-template/issues"
   },
-  "templateVersion": "0.1.0",
+  "templateVersion": "0.1.1",
   "source": "./hosting",
   "directories": {
     "serve": "hosting/dist"
@@ -41,35 +41,36 @@
     "@jspsych/plugin-html-keyboard-response": "^2.0.0",
     "@jspsych/plugin-image-keyboard-response": "^2.0.0",
     "@jspsych/plugin-preload": "^2.0.0",
-    "firebase": "^10.13.1",
+    "firebase": "^10.14.0",
     "jspsych": "^8.0.2"
   },
   "devDependencies": {
-    "@stylistic/eslint-plugin": "^2.8.0",
+    "@stylistic/eslint-plugin": "^2.9.0",
+    "@types/eslint": "^9.6.1",
     "@types/eslint-config-prettier": "^6.11.3",
-    "@types/node": "^22.5.4",
-    "@typescript-eslint/eslint-plugin": "^8.5.0",
-    "@typescript-eslint/parser": "^8.5.0",
+    "@types/node": "^22.7.5",
+    "@typescript-eslint/eslint-plugin": "^8.8.1",
+    "@typescript-eslint/parser": "^8.8.1",
     "autoprefixer": "^10.4.20",
-    "browserslist": "^4.23.3",
+    "browserslist": "^4.24.0",
     "browserslist-to-esbuild": "^2.1.1",
     "child_process": "^1.0.2",
-    "eslint": "^8.57.0 <9.0.0",
+    "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.3",
-    "eslint-plugin-import": "^2.30.0",
+    "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "firebase-tools": "^13.16.0",
-    "globals": "^15.9.0",
-    "postcss": "^8.4.45",
+    "firebase-tools": "^13.21.0",
+    "globals": "^15.10.0",
+    "postcss": "^8.4.47",
     "prettier": "^3.3.3",
-    "prettier-plugin-tailwindcss": "^0.6.6",
+    "prettier-plugin-tailwindcss": "^0.6.8",
     "readline-sync": "^1.4.10",
     "shelljs": "^0.8.5",
-    "tailwindcss": "^3.4.10",
-    "typescript": "^5.6.2",
-    "vite": "^5.4.3",
+    "tailwindcss": "^3.4.13",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.8",
     "vite-plugin-html": "^3.2.2"
   },
-  "packageManager": "yarn@4.4.1"
+  "packageManager": "yarn@4.5.0"
 }

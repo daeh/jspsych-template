@@ -1,7 +1,11 @@
 import { promises as fs } from 'fs'
 import path from 'path'
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import readlineSync from 'readline-sync'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import pkg from 'shelljs'
 
 const { cd, exec, error } = pkg
@@ -32,7 +36,11 @@ async function updatePackageJsonVersion(newVersion, projectDir) {
   await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n', 'utf8')
 }
 
-// Function to check last command's exit status
+/**
+ * Function to check last command's exit status
+ *
+ * @param {string} task
+ */
 function checkStatus(task) {
   if (error()) {
     console.log('\n-------------------------------------------------------------')

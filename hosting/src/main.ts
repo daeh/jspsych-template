@@ -1,7 +1,11 @@
 import { runExperiment } from './experiment'
 import { debugging, getExptInitialized, setExptInitialized } from './globalVariables'
 
+import './lib/loading'
+
 import './styles/main.css'
+
+// import { doc } from 'firebase/firestore'
 
 const debug = debugging()
 
@@ -12,16 +16,18 @@ export function enableBeginExperiment() {
 
   if (getExptInitialized()) return
 
-  const loadingDiv = document.getElementById('loading-splash')
   const welcomeDiv = document.getElementById('welcome-splash')
   const startButton = document.getElementById('startButton') as HTMLButtonElement
+  const loadingDiv = document.getElementById('loading-splash')
 
-  if (loadingDiv !== null) {
+  if (loadingDiv) {
     loadingDiv.style.display = 'none'
+    loadingDiv.hidden = false
   }
 
   if (welcomeDiv) {
     welcomeDiv.style.display = 'flex'
+    welcomeDiv.hidden = false
   }
 
   startButton.addEventListener('click', () => {
@@ -31,6 +37,8 @@ export function enableBeginExperiment() {
     if (welcomeDiv) {
       welcomeDiv.style.display = 'none'
     }
+    welcomeDiv?.remove()
+
     runExperiment().then(
       () => {
         if (debug) {

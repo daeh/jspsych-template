@@ -1,14 +1,14 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
-
-import prettierConfig from 'eslint-config-prettier'
-import globals from 'globals'
 
 import stylisticPlugin from '@stylistic/eslint-plugin'
 import typescriptEslintPlugin from '@typescript-eslint/eslint-plugin'
 import typescriptEslintParser from '@typescript-eslint/parser'
+import prettierConfig from 'eslint-config-prettier'
 import importPlugin from 'eslint-plugin-import'
 import prettierPlugin from 'eslint-plugin-prettier'
+import globals from 'globals'
 
 const projectDirname = dirname(fileURLToPath(import.meta.url))
 
@@ -167,6 +167,7 @@ const config = [
       },
     },
     plugins: {
+      // @ts-ignore
       '@typescript-eslint': typescriptEslintPlugin,
       '@stylistic': stylisticPlugin,
       'import': importPlugin,
@@ -206,6 +207,7 @@ const config = [
       },
     },
     plugins: {
+      // @ts-ignore
       '@typescript-eslint': typescriptEslintPlugin,
       '@stylistic': stylisticPlugin,
       'import': importPlugin,
@@ -227,6 +229,7 @@ const config = [
       },
     },
     plugins: {
+      // @ts-ignore
       '@typescript-eslint': typescriptEslintPlugin,
       '@stylistic': stylisticPlugin,
       'import': importPlugin,
@@ -245,6 +248,44 @@ const config = [
       },
     },
     plugins: {
+      // @ts-ignore
+      '@typescript-eslint': typescriptEslintPlugin,
+      '@stylistic': stylisticPlugin,
+      'import': importPlugin,
+      'prettier': prettierPlugin,
+    },
+    rules: {
+      ...javascriptRules,
+    },
+  },
+  {
+    ignores: [
+      /* specialized ignore patterns */
+      '**/*_lintignore*',
+      '**/*-lintignore*',
+      '**/*_buildignore*',
+      '**/*-buildignore*',
+      /* generated directories */
+      '.yarn/',
+      'hosting/dist/',
+      'build/',
+      /* generated files */
+      '.pnp.*',
+      'vite.config.mts.timestamp-*.mjs',
+      /* editor config */
+      /* project specific patterns */
+    ],
+  },
+  {
+    /* utility scripts: javascript */
+    files: [`./scripts/*.{${allJsExtensions}}`],
+    settings: {
+      'import/resolver': {
+        typescript: {},
+      },
+    },
+    plugins: {
+      // @ts-ignore
       '@typescript-eslint': typescriptEslintPlugin,
       '@stylistic': stylisticPlugin,
       'import': importPlugin,
