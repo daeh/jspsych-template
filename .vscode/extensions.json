@@ -3,6 +3,7 @@
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "bradlc.vscode-tailwindcss",
-    "arcanis.vscode-zipfs"
+    "arcanis.vscode-zipfs",
+    "yoavbls.pretty-ts-errors"
   ]
 }
