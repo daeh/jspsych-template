@@ -2,9 +2,9 @@ import { description, version } from '../../package.json'
 
 import { prolificCCode } from './lib/prolificCred'
 
-const debug = true
+const debug: boolean = true
 
-const mock = true
+const mock: boolean = true
 
 const prolificCUrlLive = `https://app.prolific.com/submissions/complete?cc=${prolificCCode}`
 
@@ -52,7 +52,7 @@ export class UserRecord {
   }
 }
 
-let exptInitialized = false
+let exptInitialized: boolean = false
 let userInfo: UserRecord
 
 export function getURLParams(): Record<string, string> {

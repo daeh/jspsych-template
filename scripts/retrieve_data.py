@@ -3,7 +3,7 @@ import json
 import subprocess
 import time
 from pathlib import Path
-from typing import NamedTuple
+from typing import NamedTuple, Optional, Union
 
 import firebase_admin
 from firebase_admin import credentials, firestore
@@ -17,43 +17,70 @@ class FirestoreEncoder(json.JSONEncoder):
         return super(FirestoreEncoder, self).default(obj)
 
 
-def load_creds(relpath: str):
-    cred_archive = Path("~/Documents/api_credentials.sparsebundle").expanduser()
-    cred_file = Path("/Volumes/creds/") / relpath
-    assert cred_archive.exists(), (
-        f"Sparsebundle does not exist at {cred_archive}"
-    )  # pathlib thinks that sparsebundles are directories, not files
+def load_creds(
+    file: str,
+    dmg: Optional[Union[Path, str]] = None,
+    mountpoint: Optional[Union[Path, str]] = None,
+):
+    if dmg is None:
+        dmg = "~/Documents/api_credentials.sparsebundle"
+    if mountpoint is None:
+        mountpoint = "/Volumes/creds"
+
+    cred_archive = Path(dmg).expanduser().resolve()
+
+    # pathlib thinks that sparsebundles are directories, not files
+    assert cred_archive.exists(), f"Sparsebundle does not exist at {cred_archive}"
+
+    cred_file = Path(mountpoint).expanduser().resolve() / file
+
     assert cred_file.suffix == ".json", f"File {cred_file} does not have .json suffix"
+
+    timeout = 10  # seconds
+    delay = 0.5
+
     if not cred_file.parent.is_dir():
         clout = subprocess.run(
             ["open", str(cred_archive)], encoding="utf-8", check=True
         )
-        assert clout.returncode == 0
-        timeout = 10  # seconds
-        delay = 0.5
+        if clout.returncode != 0:
+            print(f"Error opening {cred_archive}\n\n{clout.stdout}\n\n{clout.stderr}")
+            raise Exception(f"Error opening {cred_archive}")
+
+        elapsed = 0
         while not cred_file.parent.is_dir():
             time.sleep(delay)
-            timeout -= delay
+            elapsed += delay
             assert (
-                timeout > 0
+                elapsed < timeout
             ), f"Timed out waiting for {cred_file.parent} to be mounted"
+
+    elapsed = 0
+    while not cred_file.is_file():
+        time.sleep(delay)
+        elapsed += delay
+        assert (
+            elapsed < timeout
+        ), f"Timed out waiting for {cred_file.parent} to be mounted"
+
     assert cred_file.is_file(), f"File {cred_file} does not exist"
     with open(cred_file, "r", encoding="utf-8") as f:
         contents = json.load(f)
-    Cred = NamedTuple("Cred", data=dict[str, str], path=str)
-    return Cred(contents, str(cred_file))
+
+    Cred = NamedTuple("Cred", data=dict[str, str], path=Path)
+    return Cred(contents, cred_file)
 
 
 def authorize(credpath: str, encrypted=False):
     if encrypted:
-        credential = load_creds(credpath)
-        cred_path = credential.path
+        cred = load_creds(credpath)
+        cred_path = cred.path
     else:
         cred_path = Path(credpath).expanduser()
         if not cred_path.is_absolute():
             cred_path = (Path(__file__).parent / cred_path).resolve()
 
-    assert Path(cred_path).is_file(), f"File {cred_path} does not exist"
+    assert cred_path.is_file(), f"File {cred_path} does not exist"
 
     cred = credentials.Certificate(cred_path)
 
@@ -124,7 +151,10 @@ def _cli():
 
 
 def main(
-    credpath: str, exportpath: str, collections: list[str], encrypted: bool = False
+    credpath: str,
+    exportpath: str,
+    collections: list[str],
+    encrypted: bool = False,
 ):
     getdata(
         credpath=credpath,
@@ -136,4 +166,3 @@ def main(
 
 if __name__ == "__main__":
     main(**_cli())
-

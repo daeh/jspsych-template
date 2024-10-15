@@ -15,7 +15,6 @@ logs/
 #########
 ### generated files ###
 #########
-**/.DS_Store
 _build.zip
 ./*.log
 
@@ -26,7 +25,7 @@ _build.zip
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
-# !.yarn/sdks
+!.yarn/sdks
 !.yarn/versions
 
 #########

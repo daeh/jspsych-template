@@ -5,7 +5,6 @@ import { initJsPsych } from 'jspsych'
 
 import { debugging, getUserInfo, mockStore, prolificCC, prolificCUrl } from './globalVariables'
 import { saveTrialDataComplete, saveTrialDataPartial } from './lib/databaseUtils'
-import { getMockDbState } from './lib/mockDatabase' // Mock Database Panel
 
 import type { KeyboardResponse, Task, TrialData } from './project'
 import type { DataCollection } from 'jspsych'
@@ -22,28 +21,6 @@ import imgStimOrange from './images/orange.png'
 const debug = debugging()
 const mock = mockStore()
 
-/* Mock Database Panel */
-
-const debugButton = document.getElementById('debug-panel-button')
-const debugPanel = document.getElementById('debug-panel-display')
-const debugPanelPre = document.getElementById('debug-panel-code')
-
-function updateDebugPanel() {
-  if (debugPanelPre) {
-    debugPanelPre.textContent = JSON.stringify(getMockDbState(), null, 2)
-  }
-}
-
-function toggleDebugPanel() {
-  debugPanel?.classList.toggle('hidden')
-  updateDebugPanel()
-}
-
-debugButton?.addEventListener('click', () => {
-  debugButton.blur()
-  toggleDebugPanel()
-})
-
 const debuggingText = debug ? `<br /><br />redirect link : ${prolificCUrl}` : '<br />'
 const exitMessage = `<p class="align-middle text-center"> 
 Please wait. You will be redirected back to Prolific in a few moments. 
@@ -52,19 +29,19 @@ If not, please use the following completion code to ensure compensation for this
 ${debuggingText}
 </p>`
 
-const exitExperiment = () => {
+const exitExperiment = (): void => {
   document.body.innerHTML = exitMessage
   setTimeout(() => {
     window.location.replace(prolificCUrl)
   }, 3000)
 }
 
-const exitExperimentDebugging = () => {
+const exitExperimentDebugging = (): void => {
   const contentDiv = document.getElementById('jspsych-content')
   if (contentDiv) contentDiv.innerHTML = exitMessage
 }
 
-export async function runExperiment() {
+export async function runExperiment(updateDebugPanel: () => void) {
   if (debug) {
     console.log('--runExperiment--')
     console.log('UserInfo ::', getUserInfo())
@@ -216,21 +193,6 @@ export async function runExperiment() {
     },
   }
   timeline.push(debrief_block)
-
-  /* Mock Database Panel */
-  if (debug && mock) {
-    if (debugButton) {
-      debugButton.hidden = false
-      debugButton.classList.remove('jspsych-display-element', 'hidden')
-    }
-    if (debugPanel) {
-      debugPanel.hidden = false
-      debugPanel.classList.remove('jspsych-display-element')
-    }
-  } else {
-    debugButton?.remove()
-    debugPanel?.remove()
-  }
 
   /* start the experiment */
   // @ts-expect-error allow timeline to be type jsPsych TimelineArray

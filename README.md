@@ -193,9 +193,9 @@ If you change the project from an `ES Module` to a `Common.js Module`, or if ESL
 
 TODO: describe how to setup hosting and database
 
-### Firebase Configuration
+Here's a [useful guide](https://firebase.google.com/docs/hosting/quickstart)
 
-After you setup your Firebase and Firestore services, add your configurations to
+After you setup your Firebase and Firestore accounts and services, add your configurations to
 
 - [`.firebaserc`](.firebaserc)
 - [`databaseCred.ts`](hosting/src/lib/databaseCred.ts)
@@ -210,7 +210,15 @@ yarn deploy-rules
 
 Once you have the rules deployed, you can switch from using the mock database (a simple database emulator) to Firestore.
 
-Set `const mock = false` in [`globalVariables.ts`](hosting/src/globalVariables.ts). This will cause the application to use [`databaseCred.ts`](hosting/src/lib/databaseCred.ts) and store the input in Firestore (in a DEBUG version of the data structure so that there's no confusion about what data was generated locally during development).
+Set `const mock = false` in [`globalVariables.ts`](hosting/src/globalVariables.ts). This will cause the application to use [`databaseCred.ts`](hosting/src/lib/databaseCred.ts) and store the input in Firestore. In production, the app writes to `exptData/:uid`, but will instead write to `exptData-dbug/:uid` when it is in debugging mode or running locally. This is so that there's no confusion about what data was generated locally during development.
+
+### Firebase
+
+When you're ready to deploy the website, push it to Firebase
+
+```sh
+yarn deploy
+```
 
 </details>
 
@@ -241,7 +249,7 @@ The script [`scripts/releaseScript.mjs`](scripts/releaseScript.mjs) automates de
 yarn release
 ```
 
-The script will walk you through committing your changes to git repo [that you forked](#installation).
+The script will walk you through committing your changes to the git repo [that you forked](#installation).
 
 A key idea here is that there should never be ambiguity about what code was served to a participant.
 
