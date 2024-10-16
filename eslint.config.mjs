@@ -304,8 +304,10 @@ const config = [
       '**/*-buildignore*',
       /* generated directories */
       '.yarn/',
+      '.firebase/',
       'hosting/dist/',
       'build/',
+      '_build/',
       /* generated files */
       '.pnp.*',
       'vite.config.mts.timestamp-*.mjs',

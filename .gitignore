@@ -15,6 +15,7 @@ logs/
 #########
 ### generated files ###
 #########
+**/.DS_Store
 _build.zip
 ./*.log
 

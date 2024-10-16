@@ -68,9 +68,7 @@ async function attemptRelease(projectPath) {
       '\n-------------------------------------------------------------\n',
   )
   exec('yarn lint:prod')
-  checkStatus('Lint Hosting')
-  exec('yarn lint-parent')
-  checkStatus('Lint Parent')
+  checkStatus('Lint')
   cd(projectPath)
   console.log(
     '\n-------------------------------------------------------------\n\n' + `Current Version: ${currentVersion}`,

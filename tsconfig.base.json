@@ -49,9 +49,11 @@
     "**/*-buildignore*",
     /* generated directories */
     "**/.yarn/",
-    "**/build/",
-    "**/dist/",
     "**/node_modules/",
+    "**/.firebase/",
+    "**/dist/",
+    "**/build/",
+    "**/_build/",
     /* generated files */
     "*.lock",
     "*-lock.*",
