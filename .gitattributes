@@ -2,3 +2,5 @@
 *-pubignore* export-ignore
 *_pubignore* export-ignore
 .firebaserc export-ignore
+.yarn/install-state.gz export-ignore
+yarn.lock export-ignore
