@@ -15,33 +15,12 @@ import { enableBeginExperiment } from '../main'
 
 import { initExperimentData } from './databaseUtils'
 
-// import { doc, getDoc, runTransaction, setDoc, Timestamp } from 'firebase/firestore'
-
-// export declare class Firestore {
-//   /**
-//    * Whether it's a {@link Firestore} or Firestore Lite instance.
-//    */
-//   type: 'firestore-lite' | 'firestore'
-//   private constructor()
-//   /**
-//    * The {@link @firebase/app#FirebaseApp} associated with this `Firestore` service
-//    * instance.
-//    */
-//   // get app(): FirebaseApp;
-//   /**
-//    * Returns a JSON-serializable representation of this `Firestore` instance.
-//    */
-//   toJSON(): object
-// }
-
 const mockDb = {} as Firestore
 
 let mockUid: string | null = 'mock-user-' + Math.random().toString(36).substring(2, 11)
 
 const debug: boolean = debugging()
 const mock: boolean = mockStore()
-
-// export const getFirestore = () => mockDb
 
 export const doc = (db: any, collection: string, id: string): any => ({
   path: `${collection}/${id}`,
@@ -77,12 +56,10 @@ export const getUID = async (): Promise<string> => {
 
 export const getDataBase = (): Firestore => mockDb
 
-// Helper function to get the current state of the mock database (for debugging)
+/* Helper function to get the current state of the mock database (for debugging) */
 export function getMockDbState(): Record<string, any> {
   return { ...mockDb }
 }
-
-////////////////////////
 
 /* important: called immediately to begin expt */
 if (mock) {
@@ -91,9 +68,9 @@ if (mock) {
       console.log('getUID():', uid)
       initExperimentData(uid).then(
         () => {
-          // enableBeginExperiment() ///DEBUG (241015)
+          enableBeginExperiment()
           if (debug) {
-            console.log('MockDB :: initExperimentData(): Success') // Success!
+            console.log('MockDB getUID() :: initExperimentData(): Success') // Success!
           }
         },
         (err: unknown) => {

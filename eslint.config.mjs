@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 

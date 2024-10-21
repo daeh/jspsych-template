@@ -15,7 +15,7 @@ import type { Firestore } from 'firebase/firestore'
 const debug: boolean = debugging()
 const mock = mockStore()
 
-// Initialize firebase
+/* Initialize firebase */
 const app: FirebaseApp = initializeApp(firebaseConfig)
 const auth: Auth = getAuth(app)
 const db: Firestore = getFirestore(app)
@@ -35,7 +35,7 @@ onAuthStateChanged(auth, (user: User | null) => {
       () => {
         enableBeginExperiment()
         if (debug) {
-          console.log('onAuthStateChanged(): initExperimentData(): Success') // Success!
+          console.log('onAuthStateChanged() :: initExperimentData(): Success') // Success!
         }
       },
       (err: unknown) => {

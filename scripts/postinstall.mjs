@@ -48,7 +48,7 @@ async function setup() {
   } catch (error) {
     return {
       success: false,
-      message: `Error creating ${destPath}: ${error.message}`,
+      message: `Error creating ${destPath}: ${error}`,
     }
   }
 }
