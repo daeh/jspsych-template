@@ -19,7 +19,8 @@
     "lint": "ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write . && eslint --config eslint.config.mjs --fix . && tsc --project tsconfig.json --noEmit",
     "lint:dev": "NODE_ENV=development && ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write . && eslint --config eslint.config.mjs --fix . && tsc --project tsconfig.dev.json --noEmit",
     "lint:prod": "NODE_ENV=production && ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --write . && eslint --config eslint.config.mjs --fix . && tsc --project tsconfig.prod.json --noEmit",
-    "lint:dry": "ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --check . ; eslint --config eslint.config.mjs . && tsc --project tsconfig.json --noEmit"
+    "lint:dry": "ESLINT_USE_FLAT_CONFIG=true && prettier --config prettier.config.mjs --check . ; eslint --config eslint.config.mjs . && tsc --project tsconfig.json --noEmit",
+    "postinstall": "node scripts/postinstall.mjs"
   },
   "type": "module",
   "repository": {
