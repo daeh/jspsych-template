@@ -1,12 +1,13 @@
 import { description, version } from '../../package.json'
 
-import { prolificCCode } from './lib/prolificCred'
-
-const debug: boolean = true
-
-const mock: boolean = true
-
-const prolificCUrlLive = `https://app.prolific.com/submissions/complete?cc=${prolificCCode}`
+import {
+  debuggingMode as debug,
+  saveToRemoteIncrementally as incremental,
+  simulateMockDatabase as mock,
+  prolificCCode,
+  prolificCUrlLive,
+  prolificCUrlTest,
+} from './config'
 
 const gitCommit: string = __COMMIT_HASH__ || 'unknown'
 
@@ -132,6 +133,10 @@ export function mockStore(): boolean {
   return mock
 }
 
+export function saveToRemoteIncrementally(): boolean {
+  return incremental
+}
+
 export function getDocStr(docId: string) {
   /* This gives a way to keep the PRODUCTION mode data separate from the DEBUGGING mode data.
    * Appends "-dbug" to the FireStore docId if web app is in debugging mode or is sandboxed.
@@ -142,4 +147,6 @@ export function getDocStr(docId: string) {
 }
 
 export const prolificCC = definitelyLive() ? prolificCCode : 'TESTING'
-export const prolificCUrl = definitelyLive() ? prolificCUrlLive : `https://daeh.info/?prolific&cc=${prolificCC}`
+export const prolificCUrl = definitelyLive()
+  ? `${prolificCUrlLive}?cc=${prolificCCode}`
+  : `${prolificCUrlTest}?prolific&cc=${prolificCC}`

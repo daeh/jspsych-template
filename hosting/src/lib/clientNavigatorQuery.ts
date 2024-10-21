@@ -2,16 +2,16 @@ import { debugging } from '../globalVariables'
 
 const debug = debugging()
 
-interface BrowserInfo {
+interface BrowserInfo extends Record<string, string> {
   name: string
   version: string
 }
 
-interface OSInfo {
+interface OSInfo extends Record<string, string> {
   name: string
 }
 
-interface WindowSize {
+interface WindowSize extends Record<string, number> {
   width: number
   height: number
 }

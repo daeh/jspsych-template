@@ -50,7 +50,7 @@
     /* generated directories */
     "**/.yarn/",
     "**/node_modules/",
-    "**/.firebase/",
+    ".firebase/",
     "**/dist/",
     "**/build/",
     "**/_build/",

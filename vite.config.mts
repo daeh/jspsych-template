@@ -23,12 +23,10 @@ function getCurrentCommitHash() {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default defineConfig(({ command, mode }) => {
-  // console.log('MODE: ', process.env.NODE_ENV)
-  console.log('MODE: ', mode)
+  console.log('VITE COMMAND: ', command)
+  console.log('VITE MODE: ', mode)
+  console.log('NODE MODE: ', process.env.NODE_ENV)
 
   let title = 'Expt-Template Mode Unknown'
   if (mode === 'development') {

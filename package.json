@@ -29,7 +29,7 @@
   "bugs": {
     "url": "https://github.com/daeh/jspsych-template/issues"
   },
-  "templateVersion": "0.1.3",
+  "templateVersion": "0.1.4",
   "source": "./hosting",
   "directories": {
     "serve": "hosting/dist"

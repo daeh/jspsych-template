@@ -116,6 +116,8 @@ const typescriptRules = {
   ...stylisticPlugin.configs['disable-legacy'].rules,
   ...importRules,
   ...baseRules,
+  '@typescript-eslint/no-unnecessary-condition': ['warn'],
+  '@typescript-eslint/no-unused-vars': ['warn'],
 }
 
 const javascriptRules = {
@@ -304,14 +306,19 @@ const config = [
       '**/*-buildignore*',
       /* generated directories */
       '.yarn/',
+      '**/node_modules/',
       '.firebase/',
       'hosting/dist/',
       'build/',
       '_build/',
       /* generated files */
+      '*.lock',
+      '*-lock.*',
       '.pnp.*',
       'vite.config.mts.timestamp-*.mjs',
       /* editor config */
+      '**/.vscode/',
+      '**/.idea/',
       /* project specific patterns */
     ],
   },

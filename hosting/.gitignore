@@ -1,9 +1,7 @@
 #########
 ### auth files ###
-### excluded in .gitattributes
 #########
-src/databaseCred.ts
-src/prolificCred.ts
+# src/creds.ts
 
 #########
 ### generated directories ###

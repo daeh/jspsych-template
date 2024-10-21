@@ -10,7 +10,7 @@
 
 import { Firestore } from 'firebase/firestore'
 
-import { debugging, UserRecord } from '../globalVariables'
+import { debugging, mockStore, UserRecord } from '../globalVariables'
 import { enableBeginExperiment } from '../main'
 
 import { initExperimentData } from './databaseUtils'
@@ -39,6 +39,7 @@ const mockDb = {} as Firestore
 let mockUid: string | null = 'mock-user-' + Math.random().toString(36).substring(2, 11)
 
 const debug: boolean = debugging()
+const mock: boolean = mockStore()
 
 // export const getFirestore = () => mockDb
 
@@ -76,30 +77,32 @@ export const getUID = async (): Promise<string> => {
 
 export const getDataBase = (): Firestore => mockDb
 
-////////////////////////
-
-/* important: called immediately to begin expt */
-getUID().then(
-  (uid) => {
-    console.log('getUID():', uid)
-    initExperimentData(uid).then(
-      () => {
-        enableBeginExperiment()
-        if (debug) {
-          console.log('initExperimentData(): Success') // Success!
-        }
-      },
-      (err: unknown) => {
-        console.error(err) // Error!
-      },
-    )
-  },
-  (err: unknown) => {
-    console.error(err)
-  },
-)
-
 // Helper function to get the current state of the mock database (for debugging)
 export function getMockDbState(): Record<string, any> {
   return { ...mockDb }
+}
+
+////////////////////////
+
+/* important: called immediately to begin expt */
+if (mock) {
+  getUID().then(
+    (uid) => {
+      console.log('getUID():', uid)
+      initExperimentData(uid).then(
+        () => {
+          // enableBeginExperiment() ///DEBUG (241015)
+          if (debug) {
+            console.log('MockDB :: initExperimentData(): Success') // Success!
+          }
+        },
+        (err: unknown) => {
+          console.error(err) // Error!
+        },
+      )
+    },
+    (err: unknown) => {
+      console.error(err)
+    },
+  )
 }

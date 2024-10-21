@@ -1,3 +1,2 @@
 * text=auto eol=lf
-src/databaseCred.ts export-ignore
-src/prolificCred.ts export-ignore
+src/creds.ts export-ignore

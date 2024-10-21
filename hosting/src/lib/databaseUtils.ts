@@ -1,30 +1,17 @@
-// import {
-//   // addDoc,
-//   // collection,
-//   doc,
-//   // DocumentData,
-//   getDoc,
-//   // getDocs,
-//   // getFirestore,
-//   // onSnapshot,
-//   runTransaction,
-//   setDoc,
-//   Timestamp,
-// } from 'firebase/firestore' // PRODUCTION
-
 import { Timestamp } from 'firebase/firestore'
 
-import { debugging, getDocStr, mockStore, setUserInfo, UserRecord } from '../globalVariables'
+import { debugging, getDocStr, mockStore, saveToRemoteIncrementally, setUserInfo, UserRecord } from '../globalVariables'
 
 import { getBrowserInfo, getOSInfo, getWindowSize } from './clientNavigatorQuery'
 import { FireStore } from './databaseAdapterFirestore'
 import { MockDatabase } from './databaseAdapterMock'
 
-import type { RecursiveRecordArray, TrialData } from '../project'
+import type { saveableData, saveableDataRecord } from '../../types/project'
+import type { TrialData } from '../experiment.d'
 
 const debug: boolean = debugging()
-
-const mock = mockStore()
+const mock: boolean = mockStore()
+const incremental: boolean = saveToRemoteIncrementally()
 
 const databaseBackend = mock ? MockDatabase : FireStore
 
@@ -35,10 +22,31 @@ const getUID = databaseBackend.getUID
 const runTransaction = databaseBackend.runTransaction as typeof import('firebase/firestore').runTransaction
 const setDoc = databaseBackend.setDoc as typeof import('firebase/firestore').setDoc
 
+type saveableDataRecordUndef = Record<string, saveableData | undefined>
+interface DocDataLocal extends saveableDataRecordUndef {
+  readonly firebaseUId: string
+  readonly prolificPId: string
+  readonly prolificStudyId: string
+  readonly prolificSessionId: string
+  readonly urlParams: Record<string, string>
+  readonly version: string
+  readonly gitCommit: string
+  readonly description: string
+  dateInit: Timestamp
+  debug: boolean
+  clientInfo: {
+    browser: Record<string, string>
+    os: Record<string, string>
+    windowSize: Record<string, number>
+  }
+  priorInits?: saveableDataRecord | saveableDataRecord[]
+}
+
 async function initData(userInfo: UserRecord): Promise<void> {
-  const docData = {
+  const docData: DocDataLocal = {
     ...userInfo,
     dateInit: Timestamp.now(),
+    debug: debug,
     trialsPartial: [],
     clientInfo: {
       browser: getBrowserInfo(),
@@ -50,31 +58,24 @@ async function initData(userInfo: UserRecord): Promise<void> {
   const exptDataDoc = getDocStr('exptData')
   const uid = await getUID()
   const db = getDataBase()
-
   const docRef = doc(db, exptDataDoc, uid)
   const docSnap = await getDoc(docRef)
 
   if (docSnap.exists()) {
     const existingData = docSnap.data()
-
     if (existingData.hasOwnProperty('priorInits')) {
       let { priorInits, ...existingDataReduced } = existingData
-      if (priorInits instanceof Array) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        docData['priorInits'] = [...priorInits, existingDataReduced]
+      if (priorInits && priorInits instanceof Array && priorInits.length > 0) {
+        docData.priorInits = [...priorInits, existingDataReduced]
       } else {
-        // @ts-expect-error allow priorInits to by unknown
         docData.priorInits = [priorInits, existingDataReduced]
       }
     } else {
-      // @ts-expect-error allow priorInits to by unknown
       docData.priorInits = [existingData]
     }
   }
 
-  await setDoc(doc(db, exptDataDoc, uid), docData)
+  await setDoc(docRef, docData)
   if (debug) {
     console.log('initData: Document written')
   }
@@ -175,7 +176,7 @@ export async function saveTrialDataComplete(jsPsychDataTrials: unknown[]): Promi
   return true
 }
 
-export async function saveRootData(responseData: RecursiveRecordArray): Promise<boolean> {
+export async function saveRootData(responseData: saveableDataRecord): Promise<boolean> {
   const exptDataDoc = getDocStr('exptData')
   const uid = await getUID()
   const db = getDataBase()

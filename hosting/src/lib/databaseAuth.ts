@@ -2,25 +2,30 @@ import { initializeApp } from 'firebase/app'
 import { getAuth, onAuthStateChanged, signInAnonymously } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 
+import { firebaseConfig } from '../config'
 import { debugging, mockStore } from '../globalVariables'
 import { enableBeginExperiment } from '../main'
 
-import { firebaseConfig } from './databaseCred'
 import { initExperimentData } from './databaseUtils'
 
-import type { User } from 'firebase/auth'
+import type { FirebaseApp } from 'firebase/app'
+import type { Auth, User } from 'firebase/auth'
+import type { Firestore } from 'firebase/firestore'
 
 const debug: boolean = debugging()
-
 const mock = mockStore()
 
 // Initialize firebase
-const app = initializeApp(firebaseConfig)
-const auth = getAuth(app)
-const db = getFirestore(app)
+const app: FirebaseApp = initializeApp(firebaseConfig)
+const auth: Auth = getAuth(app)
+const db: Firestore = getFirestore(app)
+
 let uid: User['uid']
 
 onAuthStateChanged(auth, (user: User | null) => {
+  if (mock) {
+    return
+  }
   if (user != null) {
     uid = user.uid
     if (debug) {

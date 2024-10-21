@@ -6,7 +6,7 @@ import { initJsPsych } from 'jspsych'
 import { debugging, getUserInfo, mockStore, prolificCC, prolificCUrl } from './globalVariables'
 import { saveTrialDataComplete, saveTrialDataPartial } from './lib/databaseUtils'
 
-import type { KeyboardResponse, Task, TrialData } from './project'
+import type { KeyboardResponse, Task, TrialData } from './experiment.d'
 import type { DataCollection } from 'jspsych'
 
 import imgStimBlue from './images/blue.png'
