@@ -2,7 +2,6 @@ import { description, version } from '../../package.json'
 
 import {
   debuggingMode as debug,
-  saveToRemoteIncrementally as incremental,
   simulateMockDatabase as mock,
   prolificCCode,
   prolificCUrlLive,
@@ -131,10 +130,6 @@ export function mockStore(): boolean {
     return false
   }
   return mock
-}
-
-export function saveToRemoteIncrementally(): boolean {
-  return incremental
 }
 
 export function getDocStr(docId: string) {

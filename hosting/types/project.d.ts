@@ -1,18 +1,9 @@
 import type { Timestamp } from 'firebase/firestore'
 
-type saveableDataBase = string | number | boolean | Timestamp
-type saveableDataAllowArrayNesting = saveableDataBase | saveableDataBase[] | saveableDataAllowArrayNesting[]
+type PrimitiveValue = number | string | boolean | Timestamp
+type SaveableArray = (PrimitiveValue | SaveableDataRecord)[]
 
-interface saveableDataRecordBase {
-  [key: string]: saveableDataAllowArrayNesting | saveableDataRecordBase | saveableDataRecordBase[]
+export interface SaveableDataRecord {
+  [key: string]: PrimitiveValue | SaveableArray | SaveableDataRecord
 }
-type saveableDataAllowArrayNestingExtended =
-  | saveableDataAllowArrayNesting
-  | saveableDataRecordBase
-  | saveableDataAllowArrayNestingExtended[]
-
-export interface saveableDataRecord {
-  [key: string]: saveableDataAllowArrayNestingExtended | saveableDataRecord | saveableDataRecord[]
-}
-
-export type saveableData = saveableDataAllowArrayNestingExtended | saveableDataRecord | saveableDataRecord[]
+export type SaveableData = PrimitiveValue | SaveableArray | SaveableDataRecord

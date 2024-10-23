@@ -4,13 +4,12 @@ import jsPsychPreload from '@jspsych/plugin-preload'
 import { initJsPsych } from 'jspsych'
 
 import { debugging, getUserInfo, mockStore, prolificCC, prolificCUrl } from './globalVariables'
-import { saveTrialDataComplete, saveTrialDataPartial } from './lib/databaseUtils'
-
-import type { KeyboardResponse, Task, TrialData } from './experiment.d'
-import type { DataCollection } from 'jspsych'
-
 import imgStimBlue from './images/blue.png'
 import imgStimOrange from './images/orange.png'
+import { saveTrialDataComplete, saveTrialDataPartial } from './lib/databaseUtils'
+
+import type { SaveableDataRecord } from '../types/project'
+import type { DataCollection } from 'jspsych'
 
 /* Alternatively
  * type JsPsychInstance = ReturnType<typeof initJsPsych>
@@ -20,6 +19,18 @@ import imgStimOrange from './images/orange.png'
 
 const debug = debugging()
 const mock = mockStore()
+
+type Task = 'response' | 'fixation'
+type Response = 'left' | 'right'
+type KeyboardResponse = 'f' | 'j'
+
+interface TrialData {
+  task: Task
+  response: Response
+  correct: boolean
+  correct_response: Response
+  saveIncrementally: boolean
+}
 
 const debuggingText = debug ? `<br /><br />redirect link : ${prolificCUrl}` : '<br />'
 const exitMessage = `<p class="align-middle text-center"> 
@@ -53,9 +64,9 @@ export async function runExperiment(updateDebugPanel: () => void) {
       if (debug) {
         console.log('jsPsych-update :: trialData ::', trialData)
       }
-      // if trialData contains a saveToFirestore property, and the property is true, then save the trialData to Firestore
-      if (trialData.saveToFirestore) {
-        saveTrialDataPartial(trialData).then(
+      // if trialData contains a saveIncrementally property, and the property is true, then save the trialData to Firestore immediately (otherwise the data will be saved at the end of the experiment)
+      if (trialData.saveIncrementally) {
+        saveTrialDataPartial(trialData as unknown as SaveableDataRecord).then(
           () => {
             if (debug) {
               console.log('saveTrialDataPartial: Success') // Success!
@@ -96,7 +107,7 @@ export async function runExperiment(updateDebugPanel: () => void) {
   })
 
   /* create timeline */
-  const timeline: Record<string, any>[] = []
+  const timeline: Record<string, unknown>[] = []
 
   /* preload images */
   const preload = {
@@ -151,21 +162,21 @@ export async function runExperiment(updateDebugPanel: () => void) {
       )[0] as number
     },
     data: {
-      task: 'fixation' as Task,
+      task: 'fixation' satisfies Task,
     },
   }
 
   const test = {
     type: jsPsychImageKeyboardResponse,
     stimulus: jsPsych.timelineVariable('stimulus') as unknown as string,
-    choices: ['f', 'j'] as KeyboardResponse[],
+    choices: ['f', 'j'] satisfies KeyboardResponse[],
     data: {
-      task: 'response' as Task,
+      task: 'response' satisfies Task,
       correct_response: jsPsych.timelineVariable('correct_response') as unknown as string,
     },
     on_finish: function (data: TrialData) {
       data.correct = jsPsych.pluginAPI.compareKeys(data.response || null, data.correct_response || null)
-      data.saveToFirestore = true
+      data.saveIncrementally = true
     },
   }
 

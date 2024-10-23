@@ -65,7 +65,7 @@ const importRules = {
       ],
       'pathGroups': [
         {
-          pattern: './images/**',
+          pattern: '/images/**',
           group: 'object',
           position: 'after',
         },
@@ -73,6 +73,7 @@ const importRules = {
           pattern: '**/*.+(png|jpg|jpeg|gif|svg)',
           group: 'object',
           position: 'after',
+          patternOptions: { matchBase: true },
         },
         {
           pattern: './styles/**',
@@ -86,6 +87,7 @@ const importRules = {
         },
       ],
       'newlines-between': 'always',
+      'distinctGroup': true,
       'alphabetize': {
         order: 'asc',
         caseInsensitive: true, // ignore case

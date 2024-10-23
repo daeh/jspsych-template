@@ -21,10 +21,10 @@ const destPath = path.join(__dirname, '..', 'hosting', 'src', 'creds.ts')
 async function setup() {
   try {
     await fs.access(srcPath)
-  } catch (error) {
+  } catch (err) {
     return {
       success: false,
-      message: `Template file ${srcPath} not found :: ${error}`,
+      message: `Template file ${srcPath} not found :: ${err}`,
     }
   }
 
@@ -34,9 +34,9 @@ async function setup() {
       success: true,
       message: `${destPath} already exists. Skipping.`,
     }
-  } catch (error) {
+  } catch (err) {
     // File doesn't exist, proceed with copy
-    console.debug(`${destPath} does not exist, proceeding with copy :: ${error}`)
+    console.debug(`${destPath} does not exist, proceeding with copy :: ${err}`)
   }
 
   try {
@@ -45,10 +45,10 @@ async function setup() {
       success: true,
       message: `Created ${destPath} from template.`,
     }
-  } catch (error) {
+  } catch (err) {
     return {
       success: false,
-      message: `Error creating ${destPath}: ${error}`,
+      message: `Error creating ${destPath} :: ${err}`,
     }
   }
 }
@@ -64,7 +64,7 @@ async function main() {
   }
 }
 
-main().catch((error) => {
-  console.error('Unexpected error:', error)
+main().catch((err) => {
+  console.error('Unexpected error:', err)
   process.exit(1)
 })

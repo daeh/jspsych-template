@@ -6,8 +6,6 @@ export const debuggingMode: boolean = true
 
 export const simulateMockDatabase: boolean = true
 
-export const saveToRemoteIncrementally: boolean = true
-
 export const contactInfo: Record<'name' | 'email', string> = {
   name: 'YOUR NAME',
   email: 'YOUR@EMAIL',

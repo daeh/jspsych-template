@@ -22,26 +22,62 @@ let mockUid: string | null = 'mock-user-' + Math.random().toString(36).substring
 const debug: boolean = debugging()
 const mock: boolean = mockStore()
 
+const deepClone = (obj: any): any => JSON.parse(JSON.stringify(obj))
+const log = (message: string, data?: any) => {
+  if (debug) {
+    console.log(`Mock Firestore: ${message}`, data)
+  }
+}
+
 export const doc = (db: any, collection: string, id: string): any => ({
   path: `${collection}/${id}`,
 })
 
 export const getDoc = async (docRef: any) => ({
   exists: () => docRef.path in mockDb,
-  data: () => mockDb[docRef.path] || null,
+  data: () => (mockDb[docRef.path] ? deepClone(mockDb[docRef.path]) : null),
 })
 
 export const setDoc = async (docRef: any, data: any): Promise<void> => {
-  mockDb[docRef.path] = data
-  console.log('Mock Firestore: Document set', { path: docRef.path, data })
+  mockDb[docRef.path] = deepClone(data)
+  log('Document set', { path: docRef.path, data })
 }
+
+// New function to match Firestore
+export const updateDoc = async (docRef: any, updates: any): Promise<void> => {
+  if (!(docRef.path in mockDb)) {
+    throw new Error('Document does not exist')
+  }
+
+  mockDb[docRef.path] = {
+    ...mockDb[docRef.path],
+    ...Object.entries(updates).reduce<Record<string, any>>((acc, [key, value]) => {
+      // Handle special FieldValue operations like arrayUnion
+      if (value?.__type === 'arrayUnion') {
+        const currentArray = mockDb[docRef.path][key] || []
+        acc[key] = [...new Set([...currentArray, ...value.values])]
+      } else {
+        acc[key] = value
+      }
+      return acc
+    }, {}),
+  }
+
+  log('Document updated', { path: docRef.path, updates })
+}
+
+// New function to match Firestore
+export const arrayUnion = (...elements: any[]) => ({
+  __type: 'arrayUnion',
+  values: elements,
+})
 
 export const runTransaction = async (db: any, updateFunction: (transaction: any) => Promise<void>): Promise<void> => {
   const mockTransaction = {
     get: getDoc,
-    update: (docRef: any, data: any) => {
-      mockDb[docRef.path] = { ...mockDb[docRef.path], ...data }
-      console.log('Mock Firestore: Document updated', { path: docRef.path, data })
+    update: async (docRef: any, updates: any) => {
+      await updateDoc(docRef, updates)
+      log('Mock Firestore: Document updated', { path: docRef.path, data })
     },
   }
   await updateFunction(mockTransaction)
@@ -56,21 +92,18 @@ export const getUID = async (): Promise<string> => {
 
 export const getDataBase = (): Firestore => mockDb
 
-/* Helper function to get the current state of the mock database (for debugging) */
-export function getMockDbState(): Record<string, any> {
-  return { ...mockDb }
-}
+export const getMockDbState = (): Record<string, any> => deepClone(mockDb)
 
 /* important: called immediately to begin expt */
 if (mock) {
   getUID().then(
     (uid) => {
-      console.log('getUID():', uid)
+      log('getUID():', uid)
       initExperimentData(uid).then(
         () => {
           enableBeginExperiment()
           if (debug) {
-            console.log('MockDB getUID() :: initExperimentData(): Success') // Success!
+            log('MockDB getUID() :: initExperimentData(): Success') // Success!
           }
         },
         (err: unknown) => {

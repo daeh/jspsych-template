@@ -6,44 +6,36 @@ import { getBrowserInfo, getOSInfo, getWindowSize } from './clientNavigatorQuery
 import { FireStore } from './databaseAdapterFirestore'
 import { MockDatabase } from './databaseAdapterMock'
 
-import type { saveableData, saveableDataRecord } from '../../types/project'
-import type { TrialData } from '../experiment.d'
+import type { SaveableDataRecord } from '../../types/project'
 
 const debug: boolean = debugging()
 const mock: boolean = mockStore()
-// const incremental: boolean = saveToRemoteIncrementally() import saveToRemoteIncrementally from globals
 
 const databaseBackend = mock ? MockDatabase : FireStore
 
+const arrayUnion = databaseBackend.arrayUnion as typeof import('firebase/firestore').arrayUnion
 const doc = databaseBackend.doc as typeof import('firebase/firestore').doc
 const getDoc = databaseBackend.getDoc as typeof import('firebase/firestore').getDoc
 const runTransaction = databaseBackend.runTransaction as typeof import('firebase/firestore').runTransaction
 const setDoc = databaseBackend.setDoc as typeof import('firebase/firestore').setDoc
+const updateDoc = databaseBackend.updateDoc as typeof import('firebase/firestore').updateDoc
 const getDataBase = databaseBackend.getDataBase as typeof import('firebase/firestore').getFirestore
 const getUID = databaseBackend.getUID
 
-type saveableDataRecordUndef = Record<string, saveableData | undefined>
-interface DocDataLocal extends saveableDataRecordUndef {
-  readonly firebaseUId: string
-  readonly prolificPId: string
-  readonly prolificStudyId: string
-  readonly prolificSessionId: string
-  readonly urlParams: Record<string, string>
-  readonly version: string
-  readonly gitCommit: string
-  readonly description: string
+interface ExperimentDocData extends UserRecord {
   dateInit: Timestamp
   debug: boolean
+  trialsPartial: SaveableDataRecord[]
   clientInfo: {
-    browser: Record<string, string>
-    os: Record<string, string>
-    windowSize: Record<string, number>
+    browser: Record<string, string | number>
+    os: Record<string, string | number>
+    windowSize: Record<string, string | number>
   }
-  priorInits?: saveableDataRecord | saveableDataRecord[]
+  priorInits?: SaveableDataRecord | SaveableDataRecord[]
 }
 
 async function initData(userInfo: UserRecord): Promise<void> {
-  const docData: DocDataLocal = {
+  const docData: ExperimentDocData = {
     ...userInfo,
     dateInit: Timestamp.now(),
     debug: debug,
@@ -94,7 +86,24 @@ export async function initExperimentData(uid: string): Promise<void> {
   await initData(userInfo)
 }
 
-export async function saveTrialDataPartial(trialData: TrialData): Promise<boolean> {
+export async function saveTrialDataPartialAddUnique(trialData: SaveableDataRecord): Promise<boolean> {
+  try {
+    const docRef = doc(getDataBase(), getDocStr('exptData'), await getUID())
+
+    await updateDoc(docRef, {
+      // Warning, this only adds unique elements to the array
+      // arrayUnion() adds elements to an array but only elements not already present.
+      trialsPartial: arrayUnion(trialData),
+    })
+
+    return true
+  } catch (err) {
+    console.error('saveSlideDataRemotely error:', err)
+    return false
+  }
+}
+
+export async function saveTrialDataPartialFullOverwrite(trialData: SaveableDataRecord): Promise<boolean> {
   try {
     const exptDataDoc = getDocStr('exptData')
     const uid = await getUID()
@@ -113,12 +122,7 @@ export async function saveTrialDataPartial(trialData: TrialData): Promise<boolea
 
       const data: Record<string, unknown[]> = {}
 
-      if ('trialsPartial' in userData) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        data.trialsPartial = userData.trialsPartial
-      } else {
-        data.trialsPartial = []
-      }
+      data.trialsPartial = userData.trialsPartial ?? []
 
       data.trialsPartial.push(trialData)
 
@@ -129,6 +133,35 @@ export async function saveTrialDataPartial(trialData: TrialData): Promise<boolea
         console.log('Successfully saved data')
       }
     })
+    return true
+  } catch (err) {
+    console.error('Error saving data:: ', err)
+    return false
+  }
+}
+
+export async function saveTrialDataPartial(trialData: SaveableDataRecord): Promise<boolean> {
+  try {
+    const db = getDataBase()
+    const docRef = doc(db, getDocStr('exptData'), await getUID())
+
+    await runTransaction(db, async (transaction) => {
+      const docSnap = await transaction.get(docRef)
+      if (!docSnap.exists()) {
+        throw new Error('Document does not exist')
+      }
+
+      const data = docSnap.data()
+      const trials = Array.isArray(data.trialsPartial) ? data.trialsPartial : []
+
+      transaction.update(docRef, {
+        trialsPartial: [...trials, trialData],
+      })
+    })
+
+    if (debug) {
+      console.log('Successfully saved data')
+    }
     return true
   } catch (err) {
     console.error('Error saving data:: ', err)
@@ -169,7 +202,7 @@ export async function saveTrialDataComplete(jsPsychDataTrials: unknown[]): Promi
   return true
 }
 
-export async function saveRootData(responseData: saveableDataRecord): Promise<boolean> {
+export async function saveRootData(responseData: SaveableDataRecord): Promise<boolean> {
   const exptDataDoc = getDocStr('exptData')
   const uid = await getUID()
   const db = getDataBase()
