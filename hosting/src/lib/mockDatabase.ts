@@ -8,12 +8,12 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
-import { Firestore } from 'firebase/firestore'
-
 import { debugging, mockStore, UserRecord } from '../globalVariables'
 import { enableBeginExperiment } from '../main'
 
 import { initExperimentData } from './databaseUtils'
+
+import type { Firestore } from 'firebase/firestore'
 
 const mockDb = {} as Firestore
 

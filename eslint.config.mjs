@@ -37,7 +37,17 @@ const allExtensions = [...allTsExtensionsArray, ...allJsExtensionsArray].join(',
 
 const importRules = {
   ...importPlugin.flatConfigs.recommended.rules,
+  'import/named': 'error',
   'import/no-unresolved': 'error',
+  '@typescript-eslint/consistent-type-imports': [
+    'error',
+    {
+      prefer: 'type-imports',
+      disallowTypeAnnotations: true,
+      fixStyle: 'inline-type-imports',
+    },
+  ],
+  '@typescript-eslint/no-import-type-side-effects': 'error',
   'sort-imports': [
     'error',
     {
@@ -192,8 +202,12 @@ const config = [
           /* for jspsyc */
         },
         typescript: {
-          extensions: ['.ts', '.d.ts'],
+          project: tsconfig,
+          alwaysTryTypes: true,
         },
+      },
+      'import/parsers': {
+        '@typescript-eslint/parser': ['.ts'],
       },
       /* for firebase */
       'import/ignore': ['node_modules/firebase'],

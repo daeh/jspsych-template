@@ -1,6 +1,6 @@
 import { Timestamp } from 'firebase/firestore'
 
-import { debugging, getDocStr, mockStore, setUserInfo, UserRecord } from '../globalVariables'
+import { debugging, getDocStr, mockStore, setUserInfo, type UserRecord } from '../globalVariables'
 
 import { getBrowserInfo, getOSInfo, getWindowSize } from './clientNavigatorQuery'
 import { FireStore } from './databaseAdapterFirestore'
@@ -13,12 +13,19 @@ const mock: boolean = mockStore()
 
 const databaseBackend = mock ? MockDatabase : FireStore
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 const arrayUnion = databaseBackend.arrayUnion as typeof import('firebase/firestore').arrayUnion
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 const doc = databaseBackend.doc as typeof import('firebase/firestore').doc
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 const getDoc = databaseBackend.getDoc as typeof import('firebase/firestore').getDoc
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 const runTransaction = databaseBackend.runTransaction as typeof import('firebase/firestore').runTransaction
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 const setDoc = databaseBackend.setDoc as typeof import('firebase/firestore').setDoc
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 const updateDoc = databaseBackend.updateDoc as typeof import('firebase/firestore').updateDoc
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 const getDataBase = databaseBackend.getDataBase as typeof import('firebase/firestore').getFirestore
 const getUID = databaseBackend.getUID
 
