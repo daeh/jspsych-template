@@ -23,7 +23,7 @@ async function setup() {
     await fs.access(srcPath)
   } catch (err) {
     return {
-      success: false,
+      success: true,
       message: `Template file ${srcPath} not found :: ${err}`,
     }
   }
