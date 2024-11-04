@@ -51,7 +51,6 @@ export default defineConfig(({ command, mode }) => {
     ],
     css: {
       postcss: {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         plugins: [tailwindcssNesting, tailwindcss(tailwindConfig), autoprefixer],
       },
     },

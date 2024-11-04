@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -276,24 +276,6 @@ const config = [
     rules: {
       ...javascriptRules,
     },
-  },
-  {
-    ignores: [
-      /* specialized ignore patterns */
-      '**/*_lintignore*',
-      '**/*-lintignore*',
-      '**/*_buildignore*',
-      '**/*-buildignore*',
-      /* generated directories */
-      '.yarn/',
-      'hosting/dist/',
-      'build/',
-      /* generated files */
-      '.pnp.*',
-      'vite.config.mts.timestamp-*.mjs',
-      /* editor config */
-      /* project specific patterns */
-    ],
   },
   {
     /* utility scripts: javascript */

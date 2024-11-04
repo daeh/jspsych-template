@@ -156,10 +156,7 @@ export async function runExperiment(updateDebugPanel: () => void) {
     stimulus: '<div style="font-size:60px;">+</div>',
     choices: 'NO_KEYS',
     trial_duration: function () {
-      return jsPsych.randomization.sampleWithoutReplacement(
-        [250, 500, 750, 1000, 1250, 1500, 1750, 2000],
-        1,
-      )[0] as number
+      return jsPsych.randomization.sampleWithoutReplacement([250, 500, 750, 1000, 1250, 1500, 1750, 2000], 1)[0]
     },
     data: {
       task: 'fixation' satisfies Task,
