@@ -4,6 +4,7 @@
     "esbenp.prettier-vscode",
     "bradlc.vscode-tailwindcss",
     "arcanis.vscode-zipfs",
-    "yoavbls.pretty-ts-errors"
+    "yoavbls.pretty-ts-errors",
+    "streetsidesoftware.code-spell-checker"
   ]
 }

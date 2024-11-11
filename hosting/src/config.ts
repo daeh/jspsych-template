@@ -23,6 +23,7 @@ const firebaseCredMock: FirebaseOptions = {
   appId: 'DUMMY-STRING',
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 export const firebaseConfig: FirebaseOptions = simulateMockDatabase ? firebaseCredMock : firebaseCred
 
 export const prolificCCode = prolificCompletionCode

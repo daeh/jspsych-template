@@ -75,25 +75,16 @@ const importRules = {
       ],
       'pathGroups': [
         {
-          pattern: '/images/**',
-          group: 'object',
-          position: 'after',
-        },
-        {
-          pattern: '**/*.+(png|jpg|jpeg|gif|svg)',
-          group: 'object',
+          pattern: '*.png',
+          group: 'unknown',
           position: 'after',
           patternOptions: { matchBase: true },
         },
         {
-          pattern: './styles/**',
+          pattern: '*.jpg',
           group: 'unknown',
           position: 'after',
-        },
-        {
-          pattern: '**/*.css',
-          group: 'unknown',
-          position: 'after',
+          patternOptions: { matchBase: true },
         },
       ],
       'newlines-between': 'always',
@@ -129,7 +120,6 @@ const typescriptRules = {
   ...stylisticPlugin.configs['disable-legacy'].rules,
   ...importRules,
   ...baseRules,
-  '@typescript-eslint/no-unnecessary-condition': ['warn'],
   '@typescript-eslint/no-unused-vars': ['warn'],
 }
 
@@ -153,6 +143,7 @@ const typescriptRulesDev = {
   '@typescript-eslint/prefer-nullish-coalescing': ['off'],
   '@typescript-eslint/no-inferrable-types': ['off'],
   '@typescript-eslint/dot-notation': ['off'],
+  '@typescript-eslint/no-unnecessary-condition': ['warn'],
 }
 
 /** @type {import("eslint").Linter.Config[]} */

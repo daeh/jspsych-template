@@ -4,12 +4,13 @@ import jsPsychPreload from '@jspsych/plugin-preload'
 import { initJsPsych } from 'jspsych'
 
 import { debugging, getUserInfo, mockStore, prolificCC, prolificCUrl } from './globalVariables'
-import imgStimBlue from './images/blue.png'
-import imgStimOrange from './images/orange.png'
 import { saveTrialDataComplete, saveTrialDataPartial } from './lib/databaseUtils'
 
 import type { SaveableDataRecord } from '../types/project'
 import type { DataCollection } from 'jspsych'
+
+import imgStimBlue from './images/blue.png'
+import imgStimOrange from './images/orange.png'
 
 /* Alternatively
  * type JsPsychInstance = ReturnType<typeof initJsPsych>

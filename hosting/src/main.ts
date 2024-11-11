@@ -6,8 +6,6 @@ import './lib/loading'
 
 import './styles/main.css'
 
-// import { doc } from 'firebase/firestore'
-
 const debug = debugging()
 const mock = mockStore()
 
