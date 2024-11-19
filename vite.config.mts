@@ -9,7 +9,8 @@ import { createHtmlPlugin } from 'vite-plugin-html'
 
 import tailwindConfig from './tailwind.config'
 
-import type { AcceptedPlugin } from 'tailwindcss/node_modules/postcss'
+// import type { AcceptedPlugin } from 'tailwindcss/node_modules/postcss'
+import type { AcceptedPlugin } from 'postcss'
 import type { UserConfig } from 'vite'
 
 const filesPathToExclude: (string | RegExp)[] = [/[-_]buildignore/]
@@ -20,7 +21,7 @@ function getCurrentCommitHash() {
     return execSync('git log -1 --format="%H"').toString().trim()
   } catch (err) {
     console.warn('Failed to get Git commit hash:', err)
-    return 'unknown'
+    return 'gitHashIsUnknown'
   }
 }
 
@@ -52,7 +53,7 @@ export default defineConfig(({ command, mode }) => {
     ],
     css: {
       postcss: {
-        plugins: [tailwindcssNesting, tailwindcss(tailwindConfig), autoprefixer as unknown as AcceptedPlugin],
+        plugins: [tailwindcssNesting, tailwindcss(tailwindConfig), autoprefixer] as unknown[] as AcceptedPlugin[],
       },
     },
     define: {

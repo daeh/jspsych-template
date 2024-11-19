@@ -8,7 +8,7 @@ import {
   prolificCUrlTest,
 } from './config'
 
-const gitCommit: string = __COMMIT_HASH__ || 'unknown'
+const gitHash: string = __COMMIT_HASH__ || 'unknown'
 
 const urlSearchParams = new URLSearchParams(window.location.search)
 const urlParams = Object.fromEntries(urlSearchParams)
@@ -22,7 +22,7 @@ export class UserRecord {
   readonly urlParams: Record<string, string>
 
   readonly version: string
-  readonly gitCommit: string
+  readonly gitHash: string
   readonly description: string
 
   constructor(firebaseUId: string) {
@@ -31,7 +31,7 @@ export class UserRecord {
     this.urlParams = urlParams
 
     this.version = version
-    this.gitCommit = gitCommit
+    this.gitHash = gitHash
     this.description = description
 
     if (urlSearchParams.has('PROLIFIC_PID')) {

@@ -86,7 +86,7 @@ export async function initExperimentData(uid: string): Promise<void> {
 
   if (debug) {
     console.log(`Experiment Version: ${userInfo.version}`)
-    console.log(`Git Commit: ${userInfo.gitCommit}`)
+    console.log(`Git Commit: ${userInfo.gitHash}`)
   }
 
   /* Initialize User's Data */
