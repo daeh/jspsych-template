@@ -30,7 +30,7 @@
   "bugs": {
     "url": "https://github.com/daeh/jspsych-template/issues"
   },
-  "templateVersion": "0.1.5",
+  "templateVersion": "0.1.6",
   "source": "./hosting",
   "directories": {
     "serve": "hosting/dist"
@@ -43,35 +43,38 @@
     "@jspsych/plugin-image-keyboard-response": "^2.0.0",
     "@jspsych/plugin-preload": "^2.0.0",
     "firebase": "^11.0.2",
-    "jspsych": "^8.0.3"
+    "jspsych": "^8.1.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.16.0",
     "@stylistic/eslint-plugin": "^2.11.0",
     "@types/eslint": "^9.6.1",
     "@types/eslint-config-prettier": "^6.11.3",
-    "@types/node": "^22.9.1",
-    "@typescript-eslint/eslint-plugin": "^8.14.0",
-    "@typescript-eslint/parser": "^8.14.0",
+    "@types/eslint-plugin-security": "^3.0.0",
+    "@types/node": "^22.10.1",
     "autoprefixer": "^10.4.20",
     "browserslist": "^4.24.2",
     "browserslist-to-esbuild": "^2.1.1",
     "child_process": "^1.0.2",
-    "eslint": "~9.14.0",
+    "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-import-resolver-typescript": "^3.6.3",
+    "eslint-import-resolver-typescript": "^3.7.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "firebase-tools": "^13.25.0",
-    "globals": "^15.12.0",
+    "eslint-plugin-security": "^3.0.1",
+    "eslint-plugin-unicorn": "^56.0.1",
+    "firebase-tools": "^13.28.0",
+    "globals": "^15.13.0",
     "postcss": "^8.4.49",
-    "prettier": "^3.3.3",
+    "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
     "readline-sync": "^1.4.10",
     "shelljs": "^0.8.5",
-    "tailwindcss": "^3.4.15",
-    "typescript": "^5.6.3",
-    "vite": "^5.4.11",
+    "tailwindcss": "^3.4.16",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.17.0",
+    "vite": "^6.0.3",
     "vite-plugin-html": "^3.2.2"
   },
-  "packageManager": "yarn@4.5.1"
+  "packageManager": "yarn@4.5.3"
 }

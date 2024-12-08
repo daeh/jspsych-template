@@ -1,11 +1,10 @@
-import { promises as fs } from 'fs'
-import path from 'path'
+/* eslint-disable security/detect-non-literal-fs-filename */
+/* eslint-disable unicorn/no-process-exit */
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+import { promises as fs } from 'node:fs'
+import path from 'node:path'
+
 import readlineSync from 'readline-sync'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import pkg from 'shelljs'
 
 const { cd, exec, error: shellError } = pkg
@@ -33,7 +32,7 @@ async function updatePackageJsonVersion(newVersion, projectDir) {
   const packageJsonPath = path.join(projectDir, 'package.json')
   const packageJson = JSON.parse(await fs.readFile(packageJsonPath, 'utf8'))
   packageJson.version = newVersion
-  await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n', 'utf8')
+  await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, undefined, 2) + '\n', 'utf8')
 }
 
 /**
@@ -205,8 +204,8 @@ function main(projectPath) {
       () => {
         process.exit(0)
       },
-      (err) => {
-        console.error(err)
+      (error) => {
+        console.error(error)
         process.exit(1)
       },
     )

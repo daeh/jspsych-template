@@ -1,6 +1,8 @@
-import { promises as fs } from 'fs'
-import path from 'path'
-import { fileURLToPath } from 'url'
+/* eslint-disable unicorn/no-process-exit */
+
+import { promises as fs } from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -21,10 +23,10 @@ const destPath = path.join(__dirname, '..', 'hosting', 'src', 'creds.ts')
 async function setup() {
   try {
     await fs.access(srcPath)
-  } catch (err) {
+  } catch (error) {
     return {
       success: true,
-      message: `Template file ${srcPath} not found :: ${err}`,
+      message: `Template file ${srcPath} not found :: ${error}`,
     }
   }
 
@@ -34,9 +36,9 @@ async function setup() {
       success: true,
       message: `${destPath} already exists. Skipping.`,
     }
-  } catch (err) {
+  } catch (error) {
     // File doesn't exist, proceed with copy
-    console.debug(`${destPath} does not exist, proceeding with copy :: ${err}`)
+    console.debug(`${destPath} does not exist, proceeding with copy :: ${error}`)
   }
 
   try {
@@ -45,10 +47,10 @@ async function setup() {
       success: true,
       message: `Created ${destPath} from template.`,
     }
-  } catch (err) {
+  } catch (error) {
     return {
       success: false,
-      message: `Error creating ${destPath} :: ${err}`,
+      message: `Error creating ${destPath} :: ${error}`,
     }
   }
 }
@@ -64,7 +66,8 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error('Unexpected error:', err)
+// eslint-disable-next-line unicorn/prefer-top-level-await
+main().catch((error) => {
+  console.error('Unexpected error:', error)
   process.exit(1)
 })

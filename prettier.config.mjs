@@ -9,9 +9,10 @@ const config = {
   quoteProps: 'consistent',
   bracketSpacing: true,
   bracketSameLine: true,
-  arrowParens: 'always',
+  // arrowParens: 'always',
   proseWrap: 'never',
   endOfLine: 'lf',
+  // experimentalOperatorPosition: 'start', // waiting for prettier 3.5
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   plugins: [import('prettier-plugin-tailwindcss')],

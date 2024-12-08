@@ -1,7 +1,7 @@
-function showContent() {
-  const preloadDiv = document.getElementById('preload-splash')
-  const loadingDiv = document.getElementById('loading-splash')
-  const welcomeDiv = document.getElementById('welcome-splash')
+function showContent(): void {
+  const preloadDiv = document.querySelector('#preload-splash')
+  const loadingDiv = document.querySelector('#loading-splash')
+  const welcomeDiv = document.querySelector('#welcome-splash')
 
   if (loadingDiv) {
     loadingDiv.hidden = false

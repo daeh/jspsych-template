@@ -42,7 +42,8 @@
     },
     "search.exclude": {
       "**/.pnp.*": true,
-      "**/.vscode": true
+      "**/.vscode": true,
+      "**/yarn.lock": true
     },
     "explorer.expandSingleFolderWorkspaces": true,
     "explorer.fileNesting.enabled": true,

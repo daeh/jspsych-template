@@ -1,26 +1,27 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+// @ts-check
 
-import { dirname, resolve } from 'path'
-import { fileURLToPath } from 'url'
+import path from 'node:path'
+const { dirname, resolve } = path
+import { fileURLToPath } from 'node:url'
 
+import jseslint from '@eslint/js'
 import stylisticPlugin from '@stylistic/eslint-plugin'
-import typescriptEslintPlugin from '@typescript-eslint/eslint-plugin'
-import typescriptEslintParser from '@typescript-eslint/parser'
-import prettierConfig from 'eslint-config-prettier'
-import importPlugin from 'eslint-plugin-import'
-import prettierPlugin from 'eslint-plugin-prettier'
+import eslintConfigPrettier from 'eslint-config-prettier'
+import eslintPluginImport from 'eslint-plugin-import'
+// import eslintPluginPrettier from 'eslint-plugin-prettier'
+import security from 'eslint-plugin-security'
+import unicorn from 'eslint-plugin-unicorn'
 import globals from 'globals'
+import { config, configs, parser as tsParser } from 'typescript-eslint'
 
 const projectDirname = dirname(fileURLToPath(import.meta.url))
 
-const context = (() => {
-  if (typeof process.env.NODE_ENV === 'undefined') return 'default'
-  if (process.env.NODE_ENV === 'development') return 'development'
-  if (process.env.NODE_ENV === 'production') return 'production'
-  new Error('Invalid NODE_ENV')
-  return 'error'
-})()
-
+const context = process.env.NODE_ENV ?? 'default'
+if (!['default', 'development', 'production'].includes(context)) {
+  throw new Error(`Invalid NODE_ENV value: ${context}`)
+}
 const tsconfig = (() => {
   if (context === 'default') return './tsconfig.json'
   if (context === 'development') return './tsconfig.dev.json'
@@ -29,264 +30,14 @@ const tsconfig = (() => {
   return 'error'
 })()
 
-const allTsExtensionsArray = ['ts', 'mts', 'cts', 'tsx', 'mtsx']
-const allJsExtensionsArray = ['js', 'mjs', 'cjs', 'jsx', 'mjsx']
+const allTsExtensionsArray = ['ts', 'mts', 'cts']
+const allJsExtensionsArray = ['js', 'mjs', 'cjs']
+const allExtensionsArray = [...allTsExtensionsArray, ...allJsExtensionsArray]
 const allTsExtensions = allTsExtensionsArray.join(',')
 const allJsExtensions = allJsExtensionsArray.join(',')
-const allExtensions = [...allTsExtensionsArray, ...allJsExtensionsArray].join(',')
+const allExtensions = allExtensionsArray.join(',')
 
-const importRules = {
-  ...importPlugin.flatConfigs.recommended.rules,
-  'import/named': 'error',
-  'import/no-unresolved': 'error',
-  '@typescript-eslint/consistent-type-imports': [
-    'error',
-    {
-      prefer: 'type-imports',
-      disallowTypeAnnotations: true,
-      fixStyle: 'inline-type-imports',
-    },
-  ],
-  '@typescript-eslint/no-import-type-side-effects': 'error',
-  'sort-imports': [
-    'error',
-    {
-      allowSeparatedGroups: true,
-      ignoreCase: true,
-      ignoreDeclarationSort: true,
-      ignoreMemberSort: false,
-      memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
-    },
-  ],
-  'import/order': [
-    'error',
-    {
-      'groups': [
-        'builtin', // Built-in imports (come from NodeJS native) go first
-        'external', // External imports
-        'internal', // Absolute imports
-        'parent', // Relative imports
-        'sibling', // Relative imports
-        // ['sibling', 'parent'], // Relative imports, the sibling and parent types they can be mingled together
-        'index', // index imports
-        'type', // type imports
-        'object', // object imports
-        'unknown', // unknown
-      ],
-      'pathGroups': [
-        {
-          pattern: '*.png',
-          group: 'unknown',
-          position: 'after',
-          patternOptions: { matchBase: true },
-        },
-        {
-          pattern: '*.jpg',
-          group: 'unknown',
-          position: 'after',
-          patternOptions: { matchBase: true },
-        },
-      ],
-      'newlines-between': 'always',
-      'distinctGroup': true,
-      'alphabetize': {
-        order: 'asc',
-        caseInsensitive: true, // ignore case
-      },
-    },
-  ],
-}
-
-const baseRules = {
-  'prettier/prettier': 'warn',
-  '@stylistic/max-len': [
-    'warn',
-    { code: 120, ignoreComments: true, ignoreTrailingComments: true, ignoreStrings: true, ignoreUrls: true },
-  ],
-  '@stylistic/indent': ['error', 2, { SwitchCase: 1 }],
-  '@stylistic/semi': ['error', 'never'],
-  '@stylistic/quotes': ['warn', 'single', { avoidEscape: true, allowTemplateLiterals: false }],
-  '@stylistic/object-curly-spacing': ['warn', 'always'],
-  '@stylistic/array-element-newline': ['error', 'consistent'],
-}
-
-const typescriptRules = {
-  ...prettierConfig.rules,
-  ...typescriptEslintPlugin.configs.recommended.rules,
-  ...typescriptEslintPlugin.configs['recommended-type-checked'].rules,
-  ...typescriptEslintPlugin.configs.strict.rules,
-  ...typescriptEslintPlugin.configs['strict-type-checked'].rules,
-  ...typescriptEslintPlugin.configs['stylistic-type-checked'].rules,
-  ...stylisticPlugin.configs['disable-legacy'].rules,
-  ...importRules,
-  ...baseRules,
-  '@typescript-eslint/no-unused-vars': ['warn'],
-}
-
-const javascriptRules = {
-  ...prettierConfig.rules,
-  ...typescriptEslintPlugin.configs.recommended.rules,
-  ...typescriptEslintPlugin.configs.strict.rules,
-  ...typescriptEslintPlugin.configs.stylistic.rules,
-  ...stylisticPlugin.configs['disable-legacy'].rules,
-  ...importRules,
-  ...baseRules,
-}
-
-const typescriptRulesDev = {
-  '@typescript-eslint/no-explicit-any': ['warn'],
-  '@typescript-eslint/no-unsafe-assignment': ['warn'],
-  '@typescript-eslint/no-unsafe-member-access': ['warn'],
-  '@typescript-eslint/no-unsafe-return': ['warn'],
-  '@typescript-eslint/no-unsafe-argument': ['warn'],
-  '@typescript-eslint/no-unused-vars': ['off'],
-  '@typescript-eslint/prefer-nullish-coalescing': ['off'],
-  '@typescript-eslint/no-inferrable-types': ['off'],
-  '@typescript-eslint/dot-notation': ['off'],
-  '@typescript-eslint/no-unnecessary-condition': ['warn'],
-}
-
-/** @type {import("eslint").Linter.Config[]} */
-const config = [
-  {
-    /* setup parser for all files */
-    files: [`**/*.{${allExtensions}}`],
-    languageOptions: {
-      parser: typescriptEslintParser,
-      parserOptions: {
-        ecmaVersion: 'latest', // 2024 sets the ecmaVersion parser option to 15
-        sourceType: 'module',
-        tsconfigRootDir: resolve(projectDirname),
-        project: tsconfig,
-      },
-    },
-  },
-  {
-    /* all typescript files, except config files */
-    files: [`**/*.{${allTsExtensions}}`],
-    ignores: [`**/*.config.{${allTsExtensions}}`],
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-        ...globals.es2021,
-      },
-    },
-    plugins: {
-      // @ts-ignore
-      '@typescript-eslint': typescriptEslintPlugin,
-      '@stylistic': stylisticPlugin,
-      'import': importPlugin,
-      'prettier': prettierPlugin,
-    },
-    rules: {
-      ...typescriptRules,
-    },
-  },
-  {
-    /* +lenient for typescript files in ./src/ folder */
-    files: [`hosting/src/**/*.{${allTsExtensions}}`, `build-pubmods-pubignore/hosting/src/**/*.{${allTsExtensions}}`],
-    ignores: [`**/*.config.{${allTsExtensions}}`],
-    settings: {
-      'import/resolver': {
-        node: {
-          /* for jspsyc */
-        },
-        typescript: {
-          project: tsconfig,
-          alwaysTryTypes: true,
-        },
-      },
-      'import/parsers': {
-        '@typescript-eslint/parser': ['.ts'],
-      },
-      /* for firebase */
-      'import/ignore': ['node_modules/firebase'],
-    },
-    rules: {
-      ...typescriptRules,
-      ...typescriptRulesDev,
-    },
-  },
-  {
-    /* config files: typescript */
-    files: [`**/*.config.{${allTsExtensions}}`],
-    settings: {
-      'import/resolver': {
-        typescript: {},
-      },
-    },
-    plugins: {
-      // @ts-ignore
-      '@typescript-eslint': typescriptEslintPlugin,
-      '@stylistic': stylisticPlugin,
-      'import': importPlugin,
-      'prettier': prettierPlugin,
-    },
-    rules: {
-      ...typescriptRules,
-    },
-  },
-  {
-    /* all javascript files, except config */
-    files: [`**/*.{${allJsExtensions}}`],
-    ignores: [`**/*.config.{${allJsExtensions}}`],
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-        ...globals.es2021,
-      },
-    },
-    plugins: {
-      // @ts-ignore
-      '@typescript-eslint': typescriptEslintPlugin,
-      '@stylistic': stylisticPlugin,
-      'import': importPlugin,
-      'prettier': prettierPlugin,
-    },
-    rules: {
-      ...javascriptRules,
-    },
-  },
-  {
-    /* config files: javascript */
-    files: [`**/*.config.{${allJsExtensions}}`],
-    settings: {
-      'import/resolver': {
-        typescript: {},
-      },
-    },
-    plugins: {
-      // @ts-ignore
-      '@typescript-eslint': typescriptEslintPlugin,
-      '@stylistic': stylisticPlugin,
-      'import': importPlugin,
-      'prettier': prettierPlugin,
-    },
-    rules: {
-      ...javascriptRules,
-    },
-  },
-  {
-    /* utility scripts: javascript */
-    files: [`./scripts/*.{${allJsExtensions}}`],
-    settings: {
-      'import/resolver': {
-        typescript: {},
-      },
-    },
-    plugins: {
-      // @ts-ignore
-      '@typescript-eslint': typescriptEslintPlugin,
-      '@stylistic': stylisticPlugin,
-      'import': importPlugin,
-      'prettier': prettierPlugin,
-    },
-    rules: {
-      ...javascriptRules,
-    },
-  },
+export default config(
   {
     ignores: [
       /* specialized ignore patterns */
@@ -312,6 +63,473 @@ const config = [
       /* project specific patterns */
     ],
   },
-]
 
-export default config
+  /* Prerolled configs */
+  jseslint.configs.recommended,
+  configs.strict,
+  configs.stylistic,
+  stylisticPlugin.configs['recommended-flat'],
+  stylisticPlugin.configs['disable-legacy'],
+
+  /* All Files */
+  {
+    linterOptions: {
+      reportUnusedDisableDirectives: true,
+    },
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: tsconfig,
+        tsconfigRootDir: projectDirname,
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+      },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        ...globals.es2021,
+      },
+    },
+    settings: {
+      // 'import/parsers': {
+      //   '@typescript-eslint/parser': ['.ts', '.mts', '.cts', '.js', '.mjs', '.cjs'],
+      // },
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: [tsconfig],
+        },
+        node: {
+          // extensions: ['.ts', '.mts', '.cts', '.tsx', '.js', '.mjs', '.cjs', '.jsx'],
+        },
+      },
+      // 'import/extensions': ['.ts', '.mts', '.cts', '.tsx', '.js', '.mjs', '.cjs', '.jsx'],
+      // 'import/external-module-folders': ['node_modules', 'node_modules/@types'],
+      // 'import/ignore': ['node_modules/firebase'],
+    },
+    plugins: {
+      // prettier: eslintPluginPrettier,
+      import: eslintPluginImport,
+      unicorn,
+      security,
+    },
+    // Use eslint-config-prettier last to disable stylistic rules that conflict with Prettier.
+    ...eslintConfigPrettier,
+    rules: {
+      // Security plugin rules - enabling a subset of important checks
+      'security/detect-object-injection': 'warn',
+      'security/detect-non-literal-fs-filename': 'warn',
+      'security/detect-non-literal-require': 'warn',
+      'security/detect-possible-timing-attacks': 'warn',
+
+      // Unicorn plugin: we start with recommended settings plus some specific rules
+      ...unicorn.configs.recommended.rules,
+      // Example: If you want to enforce more modern code:
+      // 'unicorn/prevent-abbreviations': 'warn',
+      // 'unicorn/no-null': 'warn',
+      'unicorn/prevent-abbreviations': 'off',
+      'unicorn/filename-case': 'off',
+      'unicorn/no-null': 'warn',
+      'unicorn/prefer-ternary': ['off'],
+
+      /* Stylistic */
+      '@stylistic/max-len': [
+        'warn',
+        { code: 120, ignoreComments: true, ignoreTrailingComments: true, ignoreStrings: true, ignoreUrls: true },
+      ],
+      '@stylistic/indent': ['error', 2, { SwitchCase: 1 }],
+      '@stylistic/semi': ['error', 'never'],
+      '@stylistic/quotes': ['warn', 'single', { avoidEscape: true, allowTemplateLiterals: false }],
+      '@stylistic/object-curly-spacing': ['warn', 'always'],
+      '@stylistic/array-element-newline': ['error', 'consistent'],
+      '@stylistic/brace-style': ['warn', '1tbs', { allowSingleLine: true }],
+      '@stylistic/member-delimiter-style': [
+        'warn',
+        {
+          multiline: {
+            delimiter: 'none',
+            requireLast: false,
+          },
+          singleline: {
+            delimiter: 'semi',
+            requireLast: false,
+          },
+          multilineDetection: 'brackets',
+        },
+      ],
+      '@stylistic/operator-linebreak': ['warn', 'after'], /// DEBUG temp disabled until prettier 3.5 supports experimentalOperatorPosition
+      '@stylistic/indent-binary-ops': ['off'], /// DEBUG temp disabled until prettier 3.5 supports experimentalOperatorPosition
+    },
+  },
+
+  // All TypeScript files
+  {
+    files: [`**/*.{${allTsExtensions}}`],
+    extends: [
+      // configs.recommendedTypeChecked,
+      configs.strictTypeChecked,
+      configs.stylisticTypeChecked,
+    ],
+    plugins: {
+      import: eslintPluginImport,
+    },
+    rules: {
+      /* Import */
+      ...eslintPluginImport.flatConfigs.recommended.rules,
+      ...eslintPluginImport.flatConfigs.typescript.rules,
+      'import/no-unresolved': 'error',
+      'sort-imports': [
+        'error',
+        {
+          allowSeparatedGroups: true,
+          ignoreCase: true,
+          ignoreDeclarationSort: true,
+          ignoreMemberSort: false,
+          memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
+        },
+      ],
+      'import/order': [
+        'error',
+        {
+          'groups': [
+            'builtin', // Built-in imports (come from NodeJS native) go first
+            'external', // External imports
+            'internal', // Absolute imports
+            'parent', // Relative imports
+            'sibling', // Relative imports
+            // ['sibling', 'parent'], // Relative imports, the sibling and parent types they can be mingled together
+            'index', // index imports
+            'type', // type imports
+            'object', // object imports
+            'unknown', // unknown
+          ],
+          'pathGroups': [
+            {
+              pattern: '*.png',
+              group: 'unknown',
+              position: 'after',
+              patternOptions: { matchBase: true },
+            },
+            {
+              pattern: '*.jpg',
+              group: 'unknown',
+              position: 'after',
+              patternOptions: { matchBase: true },
+            },
+          ],
+          'newlines-between': 'always',
+          'distinctGroup': true,
+          'alphabetize': {
+            order: 'asc',
+            caseInsensitive: true, // ignore case
+          },
+        },
+      ],
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        {
+          prefer: 'type-imports',
+          disallowTypeAnnotations: true,
+          fixStyle: 'inline-type-imports',
+        },
+      ],
+      '@typescript-eslint/no-import-type-side-effects': 'error',
+
+      'no-extra-boolean-cast': 'off',
+      'no-alert': 'error',
+      'no-self-compare': 'error',
+      'no-unreachable-loop': 'error',
+      'no-template-curly-in-string': 'error',
+      'no-unused-private-class-members': 'error',
+      'no-extend-native': 'error',
+      'no-floating-decimal': 'error',
+      'no-implied-eval': 'error',
+      'no-iterator': 'error',
+      'no-lone-blocks': 'error',
+      'no-loop-func': 'error',
+      'no-new-object': 'error',
+      'no-proto': 'error',
+      'no-useless-catch': 'error',
+      'one-var-declaration-per-line': 'error',
+      'prefer-arrow-callback': 'warn',
+      'prefer-destructuring': 'warn',
+      'prefer-exponentiation-operator': 'error',
+      'prefer-promise-reject-errors': 'warn',
+      'prefer-regex-literals': 'error',
+      'prefer-spread': 'warn',
+      'prefer-template': 'warn',
+      // 'require-await': 'error',
+      '@typescript-eslint/adjacent-overload-signatures': 'error',
+
+      '@typescript-eslint/array-type': [
+        'error',
+        {
+          default: 'array',
+        },
+      ],
+
+      '@typescript-eslint/no-restricted-types': [
+        'error',
+        {
+          types: {
+            Object: {
+              message: 'Avoid using the `Object` type. Did you mean `object`?',
+              fixWith: 'object',
+            },
+
+            Function: {
+              message: 'Avoid using the `Function` type. Prefer a specific function type, like `() => void`.',
+            },
+
+            Boolean: {
+              message: 'Avoid using the `Boolean` type. Did you mean `boolean`?',
+              fixWith: 'boolean',
+            },
+
+            Number: {
+              message: 'Avoid using the `Number` type. Did you mean `number`?',
+              fixWith: 'number',
+            },
+
+            String: {
+              message: 'Avoid using the `String` type. Did you mean `string`?',
+              fixWith: 'string',
+            },
+
+            Symbol: {
+              message: 'Avoid using the `Symbol` type. Did you mean `symbol`?',
+              fixWith: 'symbol',
+            },
+          },
+        },
+      ],
+
+      '@typescript-eslint/consistent-type-assertions': 'error',
+
+      '@typescript-eslint/explicit-function-return-type': [
+        'warn',
+        {
+          allowExpressions: true,
+          allowTypedFunctionExpressions: true,
+          allowHigherOrderFunctions: false,
+          allowDirectConstAssertionInArrowFunctions: true,
+          allowConciseArrowFunctionExpressionsStartingWithVoid: true,
+        },
+      ],
+
+      '@typescript-eslint/explicit-member-accessibility': [
+        'error',
+        {
+          accessibility: 'explicit',
+
+          overrides: {
+            accessors: 'explicit',
+          },
+        },
+      ],
+
+      '@typescript-eslint/explicit-module-boundary-types': [
+        'error',
+        {
+          allowArgumentsExplicitlyTypedAsAny: true,
+          allowDirectConstAssertionInArrowFunctions: true,
+          allowHigherOrderFunctions: false,
+          allowTypedFunctionExpressions: false,
+        },
+      ],
+
+      '@typescript-eslint/naming-convention': [
+        'warn',
+        {
+          selector: ['objectLiteralProperty'],
+          leadingUnderscore: 'allow',
+          format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
+
+          filter: {
+            regex: '(^[a-z]+:.+)|_attr|[0-9]',
+            match: false,
+          },
+        },
+      ],
+
+      '@typescript-eslint/no-empty-function': 'warn',
+      '@typescript-eslint/no-empty-interface': 'warn',
+      // '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-misused-new': 'error',
+      '@typescript-eslint/no-namespace': 'warn',
+      '@typescript-eslint/no-parameter-properties': 'off',
+      '@typescript-eslint/no-require-imports': 'error',
+
+      '@typescript-eslint/no-shadow': [
+        'error',
+        {
+          hoist: 'all',
+        },
+      ],
+
+      '@typescript-eslint/no-this-alias': 'error',
+      '@typescript-eslint/no-unused-expressions': 'warn',
+      '@typescript-eslint/no-use-before-define': 'error',
+      '@typescript-eslint/no-var-requires': 'error',
+      '@typescript-eslint/prefer-for-of': 'error',
+      '@typescript-eslint/prefer-function-type': 'error',
+      '@typescript-eslint/prefer-namespace-keyword': 'error',
+      '@typescript-eslint/prefer-readonly': 'error',
+
+      '@typescript-eslint/triple-slash-reference': [
+        'error',
+        {
+          path: 'always',
+          types: 'prefer-import',
+          lib: 'always',
+        },
+      ],
+
+      '@typescript-eslint/typedef': [
+        'warn',
+        {
+          parameter: true,
+          propertyDeclaration: true,
+        },
+      ],
+
+      '@typescript-eslint/unified-signatures': 'error',
+      // 'arrow-body-style': 'error',
+      'complexity': 'off',
+      'consistent-return': 'error',
+      'constructor-super': 'error',
+      // 'curly': 'error',
+      'dot-notation': 'off',
+      'eqeqeq': ['error', 'smart'],
+      'guard-for-in': 'error',
+
+      'id-denylist': [
+        'error',
+        'any',
+        'Number',
+        'number',
+        'String',
+        'string',
+        'Boolean',
+        'boolean',
+        'Undefined',
+        'undefined',
+      ],
+
+      'id-match': 'error',
+      // 'import/no-default-export': 'error',
+      'import/no-extraneous-dependencies': 'off',
+      'import/no-internal-modules': 'off',
+      'indent': 'off',
+      'max-classes-per-file': 'off',
+      'max-len': 'off',
+      'new-parens': 'error',
+      'no-bitwise': 'error',
+      'no-caller': 'error',
+      'no-cond-assign': 'error',
+      'no-console': 'off',
+      'no-debugger': 'error',
+      'no-duplicate-case': 'error',
+      // 'no-duplicate-imports': 'error',
+      'no-empty': 'error',
+      'no-empty-function': 'off',
+      'no-eval': 'error',
+      'no-extra-bind': 'error',
+      'no-fallthrough': 'off',
+      'no-invalid-this': 'off',
+      'no-multiple-empty-lines': 'error',
+      'no-new-func': 'error',
+      'no-new-wrappers': 'error',
+      'no-param-reassign': 'error',
+      'no-redeclare': 'error',
+      'no-return-await': 'error',
+      'no-sequences': 'error',
+      'no-shadow': 'off',
+      'no-sparse-arrays': 'error',
+      'no-throw-literal': 'error',
+      'no-trailing-spaces': 'error',
+      'no-undef-init': 'error',
+
+      'no-unsafe-finally': 'error',
+      'no-unused-expressions': 'off',
+      'no-unused-labels': 'error',
+      'no-use-before-define': 'off',
+      'no-useless-constructor': 'error',
+      'no-var': 'error',
+      'object-shorthand': 'off',
+      'one-var': ['error', 'never'],
+      // 'prefer-arrow/prefer-arrow-functions': 'error',
+      'prefer-const': 'error',
+      'prefer-object-spread': 'error',
+      'radix': 'error',
+      'space-in-parens': ['error', 'never'],
+
+      'use-isnan': 'error',
+      'valid-typeof': 'off',
+    },
+  },
+
+  {
+    files: [`hosting/**/*.{${allTsExtensions}}`],
+
+    rules: {
+      '@typescript-eslint/no-explicit-any': ['warn'],
+      '@typescript-eslint/no-unsafe-assignment': ['warn'],
+      '@typescript-eslint/no-unsafe-member-access': ['warn'],
+      '@typescript-eslint/no-unsafe-return': ['warn'],
+      '@typescript-eslint/no-unsafe-argument': ['warn'],
+      '@typescript-eslint/no-unused-vars': ['off'],
+      '@typescript-eslint/prefer-nullish-coalescing': ['warn'],
+      '@typescript-eslint/no-inferrable-types': ['off'],
+      '@typescript-eslint/dot-notation': ['warn'],
+      '@typescript-eslint/no-unnecessary-condition': ['warn'],
+    },
+  },
+
+  // JS files
+  {
+    files: [`**/*.{${allJsExtensions}}`],
+    extends: [jseslint.configs.recommended],
+    plugins: {
+      import: eslintPluginImport,
+    },
+    rules: {
+      ...configs.disableTypeChecked.rules,
+      ...eslintPluginImport.flatConfigs.recommended.rules,
+      'import/no-unresolved': 'error',
+      'sort-imports': [
+        'error',
+        {
+          allowSeparatedGroups: true,
+          ignoreCase: true,
+          ignoreDeclarationSort: true,
+          ignoreMemberSort: false,
+          memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
+        },
+      ],
+      'import/order': [
+        'error',
+        {
+          'groups': [
+            'builtin', // Built-in imports (come from NodeJS native) go first
+            'external', // External imports
+            'internal', // Absolute imports
+            'parent', // Relative imports
+            'sibling', // Relative imports
+            // ['sibling', 'parent'], // Relative imports, the sibling and parent types they can be mingled together
+            'index', // index imports
+            'type', // type imports
+            'object', // object imports
+            'unknown', // unknown
+          ],
+          'newlines-between': 'always',
+          'distinctGroup': true,
+          'alphabetize': {
+            order: 'asc',
+            caseInsensitive: true, // ignore case
+          },
+        },
+      ],
+    },
+  },
+)

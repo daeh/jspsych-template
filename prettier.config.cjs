@@ -9,9 +9,10 @@ const config = {
   quoteProps: 'consistent',
   bracketSpacing: true,
   bracketSameLine: true,
-  arrowParens: 'always',
+  // arrowParens: 'always',
   proseWrap: 'never',
   endOfLine: 'lf',
+  // experimentalOperatorPosition: 'start',  // waiting for prettier 3.5
   plugins: ['prettier-plugin-tailwindcss'],
   tailwindConfig: './tailwind.config.ts',
   overrides: [

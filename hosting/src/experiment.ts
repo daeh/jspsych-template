@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+
 import jsPsychHtmlKeyboardResponse from '@jspsych/plugin-html-keyboard-response'
 import jsPsychImageKeyboardResponse from '@jspsych/plugin-image-keyboard-response'
 import jsPsychPreload from '@jspsych/plugin-preload'
@@ -44,16 +46,16 @@ ${debuggingText}
 const exitExperiment = (): void => {
   document.body.innerHTML = exitMessage
   setTimeout(() => {
-    window.location.replace(prolificCUrl)
+    globalThis.location.replace(prolificCUrl)
   }, 3000)
 }
 
 const exitExperimentDebugging = (): void => {
-  const contentDiv = document.getElementById('jspsych-content')
+  const contentDiv = document.querySelector('#jspsych-content')
   if (contentDiv) contentDiv.innerHTML = exitMessage
 }
 
-export async function runExperiment(updateDebugPanel: () => void) {
+export async function runExperiment(updateDebugPanel: () => void): Promise<void> {
   if (debug) {
     console.log('--runExperiment--')
     console.log('UserInfo ::', getUserInfo())
@@ -76,14 +78,14 @@ export async function runExperiment(updateDebugPanel: () => void) {
               }
             }
           },
-          (err: unknown) => {
-            console.error(err) // Error!
+          (error: unknown) => {
+            console.error(error) // Error!
           },
         )
       }
     },
     on_finish: (data: DataCollection) => {
-      const contentDiv = document.getElementById('jspsych-content')
+      const contentDiv = document.querySelector('#jspsych-content')
       if (contentDiv) contentDiv.innerHTML = '<p> Please wait, your data are being saved.</p>'
       saveTrialDataComplete(data.values()).then(
         () => {
@@ -99,8 +101,8 @@ export async function runExperiment(updateDebugPanel: () => void) {
             exitExperiment()
           }
         },
-        (err: unknown) => {
-          console.error(err) // Error!
+        (error: unknown) => {
+          console.error(error) // Error!
           exitExperiment()
         },
       )
@@ -173,6 +175,7 @@ export async function runExperiment(updateDebugPanel: () => void) {
       correct_response: jsPsych.timelineVariable('correct_response') as unknown as string,
     },
     on_finish: function (data: TrialData) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, unicorn/no-null
       data.correct = jsPsych.pluginAPI.compareKeys(data.response || null, data.correct_response || null)
       data.saveIncrementally = true
     },

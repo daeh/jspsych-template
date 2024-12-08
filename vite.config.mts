@@ -1,4 +1,6 @@
-import { execSync } from 'child_process'
+/* eslint-disable @typescript-eslint/naming-convention */
+
+import { execSync } from 'node:child_process'
 
 import autoprefixer from 'autoprefixer'
 import browserslistToEsbuild from 'browserslist-to-esbuild'
@@ -10,25 +12,26 @@ import { createHtmlPlugin } from 'vite-plugin-html'
 import tailwindConfig from './tailwind.config'
 
 // import type { AcceptedPlugin } from 'tailwindcss/node_modules/postcss'
-import type { AcceptedPlugin } from 'postcss'
+// import type { AcceptedPlugin } from 'postcss'
+// import type { AcceptedPlugin } from 'tailwindcss/stubs/postcss.config'
 import type { UserConfig } from 'vite'
 
 const filesPathToExclude: (string | RegExp)[] = [/[-_]buildignore/]
 
 // Function to get the current commit hash
-function getCurrentCommitHash() {
+function getCurrentCommitHash(): string {
   try {
     return execSync('git log -1 --format="%H"').toString().trim()
-  } catch (err) {
-    console.warn('Failed to get Git commit hash:', err)
-    return 'gitHashIsUnknown'
+  } catch (error) {
+    console.warn('Failed to get Git commit hash:', error)
+    return 'gitCommitHashUnknown'
   }
 }
 
 export default defineConfig(({ command, mode }) => {
-  console.log('VITE COMMAND: ', command)
-  console.log('VITE MODE: ', mode)
-  console.log('NODE MODE: ', process.env.NODE_ENV)
+  console.log('VITE COMMAND:', command)
+  console.log('VITE MODE:', mode)
+  console.log('NODE MODE:', process.env.NODE_ENV)
 
   let title = 'Expt-Template Mode Unknown'
   if (mode === 'development') {
@@ -53,7 +56,7 @@ export default defineConfig(({ command, mode }) => {
     ],
     css: {
       postcss: {
-        plugins: [tailwindcssNesting, tailwindcss(tailwindConfig), autoprefixer] as unknown[] as AcceptedPlugin[],
+        plugins: [tailwindcssNesting, tailwindcss(tailwindConfig), autoprefixer], //  as unknown[] as AcceptedPlugin[]
       },
     },
     define: {

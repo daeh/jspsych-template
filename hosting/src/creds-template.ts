@@ -11,4 +11,4 @@ export const firebaseCred: FirebaseOptions = {
   measurementId: 'G-REPLACEWITHYOURS',
 }
 
-export const prolificCompletionCode: string = 'REPLACE-WITH-YOURS'
+export const prolificCompletionCode = 'REPLACE-WITH-YOURS'

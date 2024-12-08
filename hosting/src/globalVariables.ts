@@ -6,26 +6,26 @@ import {
   prolificCCode,
   prolificCUrlLive,
   prolificCUrlTest,
-} from './config'
+} from './appConfig'
 
 const gitHash: string = __COMMIT_HASH__ || 'unknown'
 
-const urlSearchParams = new URLSearchParams(window.location.search)
+const urlSearchParams = new URLSearchParams(globalThis.location.search)
 const urlParams = Object.fromEntries(urlSearchParams)
 
 export class UserRecord {
-  readonly firebaseUId: string
-  readonly prolificPId: string
-  readonly prolificStudyId: string
-  readonly prolificSessionId: string
+  public readonly firebaseUId: string
+  public readonly prolificPId: string
+  public readonly prolificStudyId: string
+  public readonly prolificSessionId: string
 
-  readonly urlParams: Record<string, string>
+  public readonly urlParams: Record<string, string>
 
-  readonly version: string
-  readonly gitHash: string
-  readonly description: string
+  public readonly version: string
+  public readonly gitHash: string
+  public readonly description: string
 
-  constructor(firebaseUId: string) {
+  public constructor(firebaseUId: string) {
     this.firebaseUId = firebaseUId
 
     this.urlParams = urlParams
@@ -35,17 +35,17 @@ export class UserRecord {
     this.description = description
 
     if (urlSearchParams.has('PROLIFIC_PID')) {
-      this.prolificPId = urlSearchParams.get('PROLIFIC_PID') || 'error'
+      this.prolificPId = urlSearchParams.get('PROLIFIC_PID') ?? 'error'
     } else {
       this.prolificPId = ''
     }
     if (urlSearchParams.has('STUDY_ID')) {
-      this.prolificStudyId = urlSearchParams.get('STUDY_ID') || 'error'
+      this.prolificStudyId = urlSearchParams.get('STUDY_ID') ?? 'error'
     } else {
       this.prolificStudyId = ''
     }
     if (urlSearchParams.has('SESSION_ID')) {
-      this.prolificSessionId = urlSearchParams.get('SESSION_ID') || 'error'
+      this.prolificSessionId = urlSearchParams.get('SESSION_ID') ?? 'error'
     } else {
       this.prolificSessionId = ''
     }
@@ -79,20 +79,20 @@ export function getExptInitialized(): boolean {
 function emulator(): boolean {
   /* Returns true if web app is running locally
    */
-  return window.location.hostname === 'localhost'
+  return globalThis.location.hostname === 'localhost'
 }
 
-export function sandbox() {
+export function sandbox(): boolean {
   /* Returns true if web app is running locally or on a sandboxed server
    */
-  //TODO add sandboxed server detection
+  // TODO add sandboxed server detection
   return emulator()
 }
 
-function definitelyLive() {
+function definitelyLive(): boolean {
   /* Returns true if web app is running on a live server
    */
-  return !sandbox() && !emulator() && getURLParams().hasOwnProperty('PROLIFIC_PID')
+  return !sandbox() && !emulator() && Object.hasOwn(getURLParams(), 'PROLIFIC_PID')
 }
 
 export function debugging(): boolean {
@@ -108,31 +108,59 @@ export function debugging(): boolean {
   if (definitelyLive()) {
     return false
   }
-  if (getURLParams().hasOwnProperty('debug')) {
+
+  const urlParameters = getURLParams()
+
+  if (Object.hasOwn(urlParameters, 'debug')) {
     // load with https://*.web.app/?debug
+    try {
+      const val = urlParameters.debug.toLowerCase()
+      if (val === 'false') {
+        return false
+      }
+    } catch (error) {
+      console.error('debugging() :: urlParameters["debug"]', error)
+    }
     return true
   }
-  if (getURLParams().hasOwnProperty('nodebug')) {
+  if (Object.hasOwn(urlParameters, 'nodebug')) {
     // load with https://*.web.app/?nodebug
     return false
   }
   if (!emulator()) {
     return false
   }
-  if (Object.keys(getURLParams()).length) {
+  /// If there are are URL Search Params, and the search param do not explicitly use "debug" or "nodebug", turn debugging off
+  if (Object.keys(urlParams).length > 0) {
     return false
   }
   return debug
 }
 
 export function mockStore(): boolean {
-  if (!debugging()) {
+  if (definitelyLive()) {
     return false
   }
-  return mock
+  const urlParameters = getURLParams()
+  if (Object.hasOwn(urlParameters, 'mock')) {
+    // load with https://*.web.app/?mock
+    try {
+      const val = urlParameters.mock.toLowerCase()
+      if (val === 'false') {
+        return false
+      }
+    } catch (error) {
+      console.error('mockStore() :: urlParameters["mock"]', error)
+    }
+    return true
+  }
+  if (debugging()) {
+    return mock
+  }
+  return false
 }
 
-export function getDocStr(docId: string) {
+export function getDocStr(docId: string): string {
   /* This gives a way to keep the PRODUCTION mode data separate from the DEBUGGING mode data.
    * Appends "-dbug" to the FireStore docId if web app is in debugging mode or is sandboxed.
    */
@@ -142,6 +170,6 @@ export function getDocStr(docId: string) {
 }
 
 export const prolificCC = definitelyLive() ? prolificCCode : 'TESTING'
-export const prolificCUrl = definitelyLive()
-  ? `${prolificCUrlLive}?cc=${prolificCCode}`
-  : `${prolificCUrlTest}?prolific&cc=${prolificCC}`
+// prettier-ignore
+// eslint-disable-next-line @stylistic/max-len
+export const prolificCUrl = definitelyLive() ? `${prolificCUrlLive}?cc=${prolificCCode}` : `${prolificCUrlTest}?prolific&cc=${prolificCC}`

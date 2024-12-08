@@ -16,19 +16,19 @@ export function enableBeginExperiment(): void {
 
   if (getExptInitialized()) return
 
-  const welcomeDiv = document.getElementById('welcome-splash')
-  const startButton = document.getElementById('startButton') as HTMLButtonElement
-  const loadingDiv = document.getElementById('loading-splash')
+  const welcomeDiv = document.querySelector('#welcome-splash')
+  const startButton = document.querySelector('#startButton')
+  const loadingDiv = document.querySelector('#loading-splash')
 
   /* Mock Database Panel */
 
-  const debugButton = document.getElementById('debug-panel-button')
-  const debugPanel = document.getElementById('debug-panel-display')
-  const debugPanelPre = document.getElementById('debug-panel-code')
+  const debugButton = document.querySelector('#debug-panel-button')
+  const debugPanel = document.querySelector('#debug-panel-display')
+  const debugPanelPre = document.querySelector('#debug-panel-code')
 
   function updateDebugPanel(): void {
     if (debugPanelPre) {
-      debugPanelPre.textContent = JSON.stringify(getMockDbState(), null, 2)
+      debugPanelPre.textContent = JSON.stringify(getMockDbState(), undefined, 2)
     }
   }
 
@@ -37,18 +37,20 @@ export function enableBeginExperiment(): void {
     updateDebugPanel()
   }
 
-  debugButton?.addEventListener('click', () => {
-    debugButton.blur()
-    toggleDebugPanel()
-  })
+  if (debugButton instanceof HTMLElement) {
+    debugButton.addEventListener('click', () => {
+      debugButton.blur()
+      toggleDebugPanel()
+    })
+  }
 
   /* Mock Database Panel */
   if (debug && mock) {
-    if (debugButton) {
+    if (debugButton instanceof HTMLElement) {
       debugButton.hidden = false
       debugButton.classList.remove('jspsych-display-element', 'hidden')
     }
-    if (debugPanel) {
+    if (debugPanel instanceof HTMLElement) {
       debugPanel.hidden = false
       debugPanel.classList.remove('jspsych-display-element')
     }
@@ -57,38 +59,40 @@ export function enableBeginExperiment(): void {
     debugPanel?.remove()
   }
 
-  if (loadingDiv) {
+  if (loadingDiv instanceof HTMLElement) {
     loadingDiv.style.display = 'none'
     loadingDiv.hidden = false
   }
 
-  if (welcomeDiv) {
+  if (welcomeDiv instanceof HTMLElement) {
     welcomeDiv.style.display = 'flex'
     welcomeDiv.hidden = false
   }
 
-  startButton.addEventListener('click', () => {
-    startButton.blur()
-    startButton.disabled = true
+  if (startButton instanceof HTMLButtonElement) {
+    startButton.addEventListener('click', () => {
+      startButton.blur()
+      startButton.disabled = true
 
-    if (welcomeDiv) {
-      welcomeDiv.style.display = 'none'
-    }
-    welcomeDiv?.remove()
+      if (welcomeDiv instanceof HTMLElement) {
+        welcomeDiv.style.display = 'none'
+      }
+      welcomeDiv?.remove()
 
-    runExperiment(updateDebugPanel).then(
-      () => {
-        if (debug) {
-          console.log('runExperiment: Finished: Success') // Success!
-        }
-      },
-      (err: unknown) => {
-        console.error(err) // Error!
-      },
-    )
-  })
+      runExperiment(updateDebugPanel).then(
+        () => {
+          if (debug) {
+            console.log('runExperiment: Finished: Success') // Success!
+          }
+        },
+        (error: unknown) => {
+          console.error(error) // Error!
+        },
+      )
+    })
 
-  startButton.textContent = "Let's Go!"
-  startButton.disabled = false
-  setExptInitialized(true)
+    startButton.textContent = "Let's Go!"
+    startButton.disabled = false
+    setExptInitialized(true)
+  }
 }

@@ -5,8 +5,8 @@ import time
 from pathlib import Path
 from typing import NamedTuple, Optional, Union
 
-import firebase_admin
-from firebase_admin import credentials, firestore
+import firebase_admin  # type: ignore
+from firebase_admin import credentials, firestore  # type: ignore
 
 
 class FirestoreEncoder(json.JSONEncoder):
@@ -89,7 +89,7 @@ def authorize(credpath: str, encrypted=False):
     return firestore.client()
 
 
-def getdata(
+def get_data(
     credpath: str, exportpath: str, collections: list[str], encrypted: bool = False
 ):
     export_path = Path(exportpath).expanduser()
@@ -156,7 +156,7 @@ def main(
     collections: list[str],
     encrypted: bool = False,
 ):
-    getdata(
+    get_data(
         credpath=credpath,
         exportpath=exportpath,
         collections=collections,

@@ -26,4 +26,4 @@ const firebaseCredMock: FirebaseOptions = {
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 export const firebaseConfig: FirebaseOptions = simulateMockDatabase ? firebaseCredMock : firebaseCred
 
-export const prolificCCode = prolificCompletionCode
+export const prolificCCode: string = prolificCompletionCode

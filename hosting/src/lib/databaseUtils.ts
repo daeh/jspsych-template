@@ -27,7 +27,7 @@ const setDoc = databaseBackend.setDoc as typeof import('firebase/firestore').set
 const updateDoc = databaseBackend.updateDoc as typeof import('firebase/firestore').updateDoc
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 const getDataBase = databaseBackend.getDataBase as typeof import('firebase/firestore').getFirestore
-const getUID = databaseBackend.getUID
+const { getUID } = databaseBackend
 
 interface ExperimentDocData extends UserRecord {
   dateInit: Timestamp
@@ -62,9 +62,10 @@ async function initData(userInfo: UserRecord): Promise<void> {
 
   if (docSnap.exists()) {
     const existingData = docSnap.data()
-    if (existingData.hasOwnProperty('priorInits')) {
-      let { priorInits, ...existingDataReduced } = existingData
-      if (priorInits && priorInits instanceof Array && priorInits.length > 0) {
+    if (Object.hasOwn(existingData, 'priorInits')) {
+      const { priorInits, ...existingDataReduced } = existingData
+      if (priorInits && Array.isArray(priorInits) && priorInits.length > 0) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         docData.priorInits = [...priorInits, existingDataReduced]
       } else {
         docData.priorInits = [priorInits, existingDataReduced]
@@ -104,8 +105,8 @@ export async function saveTrialDataPartialAddUnique(trialData: SaveableDataRecor
     })
 
     return true
-  } catch (err) {
-    console.error('saveSlideDataRemotely error:', err)
+  } catch (error) {
+    console.error('saveSlideDataRemotely error:', error)
     return false
   }
 }
@@ -129,6 +130,7 @@ export async function saveTrialDataPartialFullOverwrite(trialData: SaveableDataR
 
       const data: Record<string, unknown[]> = {}
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       data.trialsPartial = userData.trialsPartial ?? []
 
       data.trialsPartial.push(trialData)
@@ -141,8 +143,8 @@ export async function saveTrialDataPartialFullOverwrite(trialData: SaveableDataR
       }
     })
     return true
-  } catch (err) {
-    console.error('Error saving data:: ', err)
+  } catch (error) {
+    console.error('Error saving data::', error)
     return false
   }
 }
@@ -162,6 +164,7 @@ export async function saveTrialDataPartial(trialData: SaveableDataRecord): Promi
       const trials = Array.isArray(data.trialsPartial) ? data.trialsPartial : []
 
       transaction.update(docRef, {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         trialsPartial: [...trials, trialData],
       })
     })
@@ -170,8 +173,8 @@ export async function saveTrialDataPartial(trialData: SaveableDataRecord): Promi
       console.log('Successfully saved data')
     }
     return true
-  } catch (err) {
-    console.error('Error saving data:: ', err)
+  } catch (error) {
+    console.error('Error saving data::', error)
     return false
   }
 }
@@ -202,8 +205,8 @@ export async function saveTrialDataComplete(jsPsychDataTrials: unknown[]): Promi
         console.log('Successfully saved data')
       }
     })
-  } catch (err) {
-    console.error('Error saving data:: ', err)
+  } catch (error) {
+    console.error('Error saving data::', error)
     return false
   }
   return true
@@ -230,8 +233,8 @@ export async function saveRootData(responseData: SaveableDataRecord): Promise<bo
         console.log('Successfully saved data')
       }
     })
-  } catch (err) {
-    console.error('Error saving data:: ', err)
+  } catch (error) {
+    console.error('Error saving local data::', error)
     return false
   }
   return true
