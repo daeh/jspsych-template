@@ -3,11 +3,11 @@ function showContent(): void {
   const loadingDiv = document.querySelector('#loading-splash')
   const welcomeDiv = document.querySelector('#welcome-splash')
 
-  if (loadingDiv) {
+  if (loadingDiv && loadingDiv instanceof HTMLElement) {
     loadingDiv.hidden = false
   }
   preloadDiv?.remove()
-  if (welcomeDiv) {
+  if (welcomeDiv && welcomeDiv instanceof HTMLElement) {
     welcomeDiv.hidden = false
   }
 }
