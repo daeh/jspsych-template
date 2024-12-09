@@ -18,15 +18,21 @@ import type { Firestore } from 'firebase/firestore'
 
 const mockDb = {} as Firestore
 
-let mockUid: string | null = `mock-user-${Math.random().toString(36).slice(2, 11)}`
+let mockUid: string = `mock-user-${Math.random().toString(36).slice(2, 11)}`
 
 const debug: boolean = debugging()
 const mock: boolean = mockStore()
 
-const deepClone = (obj: any): any => structuredClone(obj)
+// eslint-disable-next-line unicorn/prefer-structured-clone
+const deepClone = (obj: any): any => JSON.parse(JSON.stringify(obj))
+
 const log = (message: string, data?: any): void => {
   if (debug) {
-    console.log(`Mock Firestore: ${message}`, data)
+    if (data) {
+      console.log(`(MockFirestore) ${message}`, data)
+    } else {
+      console.log(`(MockFirestore) ${message}`)
+    }
   }
 }
 
@@ -34,14 +40,23 @@ export const doc = (db: any, collection: string, id: string): any => ({
   path: `${collection}/${id}`,
 })
 
-export const getDoc = async (docRef: any): Promise<{ exists: () => boolean; data: () => any }> => ({
-  exists: () => docRef.path in mockDb,
-  data: () => (mockDb[docRef.path] ? deepClone(mockDb[docRef.path]) : undefined),
-})
+export const getDoc = async (docRef: any): Promise<{ exists: () => boolean; data: () => any }> => {
+  return {
+    exists: () => docRef.path in mockDb,
+    data: () => (mockDb[docRef.path] ? deepClone(mockDb[docRef.path]) : undefined),
+  }
+}
+
+export const getDocs = async (): Promise<{ id: string; data: () => any }[]> => {
+  return Object.entries(mockDb).map(([path, data]) => ({
+    id: path.split('/').pop(),
+    data: () => deepClone(data),
+  }))
+}
 
 export const setDoc = async (docRef: any, data: any): Promise<void> => {
   mockDb[docRef.path] = deepClone(data)
-  log('Document set', { path: docRef.path, data })
+  log('setDoc: Document set', { path: docRef.path, data })
 }
 
 export const updateDoc = async (docRef: any, updates: Record<string, unknown>): Promise<void> => {
@@ -66,7 +81,7 @@ export const updateDoc = async (docRef: any, updates: Record<string, unknown>): 
     ...updatedFields,
   }
 
-  log('Mock Firestore: Document updated', { path: docRef.path, updates })
+  log('updateDoc: Document updated', { path: docRef.path, updates })
 }
 
 export const arrayUnion = (...elements: any[]): { __type: string; values: any[] } => ({
@@ -75,15 +90,12 @@ export const arrayUnion = (...elements: any[]): { __type: string; values: any[] 
   values: elements,
 })
 
-export const runTransaction = async (
-  database: any,
-  updateFunction: (transaction: any) => Promise<void>,
-): Promise<void> => {
+export const runTransaction = async (db: any, updateFunction: (transaction: any) => Promise<void>): Promise<void> => {
   const mockTransaction = {
     get: getDoc,
     update: async (docRef: any, updates: Record<string, unknown>) => {
       await updateDoc(docRef, updates)
-      log('Mock Firestore: Document updated', { path: docRef.path, updates })
+      log('runTransaction: Success')
     },
   }
   await updateFunction(mockTransaction)
@@ -100,7 +112,10 @@ export const getDataBase = (): Firestore => mockDb
 
 export const getMockDbState = (): Record<string, any> => deepClone(mockDb)
 
-/* important: called immediately to begin expt */
+/*
+Initialize mock environment
+important: called immediately to begin expt
+*/
 if (mock) {
   // eslint-disable-next-line unicorn/prefer-top-level-await
   getUID().then(
