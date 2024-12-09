@@ -75,13 +75,15 @@ To develop the website, run `yarn dev`, which will open a localhost Vite server 
 
 ### Sandbox
 
-You don't need to set up Firebase, Firestore or Prolific to develop the experiment. This app comes built to start development immediately. There are primarily two toggles to help with sandboxed development, which are found in [`config.ts`](hosting/src/config.ts).
+You don't need to set up Firebase, Firestore or Prolific to develop the experiment. This app comes built to start development immediately. There are primarily two toggles to help with sandboxed development, which are found in [`appConfig.ts`](hosting/src/appConfig.ts).
 
-- Setting `const debug = true` will increase the verbosity of the console output.
+- Setting `const debuggingMode = true` will increase the verbosity of the console output.
 
-  - Alternatively, you can force debugging mode by including `debug` as a URL Parameter, e.g. `https://mysite.web.app/?debug`
+  - Alternatively, you can force debugging mode by including `debug` as a URL Parameter, e.g. `https://mysite.web.app/?debug=true`
 
-- Setting `const mock = true` will make the app use a serverless emulator so that you don't have to set up Firestore before beginning development.
+- Setting `const simulateMockDatabase = true` will make the app use a serverless emulator so that you don't have to set up Firestore before beginning development.
+
+  - Similarly, you can modulate the backend with a URL Parameter, e.g. `https://mysite.web.app/?debug=true&mock=false`
 
 # Configuration
 
@@ -229,7 +231,7 @@ yarn deploy-rules
 
 Once you have the rules deployed, you can switch from using the mock database (a simple database emulator) to Firestore.
 
-Set `const mock = false` in [`config.ts`](hosting/src/config.ts). This will cause the application to use [`creds.ts`](hosting/src/creds.ts) and store the input in Firestore. In production, the app writes to `exptData/:uid`, but will instead write to `exptData-dbug/:uid` when it is in debugging mode or running locally. This is so that there's no confusion about what data was generated locally during development.
+Set `const simulateMockDatabase = false` in [`appConfig.ts`](hosting/src/appConfig.ts). This will cause the application to use [`creds.ts`](hosting/src/creds.ts) and store the input in Firestore. In production, the app writes to `exptData/:uid`, but will instead write to `exptData-dbug/:uid` when it is in debugging mode or running locally. This is so that there's no confusion about what data was generated locally during development.
 
 ### Firebase
 
