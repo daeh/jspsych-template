@@ -83,7 +83,7 @@ You don't need to set up Firebase, Firestore or Prolific to develop the experime
 
 - Setting `const simulateMockDatabase = true` will make the app use a serverless emulator so that you don't have to set up Firestore before beginning development.
 
-  - Similarly, you can modulate the backend with a URL Parameter, e.g. `https://mysite.web.app/?debug=true&mock=false`
+  - Similarly, you can modulate the backend with a URL Parameter, e.g. `https://mysite.web.app/?debug=false&mock=true`
 
 # Configuration
 

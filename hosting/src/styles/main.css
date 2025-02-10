@@ -1,30 +1,41 @@
-@import 'jspsych/css/jspsych.css';
+@import 'jspsych/css/jspsych.css' layer(base);
 
 /* @import './debug.css'; */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@utility debug-toggle {
+  @apply fixed right-2.5 bottom-2.5 z-1000;
+}
+
+@utility debug-panel {
+  @apply fixed right-2 bottom-12 z-1000 max-h-96 w-96 overflow-y-scroll rounded-sm bg-slate-900/80 p-2 font-mono leading-4 text-white select-none;
+
+  & pre {
+    @apply text-xs whitespace-pre text-green-500 select-text;
+  }
+}
 
 @layer base {
   button {
-    @apply cursor-pointer select-none rounded border border-transparent bg-blue-500 px-5 py-2 text-base font-extrabold text-black enabled:transition-colors enabled:duration-200 enabled:hover:border-red-500 enabled:focus:outline-none enabled:active:bg-blue-300 enabled:active:transition-colors disabled:pointer-events-none disabled:bg-gray-400;
+    @apply cursor-pointer rounded-sm border border-transparent bg-blue-500 px-5 py-2 text-base font-extrabold text-black select-none enabled:transition-colors enabled:duration-200 enabled:hover:border-red-500 enabled:focus:outline-hidden enabled:active:bg-blue-300 enabled:active:transition-colors disabled:pointer-events-none disabled:bg-gray-400;
   }
-}
-
-@layer components {
-  .debug-toggle {
-    @apply fixed bottom-2.5 right-2.5 z-[1000];
-  }
-
-  .debug-panel {
-    @apply fixed bottom-12 right-2 z-[1000] max-h-96 w-96 select-none overflow-y-scroll rounded bg-slate-900 bg-opacity-80 p-2 font-mono leading-4 text-white;
-  }
-
-  .debug-panel pre {
-    @apply select-text whitespace-pre text-xs text-green-500;
-  }
-}
-
-@layer utilities {
 }

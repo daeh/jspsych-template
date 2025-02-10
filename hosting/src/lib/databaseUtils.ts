@@ -43,6 +43,8 @@ interface ExperimentDocData extends UserRecord {
 
 async function initData(userInfo: UserRecord): Promise<void> {
   const docData: ExperimentDocData = {
+    // DEBUG
+    // eslint-disable-next-line @typescript-eslint/no-misused-spread
     ...userInfo,
     dateInit: Timestamp.now(),
     debug: debug,

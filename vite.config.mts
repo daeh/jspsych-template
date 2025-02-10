@@ -2,14 +2,10 @@
 
 import { execSync } from 'node:child_process'
 
-import autoprefixer from 'autoprefixer'
+import tailwindcss from '@tailwindcss/vite'
 import browserslistToEsbuild from 'browserslist-to-esbuild'
-import tailwindcss from 'tailwindcss'
-import tailwindcssNesting from 'tailwindcss/nesting'
 import { defineConfig } from 'vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
-
-import tailwindConfig from './tailwind.config'
 
 // import type { AcceptedPlugin } from 'tailwindcss/node_modules/postcss'
 // import type { AcceptedPlugin } from 'postcss'
@@ -50,14 +46,13 @@ export default defineConfig(({ command, mode }) => {
       // outDir: '../dist', // Output to the project root's dist folder
     },
     plugins: [
+      tailwindcss(),
       createHtmlPlugin({
         minify: true,
       }),
     ],
     css: {
-      postcss: {
-        plugins: [tailwindcssNesting, tailwindcss(tailwindConfig), autoprefixer], //  as unknown[] as AcceptedPlugin[]
-      },
+      postcss: './postcss.config.cjs',
     },
     define: {
       'import.meta.env.VITE_APP_TITLE': JSON.stringify(title),

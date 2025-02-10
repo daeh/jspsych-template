@@ -30,7 +30,7 @@
   "bugs": {
     "url": "https://github.com/daeh/jspsych-template/issues"
   },
-  "templateVersion": "0.1.6",
+  "templateVersion": "0.1.7",
   "source": "./hosting",
   "directories": {
     "serve": "hosting/dist"
@@ -39,42 +39,43 @@
     "defaults"
   ],
   "dependencies": {
-    "@jspsych/plugin-html-keyboard-response": "^2.0.0",
-    "@jspsych/plugin-image-keyboard-response": "^2.0.0",
-    "@jspsych/plugin-preload": "^2.0.0",
-    "firebase": "^11.0.2",
-    "jspsych": "^8.1.0"
+    "@jspsych/plugin-html-keyboard-response": "^2.1.0",
+    "@jspsych/plugin-image-keyboard-response": "^2.1.0",
+    "@jspsych/plugin-preload": "^2.1.0",
+    "firebase": "^11.3.0",
+    "jspsych": "^8.2.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.16.0",
-    "@stylistic/eslint-plugin": "^2.12.0",
+    "@eslint/js": "^9.20.0",
+    "@stylistic/eslint-plugin": "^3.1.0",
+    "@tailwindcss/postcss": "4.0.5",
+    "@tailwindcss/vite": "^4.0.5",
     "@types/eslint": "^9.6.1",
     "@types/eslint-config-prettier": "^6.11.3",
     "@types/eslint-plugin-security": "^3.0.0",
-    "@types/node": "^22.10.1",
-    "autoprefixer": "^10.4.20",
-    "browserslist": "^4.24.2",
+    "@types/node": "^22.13.1",
+    "browserslist": "^4.24.4",
     "browserslist-to-esbuild": "^2.1.1",
     "child_process": "^1.0.2",
-    "eslint": "^9.16.0",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint": "^9.20.0",
+    "eslint-config-prettier": "^10.0.1",
     "eslint-import-resolver-typescript": "^3.7.0",
     "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-security": "^3.0.1",
     "eslint-plugin-unicorn": "^56.0.1",
-    "firebase-tools": "^13.28.0",
-    "globals": "^15.13.0",
-    "postcss": "^8.4.49",
-    "prettier": "^3.4.2",
-    "prettier-plugin-tailwindcss": "^0.6.9",
+    "firebase-tools": "^13.30.0",
+    "globals": "^15.14.0",
+    "postcss": "^8.5.1",
+    "prettier": "^3.5.0",
+    "prettier-plugin-tailwindcss": "^0.6.11",
     "readline-sync": "^1.4.10",
     "shelljs": "^0.8.5",
-    "tailwindcss": "^3.4.16",
-    "typescript": "^5.7.2",
-    "typescript-eslint": "^8.17.0",
-    "vite": "^6.0.3",
+    "tailwindcss": "4.0.5",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.23.0",
+    "vite": "^6.1.0",
     "vite-plugin-html": "^3.2.2"
   },
-  "packageManager": "yarn@4.5.3"
+  "packageManager": "yarn@4.6.0"
 }

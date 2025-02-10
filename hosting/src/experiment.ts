@@ -36,8 +36,8 @@ interface TrialData {
 }
 
 const debuggingText = debug ? `<br /><br />redirect link : ${prolificCUrl}` : '<br />'
-const exitMessage = `<p class="align-middle text-center"> 
-Please wait. You will be redirected back to Prolific in a few moments. 
+const exitMessage = `<p class="text-center align-middle">
+Please wait. You will be redirected back to Prolific in a few moments.
 <br /><br />
 If not, please use the following completion code to ensure compensation for this study: ${prolificCC}
 ${debuggingText}
@@ -130,19 +130,21 @@ export async function runExperiment(updateDebugPanel: () => void): Promise<void>
   const instructions = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
-        <p>In this experiment, a circle will appear in the center of the screen.</p>
-        <p>If the circle is <span class="text-blue-500 font-semibold">blue</span>, 
-        press the letter <span class="text-blue-500 font-semibold">F</span> on the keyboard as fast as you can.</p>
-        <p>If the circle is <span class="text-orange-500 font-semibold">orange</span>, 
-        press the letter <span class="text-orange-500 font-semibold">J</span> as fast as you can.</p>
-        <div style='width: 700px;'>
-        <div style='float: left;'><img src='${imgStimBlue}'></img>
-        <p class='small'><strong>Press the F key</strong></p></div>
-        <div style='float: right;'><img src='${imgStimOrange}'></img>
-        <p class='small'><strong>Press the J key</strong></p></div>
-        </div>
-        <p>Press any key to begin.</p>
-      `,
+<p>In this experiment, a circle will appear in the center of the screen.</p>
+<p>If the circle is <span class="font-semibold text-blue-500">blue</span>, press the letter <span class="font-semibold text-blue-500">F</span> on the keyboard as fast as you can.</p>
+<p>If the circle is <span class="font-semibold text-orange-500">orange</span>, press the letter <span class="font-semibold text-orange-500">J</span> as fast as you can.</p>
+<div class="w-[700px]">
+  <div class="float-left">
+    <img src="${imgStimBlue}" />
+    <p class="small"><strong>Press the F key</strong></p>
+  </div>
+  <div class="float-right">
+    <img src="${imgStimOrange}" />
+    <p class="small"><strong>Press the J key</strong></p>
+  </div>
+</div>
+<p>Press any key to begin.</p>
+    `,
     post_trial_gap: 2000,
   }
   timeline.push(instructions)
