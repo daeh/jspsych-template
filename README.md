@@ -100,7 +100,7 @@ The ESLint config integrates these configurations.
 For bundling the website, this project uses
 
 - [Vite](https://vitejs.dev/) (configured in [`vite.config.mts`](vite.config.mts))
-- [Tailwind CSS](https://tailwindcss.com/) (configured in [`tailwind.config.ts`](tailwind.config.ts))
+- [Tailwind CSS](https://tailwindcss.com/)
 - [PostCSS](https://postcss.org/) (configured in [`vite.config.mts`](vite.config.mts); uses [Autoprefixer](https://github.com/postcss/autoprefixer))
 - [Browserslist](https://github.com/browserslist/browserslist) (via the [browserslist-to-esbuild plugin](https://github.com/marcofugaro/browserslist-to-esbuild); configured in [`package.json`](package.json))
 - [jsPsych](https://www.jspsych.org/) - UX (experiment flow, data capture)

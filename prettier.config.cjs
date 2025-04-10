@@ -12,8 +12,8 @@ const config = {
   // arrowParens: 'always',
   proseWrap: 'never',
   endOfLine: 'lf',
-  // experimentalOperatorPosition: 'start',  // waiting for prettier 3.5
-  plugins: ['prettier-plugin-tailwindcss'],
+  experimentalOperatorPosition: 'start',
+  plugins: [require.resolve('prettier-plugin-tailwindcss')],
   tailwindConfig: './tailwind.config.ts',
   overrides: [
     {

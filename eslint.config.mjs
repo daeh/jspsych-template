@@ -3,7 +3,7 @@
 // @ts-check
 
 import path from 'node:path'
-const { dirname, resolve } = path
+const { dirname } = path
 import { fileURLToPath } from 'node:url'
 
 import jseslint from '@eslint/js'
@@ -35,7 +35,7 @@ const allJsExtensionsArray = ['js', 'mjs', 'cjs']
 const allExtensionsArray = [...allTsExtensionsArray, ...allJsExtensionsArray]
 const allTsExtensions = allTsExtensionsArray.join(',')
 const allJsExtensions = allJsExtensionsArray.join(',')
-const allExtensions = allExtensionsArray.join(',')
+// const allExtensions = allExtensionsArray.join(',')
 
 export default config(
   {
@@ -157,8 +157,8 @@ export default config(
           multilineDetection: 'brackets',
         },
       ],
-      '@stylistic/operator-linebreak': ['warn', 'after'], /// DEBUG temp disabled until prettier 3.5 supports experimentalOperatorPosition
-      '@stylistic/indent-binary-ops': ['off'], /// DEBUG temp disabled until prettier 3.5 supports experimentalOperatorPosition
+      '@stylistic/operator-linebreak': ['warn', 'before'],
+      '@stylistic/indent-binary-ops': ['warn', 2],
     },
   },
 

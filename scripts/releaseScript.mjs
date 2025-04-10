@@ -62,9 +62,9 @@ async function attemptRelease(projectPath) {
   checkStatus('Change Directory to Hosting')
   // Run linting
   console.log(
-    '\n-------------------------------------------------------------\n' +
-      'Linting...' +
-      '\n-------------------------------------------------------------\n',
+    '\n-------------------------------------------------------------\n'
+    + 'Linting...'
+    + '\n-------------------------------------------------------------\n',
   )
   exec('yarn lint:prod')
   checkStatus('Lint')
@@ -78,9 +78,9 @@ async function attemptRelease(projectPath) {
   if (exec('git status --porcelain', { silent: true }).stdout === '') {
     gitPorcelain = true
     console.log(
-      '\n-------------------------------------------------------------\n' +
-        'Git Repo is up to date, moving on...' +
-        '\n-------------------------------------------------------------\n',
+      '\n-------------------------------------------------------------\n'
+      + 'Git Repo is up to date, moving on...'
+      + '\n-------------------------------------------------------------\n',
     )
   } else {
     console.log('\n-------------------------------------------------------------\n')
@@ -98,9 +98,9 @@ async function attemptRelease(projectPath) {
         await updatePackageJsonVersion(newVersion, projectPath)
         tag = true
         console.log(
-          '\n-------------------------------------------------------------\n' +
-            'Version update completed successfully.' +
-            '\n-------------------------------------------------------------\n',
+          '\n-------------------------------------------------------------\n'
+          + 'Version update completed successfully.'
+          + '\n-------------------------------------------------------------\n',
         )
       } else {
         console.error('\nInvalid version format. Version was not incremented.\n')
@@ -111,15 +111,15 @@ async function attemptRelease(projectPath) {
   checkStatus('Version Update')
   if (gitPorcelain) {
     console.log(
-      '\n-------------------------------------------------------------\n' +
-        'No changes to commit.' +
-        '\n-------------------------------------------------------------\n',
+      '\n-------------------------------------------------------------\n'
+      + 'No changes to commit.'
+      + '\n-------------------------------------------------------------\n',
     )
   } else {
     console.log(
-      '\n-------------------------------------------------------------\n' +
-        'Modified files:' +
-        '\n-------------------------------------------------------------\n',
+      '\n-------------------------------------------------------------\n'
+      + 'Modified files:'
+      + '\n-------------------------------------------------------------\n',
     )
     exec('git status --porcelain')
     checkStatus('Git Status')
@@ -132,9 +132,9 @@ async function attemptRelease(projectPath) {
     exec('git add .')
     checkStatus('Git Add')
     console.log(
-      '\n-------------------------------------------------------------\n' +
-        'Changes to be committed:' +
-        '\n-------------------------------------------------------------\n',
+      '\n-------------------------------------------------------------\n'
+      + 'Changes to be committed:'
+      + '\n-------------------------------------------------------------\n',
     )
     exec('GIT_PAGER=cat git diff --cached')
     checkStatus('Git Diff')
@@ -142,9 +142,9 @@ async function attemptRelease(projectPath) {
       '\n>>> Diffs shown above' + '\n>>> Press Enter to continue to the commit process, or Ctrl+C to abort.\n',
     )
     console.log(
-      '\n-------------------------------------------------------------\n' +
-        'Starting Git commit process...' +
-        '\n-------------------------------------------------------------\n',
+      '\n-------------------------------------------------------------\n'
+      + 'Starting Git commit process...'
+      + '\n-------------------------------------------------------------\n',
     )
     const commitMsg = readlineSync.question('>>> Enter your commit message:  ')
     exec(`git commit -m "${commitMsg}"`)
@@ -163,35 +163,35 @@ async function attemptRelease(projectPath) {
     if (tagCommit) {
       exec(`git tag -a "v${newVersion}" -m "Version ${newVersion}"`)
       console.log(
-        '\n-------------------------------------------------------------\n' +
-          `Tag v${newVersion} added.` +
-          '\n-------------------------------------------------------------\n',
+        '\n-------------------------------------------------------------\n'
+        + `Tag v${newVersion} added.`
+        + '\n-------------------------------------------------------------\n',
       )
     }
   }
   checkStatus('Tag Release')
   cd(hostingPath)
   console.log(
-    '\n-------------------------------------------------------------\n' +
-      'Building project...' +
-      '\n-------------------------------------------------------------\n',
+    '\n-------------------------------------------------------------\n'
+    + 'Building project...'
+    + '\n-------------------------------------------------------------\n',
   )
   exec('yarn build:prod')
   checkStatus('Build')
   cd(projectPath)
   console.log(
-    '\n-------------------------------------------------------------\n' +
-      'Deploying project...' +
-      '\n-------------------------------------------------------------\n',
+    '\n-------------------------------------------------------------\n'
+    + 'Deploying project...'
+    + '\n-------------------------------------------------------------\n',
   )
   exec('yarn deploy-rules')
   checkStatus('Deploy Rules')
   exec('yarn deploy')
   checkStatus('Deploy Hosting')
   console.log(
-    '\n-------------------------------------------------------------\n' +
-      'Script completed successfully.' +
-      '\n-------------------------------------------------------------\n',
+    '\n-------------------------------------------------------------\n'
+    + 'Script completed successfully.'
+    + '\n-------------------------------------------------------------\n',
   )
 }
 

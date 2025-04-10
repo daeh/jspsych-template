@@ -12,7 +12,7 @@ const config = {
   // arrowParens: 'always',
   proseWrap: 'never',
   endOfLine: 'lf',
-  // experimentalOperatorPosition: 'start', // waiting for prettier 3.5
+  experimentalOperatorPosition: 'start',
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   plugins: [import('prettier-plugin-tailwindcss')],
