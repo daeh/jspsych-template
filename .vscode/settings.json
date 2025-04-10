@@ -7,7 +7,7 @@
   "files.associations": {
     "*.css": "tailwindcss"
   },
-  "[javascript][javascriptreact][typescript]": {
+  "[javascript][javascriptreact][typescript][typescriptreact]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
   "[html]": {
@@ -19,14 +19,19 @@
   "[css][scss][less]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  //// for js/ts generally ////
   "eslint.enable": true,
   "eslint.format.enable": true,
   "eslint.useFlatConfig": true,
-  // "eslint.nodePath": ".yarn/sdks",
-  // "typescript.tsdk": ".yarn/sdks/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "prettier.prettierPath": "./node_modules/prettier",
   "prettier.configPath": "./prettier.config.cjs", // this is a temp fix for VSCode
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  /* for .yarnrc.yml > nodeLinker: pnp */
+  // "eslint.nodePath": ".yarn/sdks",
+  // "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs",
+  // "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  /* for .yarnrc.yml > nodeLinker: node-modules OR nodeLinker: pnpm */
+  "prettier.prettierPath": "./node_modules/prettier",
+  /* end */
   "files.exclude": {
     "**/node_modules": true,
     "**/.yarn": true,
@@ -35,7 +40,8 @@
   },
   "search.exclude": {
     "**/.pnp.*": true,
-    "**/.vscode": true
+    "**/.vscode": true,
+    "**/yarn.lock": true
   },
   "explorer.expandSingleFolderWorkspaces": true,
   "explorer.fileNesting.enabled": true,
