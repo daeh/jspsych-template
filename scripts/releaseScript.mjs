@@ -4,7 +4,11 @@
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore - no type definitions available
 import readlineSync from 'readline-sync'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore - no type definitions available
 import pkg from 'shelljs'
 
 const { cd, exec, error: shellError } = pkg

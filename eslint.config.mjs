@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-// @ts-check
 
 import path from 'node:path'
 const { dirname } = path
@@ -32,6 +31,8 @@ const tsconfig = (() => {
 
 const allTsExtensionsArray = ['ts', 'mts', 'cts']
 const allJsExtensionsArray = ['js', 'mjs', 'cjs']
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore - keeping for potential future use
 const allExtensionsArray = [...allTsExtensionsArray, ...allJsExtensionsArray]
 const allTsExtensions = allTsExtensionsArray.join(',')
 const allJsExtensions = allJsExtensionsArray.join(',')
@@ -68,7 +69,7 @@ export default config(
   jseslint.configs.recommended,
   configs.strict,
   configs.stylistic,
-  stylisticPlugin.configs['recommended-flat'],
+  stylisticPlugin.configs['recommended'],
   stylisticPlugin.configs['disable-legacy'],
 
   /* All Files */
@@ -139,7 +140,7 @@ export default config(
       ],
       '@stylistic/indent': ['error', 2, { SwitchCase: 1 }],
       '@stylistic/semi': ['error', 'never'],
-      '@stylistic/quotes': ['warn', 'single', { avoidEscape: true, allowTemplateLiterals: false }],
+      '@stylistic/quotes': ['warn', 'single', { avoidEscape: true, allowTemplateLiterals: 'never' }],
       '@stylistic/object-curly-spacing': ['warn', 'always'],
       '@stylistic/array-element-newline': ['error', 'consistent'],
       '@stylistic/brace-style': ['warn', '1tbs', { allowSingleLine: true }],
